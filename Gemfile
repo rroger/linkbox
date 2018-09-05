@@ -23,13 +23,13 @@ group :development, :test do
   gem 'capybara-screenshot'
   gem 'execjs'
   gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rubocop', '~> 0.58.2', require: false
+  gem 'rubocop-rspec', require: false
   gem 'geckodriver-helper'
   gem 'mdl', require: false
   gem 'reek', require: false
   gem 'rspec-rails', '~> 3.7'
-  gem 'rubocop', require: false
-  gem 'rubocop-rspec', require: false
-  gem 'scss_lint', require: false
   gem 'selenium-webdriver'
 end
 
