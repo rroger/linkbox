@@ -33,9 +33,6 @@ group :development, :test do
   gem 'pry-rails'
   gem 'reek', require: false
   gem 'rspec-rails', '~> 3.7'
-  gem 'rubocop', '~> 0.58.2', require: false
-  gem 'rubocop-rspec', require: false
-  gem 'scss_lint', require: false
   gem 'selenium-webdriver'
 end
 
