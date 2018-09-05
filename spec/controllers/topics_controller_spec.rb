@@ -3,20 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::TopicsController, type: :controller do
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
+  let(:valid_attributes) { attributes_for(:topic) }
 
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
-
-  let(:valid_session) { {} }
+  let(:invalid_attributes) { { name: '' } }
 
   describe 'GET #index' do
     it 'returns a success response' do
       Topic.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
       expect(response).to be_successful
     end
   end
@@ -24,22 +18,7 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
   describe 'GET #show' do
     it 'returns a success response' do
       topic = Topic.create! valid_attributes
-      get :show, params: { id: topic.to_param }, session: valid_session
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'GET #new' do
-    it 'returns a success response' do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'GET #edit' do
-    it 'returns a success response' do
-      topic = Topic.create! valid_attributes
-      get :edit, params: { id: topic.to_param }, session: valid_session
+      get :show, params: { id: topic.to_param }
       expect(response).to be_successful
     end
   end
@@ -48,20 +27,20 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
     context 'with valid params' do
       it 'creates a new Topic' do
         expect do
-          post :create, params: { topic: valid_attributes }, session: valid_session
+          post :create, params: { topic: valid_attributes }
         end.to change(Topic, :count).by(1)
       end
 
-      it 'redirects to the created topic' do
-        post :create, params: { topic: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(Topic.last)
+      it 'returns the created topic' do
+        post :create, params: { topic: valid_attributes }
+        expect(JSON.parse(response.body)).to eq TopicSerializer.new(Topic.last).as_json
       end
     end
 
     context 'with invalid params' do
-      it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: { topic: invalid_attributes }, session: valid_session
-        expect(response).to be_successful
+      it 'returns status unprocessable_entity' do
+        post :create, params: { topic: invalid_attributes }
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -69,28 +48,22 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        attributes_for(:topic)
       end
 
       it 'updates the requested topic' do
         topic = Topic.create! valid_attributes
-        put :update, params: { id: topic.to_param, topic: new_attributes }, session: valid_session
+        put :update, params: { id: topic.to_param, topic: new_attributes }
         topic.reload
-        skip('Add assertions for updated state')
-      end
-
-      it 'redirects to the topic' do
-        topic = Topic.create! valid_attributes
-        put :update, params: { id: topic.to_param, topic: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(topic)
+        expect(topic).to have_attributes(new_attributes)
       end
     end
 
     context 'with invalid params' do
-      it "returns a success response (i.e. to display the 'edit' template)" do
+      it 'returns status unprocessable_entity' do
         topic = Topic.create! valid_attributes
-        put :update, params: { id: topic.to_param, topic: invalid_attributes }, session: valid_session
-        expect(response).to be_successful
+        put :update, params: { id: topic.to_param, topic: invalid_attributes }
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -99,14 +72,8 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
     it 'destroys the requested topic' do
       topic = Topic.create! valid_attributes
       expect do
-        delete :destroy, params: { id: topic.to_param }, session: valid_session
+        delete :destroy, params: { id: topic.to_param }
       end.to change(Topic, :count).by(-1)
-    end
-
-    it 'redirects to the topics list' do
-      topic = Topic.create! valid_attributes
-      delete :destroy, params: { id: topic.to_param }, session: valid_session
-      expect(response).to redirect_to(topics_url)
     end
   end
 end

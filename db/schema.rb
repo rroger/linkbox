@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20_180_905_143_646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
   create_table 'topics', force: :cascade do |t|
-    t.string 'name'
+    t.string 'name', null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
   end
