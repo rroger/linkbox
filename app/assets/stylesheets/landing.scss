@@ -1,3 +1,19 @@
-// Place all the styles related to the Landing controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'variables.scss';
+
+nav {
+  height: 100px;
+  background-color: $dark-gray;
+}
+.main-container {
+  height: 100vh;
+
+}
+
+.left-outlet {
+  background-color: $light-gray;
+  height: 100%;
+}
+
+.right-outlet {
+  height: 100%;
+}

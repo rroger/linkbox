@@ -12,7 +12,10 @@
 // app/javascript/packs/application.js
 
 import Vue from 'vue/dist/vue.js'
+import VueResource from 'vue-resource';
 import App from '../app.vue'
+
+Vue.use(VueResource);
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(document.createElement('app'))
@@ -21,6 +24,5 @@ document.addEventListener('DOMContentLoaded', () => {
     template: '<App/>',
     components: { App }
   })
-
   console.log(app)
 })
