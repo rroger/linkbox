@@ -8,6 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'bootstrap', '~> 4.1.3'
+gem 'figaro'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'pg', '~> 0.18'
@@ -18,13 +19,17 @@ gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'factory_bot_rails'
+  gem 'mdl', require: false
+  gem 'reek', require: false
   gem 'rspec-rails', '~> 3.7'
-  gem 'rubocop'
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'scss_lint', require: false
   gem 'selenium-webdriver'
 end
 

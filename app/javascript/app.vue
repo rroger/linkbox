@@ -32,29 +32,15 @@
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
-    }
+      message: 'Hello Vue!'
+    };
   },
   methods: {
-    onSubmit() {
-      console.log('onSubmit');
-    },
-    sendtest() {
-      console.log('thsi', this);
-      console.log('this.$http', this.$http);
-      // GET /someUrl
-      this.$http.get('https://www.heise.de').then(response => {
-        console.log('debug', response);
-      }, response => {
-        // error callback
-        console.log('error: ', response);
-      });
-    }
-
+    onSubmit() {},
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/stylesheets/landing.scss';
+  /*@import '../assets/stylesheets/landing.scss';*/
 </style>

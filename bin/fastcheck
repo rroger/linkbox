@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "\n== ESLint =="
+
+yarn eslint app/assets/javascripts/**/*.js
+if [ $? -ne 0 ]; then
+  echo 'ESLint detected issues in app/assets/javascripts'
+  exit 1
+fi
+
+yarn eslint app/javascript/**/*.{js,vue}
+if [ $? -ne 0 ]; then
+  echo 'ESLint detected issues in app/javascript/**/*.{js,vue}'
+fi
+
+echo "\n== Rubocop =="
+bundle exec rubocop -D
+if [ $? -ne 0 ]; then
+  echo 'Rubocop detected issues'
+  exit 1
+fi
+
