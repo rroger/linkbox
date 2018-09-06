@@ -13,6 +13,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.2.1'
+gem 'seed_box'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
 
