@@ -43,7 +43,7 @@ module Api
       end
 
       def topic_params
-        params.require(:topic).permit(:name)
+        params.require(:data).permit(:id, :type, attributes: [:name]).fetch(:attributes, [])
       end
 
       def render_topics(topics, status = :ok)
