@@ -12,3 +12,10 @@ Metrics/BlockLength:
 Style/MixinUsage:
   Exclude:
     - 'bin/**/*'
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+
