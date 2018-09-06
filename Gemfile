@@ -33,7 +33,6 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
-  gem 'pry-rails'
 end
 
 group :development do
