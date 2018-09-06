@@ -44,11 +44,6 @@ rspec:
   script:
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
-  artifacts:
-    paths:
-    - tmp/capybara/
-    expire_in: 1 week
-    when: on_failure
 
 reek:
   stage: test
@@ -56,11 +51,6 @@ reek:
     RAILS_ENV: test
   script:
   - bundle exec reek
-  artifacts:
-    paths:
-    - tmp/capybara/
-    expire_in: 1 week
-    when: on_failure
 
 brakeman:
   stage: test
@@ -68,11 +58,6 @@ brakeman:
     RAILS_ENV: test
   script:
   - bundle exec brakeman -q -z --summary > /dev/null
-  artifacts:
-    paths:
-    - tmp/capybara/
-    expire_in: 1 week
-    when: on_failure
 
 bundler-audit:
   stage: test
@@ -80,8 +65,3 @@ bundler-audit:
     RAILS_ENV: test
   script:
   - bundle exec bundler-audit
-  artifacts:
-    paths:
-    - tmp/capybara/
-    expire_in: 1 week
-    when: on_failure
