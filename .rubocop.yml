@@ -18,4 +18,8 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'node_modules/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - !ruby/regexp /old_and_unused\.rb$/
 
