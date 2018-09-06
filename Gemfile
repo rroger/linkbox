@@ -24,6 +24,7 @@ group :development, :test do
   gem 'execjs'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry-rails'
   gem 'rubocop', '~> 0.58.2', require: false
   gem 'geckodriver-helper'
   gem 'mdl', require: false
@@ -34,7 +35,6 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
-  gem 'pry-rails'
 end
 
 group :development do
