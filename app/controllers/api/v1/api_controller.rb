@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# :reek:UncommunicativeModuleName: disable
 module Api
   module V1
     class ApiController < ActionController::Base
@@ -7,3 +8,4 @@ module Api
     end
   end
 end
+# :reek:UncommunicativeModuleName: enable
