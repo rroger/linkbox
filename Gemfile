@@ -26,12 +26,12 @@ group :development, :test do
   gem 'faker'
   gem 'geckodriver-helper'
   gem 'mdl', require: false
+  gem 'pry-rails'
   gem 'reek', require: false
   gem 'rspec-rails', '~> 3.7'
   gem 'rubocop', '~> 0.58.2', require: false
   gem 'rubocop-rspec', require: false
   gem 'selenium-webdriver'
-  gem 'pry-rails'
 end
 
 group :development do
