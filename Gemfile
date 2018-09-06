@@ -18,8 +18,6 @@ gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
 
 group :development, :test do
-  gem 'brakeman', require: false
-  gem 'bundler-audit', require: false
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'capybara-screenshot'
@@ -35,6 +33,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
+  gem 'pry-rails'
 end
 
 group :development do
