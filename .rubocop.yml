@@ -21,5 +21,6 @@ AllCops:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
+    - 'tmp/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
 
