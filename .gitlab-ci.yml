@@ -9,14 +9,23 @@ variables:
   POSTGRES_DB: linkbox_test
   DISABLE_SPRING: 'true'
   TZ: Europe/Zurich
+  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
+
 
 cache:
   key: $CI_COMMIT_SHA
+  untracked: true
   paths:
     - vendor/ruby
     - vendor
-    - node_modules/
+    - node_modules
 
+before_script:
+  - ls -A
+  - ruby -v                                      # Print out ruby version for debugging
+  - gem install bundler --no-ri --no-rdoc        # Bundler is not installed with the image
+  - bundle install -j $(nproc) --path vendor
+  - yarn install
 
 stages:
   - build
@@ -29,31 +38,20 @@ setup:
   script:
     - ls -A
     - ruby -v                                      # Print out ruby version for debugging
-    - gem install bundler --no-ri --no-rdoc        # Bundler is not installed with the image
-    - bundle install -j $(nproc) --path vendor
-    - yarn install
+    # If the cache would work, here could be the content of the before_script
 
 .prepare_tests: &prepare_tests
   stage: test
-  cache:
-    policy: pull
-  dependencies:
-    - setup
   variables:
     RAILS_ENV: test
 
 linting:
  <<: *prepare_tests
  script:
-    - ls -A
-    - ls node_modules
-    - ls vendor/ruby
     - bin/fastcheck
 
 rspec:
   <<: *prepare_tests
-  variables:
-    DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
   script:
     - bundle exec rake db:schema:load
     - bundle exec rspec spec
@@ -61,7 +59,7 @@ rspec:
 reek:
   <<: *prepare_tests
   script:
-    - bundle exec reek --path vendor/rubyd
+    - bundle exec reek
 
 brakeman:
   <<: *prepare_tests

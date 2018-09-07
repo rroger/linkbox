@@ -17,6 +17,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - 'bin/**/*'
+    - 'vendor/ruby/**/*'
     - 'node_modules/**/*'
     - 'db/**/*'
     - 'config/**/*'
