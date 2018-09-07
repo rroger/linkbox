@@ -1,16 +1,21 @@
 image: git.panter.ch:5001/panter/docker-build-images:ruby_2.5.1-yarn-firefox_beta
 
+services:
+  - postgres:9.4
+  - node
+
+
 variables:
-  POSTGRES_DB: linkbox_teset
+  POSTGRES_DB: linkbox_test
   DISABLE_SPRING: 'true'
   TZ: Europe/Zurich
 
 cache:
-  key: "$CI_PROJECT_ID"
+  key: $CI_COMMIT_SHA
   paths:
-  - tmp/cache/ruby
-
-before_script:
+    - vendor/ruby
+    - vendor
+    - node_modules/
 
 
 stages:
@@ -22,45 +27,48 @@ setup:
   variables:
     RAILS_ENV: test
   script:
-  - ruby -v                                      # Print out ruby version for debugging
-  - mkdir -p tmp/cache/phantomjs && ln -s `pwd`/tmp/cache/phantomjs /root/.phantomjs # Cache phantomjs download
-  - gem install bundler --no-ri --no-rdoc        # Bundler is not installed with the image
-  - bundle install -j $(nproc) --path tmp/cache  # Install dependencies into ./tmp/cache/ruby
-  - yarn install
+    - ls -A
+    - ruby -v                                      # Print out ruby version for debugging
+    - gem install bundler --no-ri --no-rdoc        # Bundler is not installed with the image
+    - bundle install -j $(nproc) --path vendor
+    - yarn install
+
+.prepare_tests: &prepare_tests
+  stage: test
+  cache:
+    policy: pull
+  dependencies:
+    - setup
+  variables:
+    RAILS_ENV: test
 
 linting:
-  stage: test
-  variables:
-    RAILS_ENV: test
-  script:
-  - bin/fastcheck
+ <<: *prepare_tests
+ script:
+    - ls -A
+    - ls node_modules
+    - ls vendor/ruby
+    - bin/fastcheck
 
 rspec:
-  stage: test
+  <<: *prepare_tests
   variables:
     DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
-    RAILS_ENV: test
   script:
-  - bundle exec rake db:schema:load
-  - bundle exec rspec spec
+    - bundle exec rake db:schema:load
+    - bundle exec rspec spec
 
 reek:
-  stage: test
-  variables:
-    RAILS_ENV: test
+  <<: *prepare_tests
   script:
-  - bundle exec reek
+    - bundle exec reek --path vendor/rubyd
 
 brakeman:
-  stage: test
-  variables:
-    RAILS_ENV: test
+  <<: *prepare_tests
   script:
-  - bundle exec brakeman -q -z --summary > /dev/null
+    - bundle exec brakeman -q -z --summary > /dev/null
 
 bundler-audit:
-  stage: test
-  variables:
-    RAILS_ENV: test
+  <<: *prepare_tests
   script:
-  - bundle exec bundler-audit
+    - bundle exec bundler-audit
