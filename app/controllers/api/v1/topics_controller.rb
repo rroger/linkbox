@@ -54,10 +54,6 @@ module Api
       def render_topics(topics, status = :ok)
         render status, json: ::TopicSerializer.new(topics)
       end
-
-      def render_topics(topics, status = :ok)
-        render status, json: ::TopicSerializer.new(topics)
-      end
     end
   end
 end
