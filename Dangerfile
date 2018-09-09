@@ -1,5 +1,7 @@
-unless gitlab.mr_body =~ %r{/issues/\d+} || gitlab.mr_body =~ %r{#\d+}
-  warn <<~TEXT.gsub(/\$/, '')
+# frozen_string_literal: true
+
+unless gitlab.mr_body =~ %r{/issues/\d+} || gitlab.mr_body =~ /#\d+/
+  warn <<~TEXT.delete(/\$/)
     This merge request does not reference any issues. Please add an \
     issue reference to the Description.
   TEXT
@@ -10,7 +12,7 @@ if git.commits.any? { |commit| commit.message =~ /^Merge branch 'master'/ }
 end
 
 if git.commits.any? { |commit| commit.message.split(/\n/).first.length > 50 }
-  warn <<~TEXT.gsub(/\$/, '')
+  warn <<~TEXT.delete(/\$/)
     On of your commit messages is too long. Please adhere to the following \
     basic structural rules for creating a meaningful commit message:
 
