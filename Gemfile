@@ -23,8 +23,10 @@ group :development, :test do
   gem 'bundler-audit', require: false
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.13'
+  gem 'capybara-screenshot'
   gem 'execjs'
   gem 'factory_bot_rails'
+  gem 'geckodriver-helper'
   gem 'mdl', require: false
   gem 'reek', require: false
   gem 'rspec-rails', '~> 3.7'

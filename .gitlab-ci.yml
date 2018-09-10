@@ -31,6 +31,8 @@ setup:
   stage: build
   variables:
     RAILS_ENV: test
+  script:
+    - ruby -v # because: jobs cant be blank
 
 .prepare_tests: &prepare_tests
   stage: test
@@ -73,6 +75,11 @@ rspec:
   script:
     - bundle exec rake db:schema:load
     - bundle exec rspec spec
+  artifacts:
+    paths:
+    - tmp/capybara
+    when: on_failure
+    expire_in: 1 week
 
 reek:
   <<: *prepare_tests
