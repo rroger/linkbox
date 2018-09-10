@@ -26,7 +26,6 @@ group :development, :test do
   gem 'execjs'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'pry-rails'
   gem 'geckodriver-helper'
   gem 'mdl', require: false
   gem 'pry-rails'

@@ -1,7 +1,42 @@
 $dark-gray: #414042;
 $light-gray: #f6f6f6;
+$gray: #9b9b9b;
 $background-bright: #fff;
 
 $font-size-title: 1em;
 $font-size-title-small: 0.75em;
 $font-weight-title: 600;
+
+$theme-colors: (
+  primary: $dark-gray
+);
+
+$enable-rounded: false;
+
+::-webkit-input-placeholder {
+  font-size: 11px!important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+     font-size: 11px!important;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+     font-size: 11px!important;
+}
+
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
