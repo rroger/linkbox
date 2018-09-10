@@ -1,10 +1,5 @@
 image: git.panter.ch:5001/panter/docker-build-images:ruby_2.5.1-yarn-firefox_beta
 
-services:
-  - postgres:9.4
-  - node
-
-
 variables:
   POSTGRES_DB: linkbox_test
   DISABLE_SPRING: 'true'
