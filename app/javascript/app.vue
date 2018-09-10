@@ -9,8 +9,8 @@
 
 <script>
 import LbNavigation from './components/lb-navigation'
+export default {
   components: {
     'lb-navigation': LbNavigation
-  }
 }
 </script>
