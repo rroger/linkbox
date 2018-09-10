@@ -13,15 +13,12 @@ variables:
 
 cache:
   key: $CI_COMMIT_SHA
-  untracked: true
   paths:
     - vendor/ruby
     - vendor
     - node_modules
 
 before_script:
-  - ls -A # Todo: fix caches and remove this debug output
-  - ruby -v
   - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
   - bundle install -j $(nproc) --path vendor
   - yarn install
@@ -34,10 +31,6 @@ setup:
   stage: build
   variables:
     RAILS_ENV: test
-  script:
-    - ls -A # Todo: fix caches and remove this debug output
-    - ruby -v # Print out ruby version for debugging
-    # If the cache would work, here could be the content of the before_script
 
 .prepare_tests: &prepare_tests
   stage: test
