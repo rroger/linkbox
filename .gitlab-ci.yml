@@ -64,10 +64,16 @@ danger-review:
     - git version
     - danger --fail-on-errors=true
 
-linting:
+rubocop:
  <<: *prepare_tests
  script:
-    - bin/fastcheck
+    - bundle exec rubocop -D
+
+eslint:
+  <<: *prepare_tests
+  script:
+    - yarn eslint app/assets/javascripts/**/*.js
+    - yarn eslint app/javascript/**/*.{js,vue}
 
 rspec:
   <<: *prepare_tests
