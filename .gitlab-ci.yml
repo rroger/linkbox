@@ -8,7 +8,6 @@ variables:
   DANGER_GITLAB_HOST: git.panter.ch
   DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
 
-
 cache:
   key: $CI_COMMIT_SHA
   untracked: true
@@ -18,7 +17,7 @@ cache:
     - node_modules
 
 before_script:
-  - ls -A- ls -A # Todo: fix caches and remove this debug output
+  - ls -A # Todo: fix caches and remove this debug output
   - ruby -v
   - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
   - bundle install -j $(nproc) --path vendor
