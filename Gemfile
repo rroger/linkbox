@@ -23,9 +23,9 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'capybara-screenshot'
-  gem 'execjs'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'foreman'
   gem 'geckodriver-helper'
   gem 'mdl', require: false
   gem 'pry-rails'
@@ -35,6 +35,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
+  gem 'spring-commands-rspec'
 end
 
 group :development do
