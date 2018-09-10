@@ -1,5 +1,5 @@
 image: git.panter.ch:5001/panter/docker-build-images:ruby_2.5.1-yarn-firefox_beta
- 
+
 services:
   - postgres:9.4
   - node
@@ -23,9 +23,9 @@ cache:
     - node_modules
 
 before_script:
-  - ls -A
-  - ruby -v                                      # Print out ruby version for debugging
-  - gem install bundler --no-ri --no-rdoc        # Bundler is not installed with the image
+  - ls -A- ls -A # Todo: fix caches and remove this debug output
+  - ruby -v
+  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
   - bundle install -j $(nproc) --path vendor
   - yarn install
 
@@ -38,8 +38,8 @@ setup:
   variables:
     RAILS_ENV: test
   script:
-    - ls -A
-    - ruby -v                                      # Print out ruby version for debugging
+    - ls -A # Todo: fix caches and remove this debug output
+    - ruby -v # Print out ruby version for debugging
     # If the cache would work, here could be the content of the before_script
 
 .prepare_tests: &prepare_tests
