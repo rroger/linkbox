@@ -1,7 +1,7 @@
 image: git.panter.ch:5001/panter/docker-build-images:ruby_2.5.1-yarn-firefox_beta
 
 services:
-- postgres:9.4
+- postgres:9.6
 
 variables:
   POSTGRES_DB: linkbox_test
@@ -10,34 +10,14 @@ variables:
   DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
   DANGER_GITLAB_HOST: git.panter.ch
   DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
-
-cache:
-  key: $CI_COMMIT_SHA
-  paths:
-    - vendor/ruby
-    - vendor
-    - node_modules
-
-before_script:
-  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-  - bundle install -j $(nproc) --path vendor
-  - yarn install
+  RAILS_ENV: test
 
 stages:
-  - build
-  - test
+- test
 
-setup:
-  stage: build
-  variables:
-    RAILS_ENV: test
-  script:
-    - ruby -v # because: jobs cant be blank
-
-.prepare_tests: &prepare_tests
-  stage: test
-  variables:
-    RAILS_ENV: test
+before_script:
+- gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
+- bundle install -j $(nproc) --path vendor
 
 danger-review:
   stage: test
@@ -45,36 +25,41 @@ danger-review:
   cache: {}
   dependencies: []
   before_script:
-    - gem install danger-gitlab --no-document
+  - gem install danger-gitlab --no-document
   only:
     variables:
-      - $DANGER_GITLAB_API_TOKEN
+    - $DANGER_GITLAB_API_TOKEN
   except:
     refs:
-      - master
+    - master
     variables:
-      - $CI_COMMIT_REF_NAME =~ /^ce-to-ee-.*/
-      - $CI_COMMIT_REF_NAME =~ /.*-stable(-ee)?-prepare-.*/
+    - $CI_COMMIT_REF_NAME =~ /^ce-to-ee-.*/
+    - $CI_COMMIT_REF_NAME =~ /.*-stable(-ee)?-prepare-.*/
   script:
-    - git version
-    - danger --fail-on-errors=true
+  - git version
+  - danger --fail-on-errors=true
 
 rubocop:
- <<: *prepare_tests
- script:
-    - bundle exec rubocop -D
+  stage: test
+  script:
+  - bundle exec rubocop -D
 
 eslint:
-  <<: *prepare_tests
+  stage: test
+  before_script:
+  - yarn install
   script:
-    - yarn eslint app/assets/javascripts/**/*.js
-    - yarn eslint app/javascript/**/*.{js,vue}
+  - yarn lint
 
 rspec:
-  <<: *prepare_tests
+  stage: test
+  before_script:
+  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
+  - bundle install -j $(nproc) --path vendor
+  - yarn install
   script:
-    - bundle exec rake db:schema:load
-    - bundle exec rspec spec
+  - bundle exec rake db:schema:load
+  - bundle exec rspec spec
   artifacts:
     paths:
     - tmp/capybara
@@ -82,16 +67,16 @@ rspec:
     expire_in: 1 week
 
 reek:
-  <<: *prepare_tests
+  stage: test
   script:
-    - bundle exec reek
+  - bundle exec reek
 
 brakeman:
-  <<: *prepare_tests
+  stage: test
   script:
-    - bundle exec brakeman -q -z --summary > /dev/null
+  - bundle exec brakeman -q -z --summary > /dev/null
 
 bundler-audit:
-  <<: *prepare_tests
+  stage: test
   script:
-    - bundle exec bundler-audit
+  - bundle exec bundler-audit
