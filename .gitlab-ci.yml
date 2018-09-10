@@ -61,8 +61,6 @@ stylelint:
 rspec:
   stage: test
   before_script:
-  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-  - bundle install -j $(nproc) --path vendor
   - yarn install
   script:
   - bundle exec rake db:schema:load
