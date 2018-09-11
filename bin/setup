@@ -19,7 +19,7 @@ chdir APP_ROOT do
 
   system('bin/yarn')
 
-  puts "\n== Copying sample files =="
+  puts "\n== Copying ENV config sample files =="
   unless File.exist?('config/application.yml')
     system! 'cp config/application.example.yml config/application.yml'
   end

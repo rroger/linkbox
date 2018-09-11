@@ -10,8 +10,15 @@ end
 Capybara.register_driver :firefox do |app|
   Capybara::Selenium::Driver.new(app, browser: :firefox)
 end
-Capybara.javascript_driver = :firefox_headless
+Capybara.javascript_driver = (ENV['JS_DRIVER'] || :firefox_headless).to_sym
 # From https://github.com/mattheworiordan/capybara-screenshot/issues/84#issuecomment-41219326
 Capybara::Screenshot.register_driver(:firefox_headless) do |driver, path|
   driver.browser.save_screenshot(path)
+end
+
+Capybara.configure do |_config|
+  Capybara.app_host = 'http://localhost:5001'
+  Capybara.server_port = 5001 # We don't want it to collide with standard rails server on port 5000
+  Capybara.server_host = '0.0.0.0' # Start server on localhost as meta-address
+  Capybara.server = :puma, { Silent: true } # Supress puma STDOUT in console
 end

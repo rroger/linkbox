@@ -43,17 +43,18 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import _ from 'lodash';
 export default {
   name: 'TopicsComponent',
 
   data() {
     return {
-      topics: [{ name: 'Test Topic' }],
+      topics: [],
       showForm: false,
       newTopicName: null,
       editTopicId: null,
-      baseUrl: 'http://localhost:3000/api/v1/topics',
+      baseUrl: `${process.env.ROOT_API}/topics`,
     };
   },
   created() {

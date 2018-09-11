@@ -7,10 +7,11 @@ variables:
   POSTGRES_DB: linkbox_test
   DISABLE_SPRING: 'true'
   TZ: Europe/Zurich
-  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
+  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB'
   DANGER_GITLAB_HOST: git.panter.ch
   DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
   RAILS_ENV: test
+  ROOT_API: 'http://localhost:5001/api/v1'
 
 stages:
 - test
