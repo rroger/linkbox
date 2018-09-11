@@ -18,7 +18,7 @@
                 </div>
                 <div class="row">
                   <div class=col-md-12>
-                    <button v-show="editTopicId" type="button" class="btn btn-outline-primary" @click="deleteTopic()">Delete</button>
+                    <button v-show="editTopicId" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="deleteTopic()">Delete</button>
                     <button v-show="!editTopicId" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
                     <button type="submit" class="btn btn-primary save-button">Save</button>
                   </div>
@@ -54,7 +54,7 @@ export default {
       showForm: false,
       newTopicName: null,
       editTopicId: null,
-      baseUrl: `${process.env.ROOT_API}/topics`,
+      baseUrl: `${process.env.BASE_API}/topics`,
     };
   },
   created() {

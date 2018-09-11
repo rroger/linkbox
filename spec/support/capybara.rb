@@ -19,6 +19,4 @@ end
 Capybara.configure do |_config|
   Capybara.app_host = 'http://localhost:5001'
   Capybara.server_port = 5001 # We don't want it to collide with standard rails server on port 5000
-  Capybara.server_host = '0.0.0.0' # Start server on localhost as meta-address
-  Capybara.server = :puma, { Silent: true } # Supress puma STDOUT in console
 end
