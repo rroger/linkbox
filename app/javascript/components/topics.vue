@@ -1,15 +1,15 @@
 <template>
   <div class="container topics">
     <div class="row mt-5">
-      <div class="mr-auto col-md-4 ml-auto">
+      <div class="offset-lg-4 col-lg-4">
         <div class="topics-header">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
               <button class="topics-add btn btn-outline-light" @click="toggleFormVisibility">+ Add Topic</button>
             </div>
           </div>
           <div class="row">
-            <div class=col-md-12>
+            <div class=col-lg-12>
               <form v-show="showForm" class="mt-4 topics-form" v-on:submit.prevent="onSubmit">
                 <div class="row">
                   <div class=col-md-12>
@@ -17,7 +17,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class=col-md-12>
+                  <div class=col-lg-12>
                     <button v-show="editTopicId" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="deleteTopic()">Delete</button>
                     <button v-show="!editTopicId" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
                     <button type="submit" class="btn btn-primary save-button">Save</button>
@@ -183,7 +183,7 @@ export default {
   .topics-row:hover {
     .edit-button {
       color: $dark-gray;
-      border-color: transparent;
+      border-color: $light-gray;
     }
     background-color: $light-gray;
   }
