@@ -10,20 +10,26 @@
           </div>
           <div class="row">
             <div class=col-lg-12>
-              <form v-show="showForm" class="mt-4 topics-form" v-on:submit.prevent="onSubmit">
-                <div class="row">
-                  <div class=col-md-12>
-                    <input v-model="newTopicName" id="topic-name" name="topic-name" type="text" placeholder="| Sketch">
+              <transition
+                    name="custom-classes-transition"
+                    enter-active-class="animated tada"
+                    leave-active-class="animated bounceOutRight"
+              >
+                <form v-show="showForm" class="mt-4 topics-form" v-on:submit.prevent="onSubmit">
+                  <div class="row">
+                    <div class=col-md-12>
+                      <input v-model="newTopicName" id="topic-name" name="topic-name" type="text" placeholder="| Sketch">
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class=col-lg-12>
-                    <button v-show="editTopicId" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="deleteTopic()">Delete</button>
-                    <button v-show="!editTopicId" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
-                    <button type="submit" class="btn btn-primary save-button">Save</button>
+                  <div class="row">
+                    <div class=col-lg-12>
+                      <button v-show="editTopicId" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="deleteTopic()">Delete</button>
+                      <button v-show="!editTopicId" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
+                      <button type="submit" class="btn btn-primary save-button">Save</button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </transition>
             </div>
           </div>
         </div>
@@ -109,6 +115,9 @@ export default {
       this.newTopicName = topic.name;
       this.showForm = true;
     },
+    confirmDeleteTopic() {
+
+    },
     deleteTopic() {
       this.$http.delete(`${this.baseUrl}/${this.editTopicId}`).then(() => {
         this.fetchTopics();
@@ -174,6 +183,7 @@ export default {
     .edit-button {
       color: transparent;
       border-color: transparent;
+      background-color: transparent;
       line-height: 0.6rem;
       font-size: 0.6rem;
       float: right;
