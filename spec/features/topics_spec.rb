@@ -13,7 +13,7 @@ RSpec.describe 'Topics page', :js do
   end
 
   it 'can add a topic' do
-    find(:css, '.topics-add').click
+    find(:css, "button[data-test='add-button']").click
     fill_in 'topic-name', with: 'TopicSoNew'
     find(:css, '.save-button').click
 
