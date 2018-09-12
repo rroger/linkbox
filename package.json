@@ -2,15 +2,13 @@
   "name": "linkbox",
   "private": true,
   "scripts": {
-    "lint": "eslint 'app/javascript/**/*.{js,vue}'",
+    "lint": "eslint 'app/javascript/**/*.{js,vue}' && eslint 'spec/javascript/**/*.js'",
     "style-lint": "stylelint 'app/**/*.{vue,scss,css,html}'"
   },
   "dependencies": {
     "@rails/webpacker": "3.5",
     "bootstrap": "4.1.3",
     "dotenv": "^6.0.0",
-    "eslint": "^5.5.0",
-    "eslint-plugin-vue": "^4.7.1",
     "lowdash": "^1.2.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.4",
@@ -22,6 +20,13 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.25",
+    "eslint": "^5.5.0",
+    "eslint-plugin-jest": "^21.22.0",
+    "eslint-plugin-vue": "^4.7.1",
+    "jest": "^23.6.0",
+    "jest-serializer-vue": "^2.0.2",
+    "vue-jest": "^2.6.0",
     "postcss-html": "^0.34.0",
     "stylelint": "^9.6.0",
     "stylelint-config-recommended-scss": "^3.2.0",
@@ -30,5 +35,25 @@
     "stylelint-scss": "^3.3.1",
     "svgo": "^1.1.1",
     "webpack-dev-server": "2.11.2"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/spec/javascript"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-vue"
+    ]
   }
 }
