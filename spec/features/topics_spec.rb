@@ -34,6 +34,7 @@ RSpec.describe 'Topics page', :js do
   it 'can delete a topic' do
     find_all(:css, '.edit-button').first.click
     find(:css, "button[data-test='delete-button']").click
+    find(:css, "button[data-test='confirm-button']").click
 
     expect(Topic.count).to be 1
     expect(page).to_not have_content 'AI'
