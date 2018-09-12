@@ -36,8 +36,8 @@ RSpec.describe 'Topics page', :js do
     find(:css, "button[data-test='delete-button']").click
     find(:css, "button[data-test='confirm-button']").click
 
+    expect(find_all("span[data-test='index-topic-name']", text: 'AI').count).to be 0
     expect(Topic.count).to be 1
     expect(page).to have_content "Successfully deleted Topic 'AI'"
-    expect(page).to_not have_xpath "//span[contains(.,'AI')]"
   end
 end
