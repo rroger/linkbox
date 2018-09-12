@@ -33,7 +33,7 @@
 <script>
 export default {
   data: function() {
-    return {};
+    return {}
   },
   props: {
     showConfirmation: Boolean,
@@ -41,10 +41,10 @@ export default {
     bodyMessage: String,
     doAfterConfirm: Function
   }
-};
+}
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .modal-mask {
   position: fixed;
   z-index: 9998;

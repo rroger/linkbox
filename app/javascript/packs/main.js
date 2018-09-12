@@ -5,6 +5,7 @@ import App from '../app.vue'
 import 'bootstrap/dist/js/bootstrap'
 
 import { routes } from '../routes'
+import store from '../store'
 import LbConfirmation from '../components/lb-confirmation';
 
 
@@ -15,13 +16,14 @@ const router = new VueRouter({
 })
 
 // Global Component registration:
-Vue.component('lb-confirmation', LbConfirmation);
+Vue.component('lb-confirmation', LbConfirmation)
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(document.createElement('app'))
   new Vue({
     el: 'app',
     router,
+    store, // inject store to all children
     template: '<App/>',
     components: { App }
   })

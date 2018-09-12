@@ -58,10 +58,11 @@
 
 <script>
 /* eslint-disable no-undef */
-import _ from 'lodash';
+import _ from 'lodash'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'TopicsComponent',
-
   data() {
     return {
       topics: [],
@@ -70,37 +71,40 @@ export default {
       newTopicName: null,
       currentTopic: null,
       baseUrl: `${process.env.BASE_API}/topics`,
-    };
+    }
   },
   created() {
-    this.fetchTopics();
+    this.fetchTopics()
   },
   methods: {
+    ...mapActions([
+      'addToast',
+    ]),
     toggleFormVisibility(){
-      this.showForm = !this.showForm;
+      this.showForm = !this.showForm
       if (!this.showForm) {
-        this.clearForm();
+        this.clearForm()
       }
     },
     clearForm() {
-      this.newTopicName = null;
-      this.currentTopic = null;
+      this.newTopicName = null
+      this.currentTopic = null
     },
     fetchTopics() {
       this.$http.get(this.baseUrl).then(response => {
         const topics = _.map(response.body['data'], (raw) => {
-          const topic = raw.attributes;
-          topic.id = raw.id;
-          return topic;
-        });
-        this.topics = topics;
-      });
+          const topic = raw.attributes
+          topic.id = raw.id
+          return topic
+        })
+        this.topics = topics
+      })
     },
     onSubmit() {
       if (this.currentTopic) {
-        this.editTopic();
+        this.editTopic()
       } else {
-        this.createTopic();
+        this.createTopic()
       }
     },
     newTopicParams() {
@@ -111,41 +115,53 @@ export default {
             name: this.newTopicName
           }
         }
-      };
+      }
     },
     createTopic() {
-      const params = this.newTopicParams();
+      const params = this.newTopicParams()
       this.$http.post(this.baseUrl, params).then(() => {
-        this.fetchTopics();
-        this.newTopicName = null;
-      });
+        this.addToast(`Successfully added Topic '${this.newTopicName}'`)
+        this.fetchTopics()
+        this.newTopicName = null
+      },
+      (error) => {
+        this.addToast(`Could not add ${this.newTopicName}' becaus of ${JSON.parse(error)}`)
+      })
     },
     editTopic() {
-      const params = this.newTopicParams();
-      params.data.id = this.currentTopic.id;
+      const params = this.newTopicParams()
+      params.data.id = this.currentTopic.id
       this.$http.put(`${this.baseUrl}/${this.currentTopic.id}`, params).then(() => {
-        this.fetchTopics();
-        this.clearForm();
-        this.showForm = false;
-      });
+        this.addToast(`Successfully edited Topic '${this.newTopicName}'`)
+        this.fetchTopics()
+        this.clearForm()
+        this.showForm = false
+      },
+      (error) => {
+        this.addToast(`Could not edit ${this.currentTopic.name}' becaus of ${JSON.parse(error)}`)
+      })
     },
     editInForm(topic) {
-      this.currentTopic = topic;
-      this.newTopicName = topic.name;
-      this.showForm = true;
+      this.currentTopic = topic
+      this.newTopicName = topic.name
+      this.showForm = true
     },
     deleteTopic() {
       this.$http.delete(`${this.baseUrl}/${this.currentTopic.id}`).then(() => {
-        this.fetchTopics();
-        this.clearForm();
-        this.showForm = false;
-      });
+        this.addToast(`Successfully deleted Topic '${this.newTopicName}'`)
+        this.fetchTopics()
+        this.clearForm()
+        this.showForm = false
+      },
+      (error) => {
+        this.addToast(`Could not delete ${this.currentTopic.name}' becaus of ${JSON.parse(error)}`)
+      })
     },
     isSaveDisabled(){
-      return !this.newTopicName || (this.currentTopic && this.currentTopic.name === this.newTopicName);
+      return !this.newTopicName || (this.currentTopic && this.currentTopic.name === this.newTopicName)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
