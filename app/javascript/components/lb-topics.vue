@@ -1,6 +1,6 @@
 <template>
   <div class="container topics">
-    <div class="row mt-5">
+    <div class="row mt-2">
       <div class="offset-lg-4 col-lg-4">
         <div class="topics-header">
           <div class="row">
