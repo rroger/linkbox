@@ -80,7 +80,7 @@ jest:
     - yarn install
     - bundle exec rake db:schema:load
   script:
-    - yarn test
+    - yarn jest
 
 reek:
   stage: test
