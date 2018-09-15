@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint 'app/javascript/**/*.{js,vue}' && eslint 'spec/javascript/**/*.js'",
-    "style-lint": "stylelint 'app/**/*.{vue,scss,css,html}'"
+    "style-lint": "stylelint 'app/**/*.{vue,scss,css,html}'",
+	"test": "jest"
   },
   "dependencies": {
     "@rails/webpacker": "3.5",
@@ -21,6 +22,8 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.25",
+    "babel-jest": "^23.6.0",
+    "babel-preset-es2015": "^6.24.1",
     "eslint": "^5.5.0",
     "eslint-plugin-jest": "^21.22.0",
     "eslint-plugin-vue": "^4.7.1",
@@ -46,7 +49,7 @@
       "vue"
     ],
     "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
     },
     "moduleNameMapper": {
@@ -55,5 +58,6 @@
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"
     ]
+
   }
 }
