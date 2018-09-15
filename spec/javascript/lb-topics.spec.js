@@ -6,6 +6,17 @@ import TopicsComponent from "../../app/javascript/components/lb-topics.vue"
 //   get: jest.fn(() => Promise.resolve({ data: 3 }))
 // }))
 
+// jest.mock('TopicsComponent.$http.get', () => ({
+//   get: jest.fn(() => )
+// }));
+TopicsComponent.$http = {
+  get: function(args) {
+    return Promise.resolve({"data":[{"id":"55","type":"topic","attributes":{"name":"One mores"}},{"id":"52","type":"topic","attributes":{"name":"So goodOk"}},{"id":"111","type":"topic","attributes":{"name":"Totaly New Topic"}},{"id":"112","type":"topic","attributes":{"name":"Typography"}}]});
+  }
+}
+
+console.log('this httpget: ', TopicsComponent.$http.get(args));
+
 describe('TopicsComponent', () => {
   // Now mount the component and you have the wrapper
   console.log('debug: ', TopicsComponent);
