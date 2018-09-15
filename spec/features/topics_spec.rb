@@ -22,7 +22,7 @@ RSpec.describe 'Topics page', :js do
   end
 
   it 'can edit a topic' do
-    find_all(:css, '.edit-button').first.click
+    find_all("button[data-test='topic-edit-button']").first.click
     fill_in 'topic-name', with: 'TopicSoEdited'
     find(:css, '.save-button').click
 
@@ -32,7 +32,7 @@ RSpec.describe 'Topics page', :js do
   end
 
   it 'can delete a topic' do
-    find_all(:css, '.edit-button').first.click
+    find_all("button[data-test='topic-edit-button']").first.click
     find(:css, "button[data-test='delete-button']").click
     find(:css, "button[data-test='confirm-button']").click
 

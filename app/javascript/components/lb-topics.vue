@@ -35,11 +35,12 @@
         <ul>
           <li>Topics <span class="topics-counter">({{ topics.length }})</span></li>
           <li>&nbsp;</li>
-          <li class="topics-row" v-bind:key="topic.name" v-for="topic in topics">
+          <li v-for="topic in topics" class="topics-row" v-bind:key="topic.name">
             <span data-test="index-topic-name">
               {{ topic.name }}
             </span>
-            <button type="button" class="btn btn-outline-light edit-button" @click="editInForm(topic)">EDIT</button>
+            <button type="button" class="btn btn-outline-light edit-button" @click="editInForm(topic)"
+                    data-test="topic-edit-button">EDIT</button>
           </li>
         </ul>
       </div>
