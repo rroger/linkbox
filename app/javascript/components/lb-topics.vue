@@ -63,7 +63,7 @@ import _ from 'lodash'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'TopicsComponent',
+  name: 'lb-topics',
   data() {
     return {
       topics: [],

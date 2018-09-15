@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'ConfirmationComponent',
+  name: 'lb-confirmation',
   data: function() {
     return {}
   },

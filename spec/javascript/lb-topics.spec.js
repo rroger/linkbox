@@ -1,34 +1,55 @@
+import Vue from 'vue/dist/vue.js'
+import { mount, shallowMount, createLocalVue } from "@vue/test-utils"
+import LbTopics from "../../app/javascript/components/lb-topics.vue"
+import LbConfirmation from "../../app/javascript/components/lb-confirmation.vue"
 
-import { mount, shallowMount } from "@vue/test-utils"
-import TopicsComponent from "../../app/javascript/components/lb-topics.vue"
-// import ConfirmationComponent from "../../app/javascript/components/lb-confirmation.vue"
 
-// jest.mock('this.$http.get', () => ({
-//   get: jest.fn(() => Promise.resolve({ data: 3 }))
-// }))
-
-// jest.mock('TopicsComponent.$http.get', () => ({
-//   get: jest.fn(() => )
-// }));
-const http = {
-  get: function(args) {
-    return Promise.resolve({"data":[{"id":"55","type":"topic","attributes":{"name":"One mores"}},{"id":"52","type":"topic","attributes":{"name":"So goodOk"}},{"id":"111","type":"topic","attributes":{"name":"Totaly New Topic"}},{"id":"112","type":"topic","attributes":{"name":"Typography"}}]});
+const $httpSuccess = {
+  get(){
+    return Promise.resolve({
+      body: {
+        "data": [
+          {"id":"55","type":"topic","attributes":{"name":"One mores"}},
+          {"id":"52","type":"topic","attributes":{"name":"So goodOk"}},
+          {"id":"111","type":"topic","attributes":{"name":"Totaly New Topic"}},
+          {"id":"112","type":"topic","attributes":{"name":"Typography"}}
+        ]
+      }
+  });
   }
-}
-
-// console.log('this httpget: ', TopicsComponent.$http.get('url',''));
+};
+const $httpFail = {
+  get(){
+    return Promise.reject({body: { message: "internal server error" }});
+  }
+};
 
 describe('TopicsComponent', () => {
-  // Now mount the component and you have the wrapper
-  console.log('debug: ', TopicsComponent);
-  const wrapper = mount(TopicsComponent);
-  wrapper.setValue(http);
-  it('renders the correct markup', () => {
-    expect(wrapper.html()).toContain('<span class="count">0</span>');
+
+  it('renders the correct Title', () => {
+    const wrapper = shallowMount(LbTopics,  {
+      mocks: {
+        components: {
+          'lb-confirmation': LbConfirmation
+        },
+        $http: $httpSuccess
+      }
+    });
+    expect(wrapper.html()).toContain('<li>Topics');
   })
 
-  // it's also easy to check for the existence of elements
-  it('has a button', () => {
-    expect(wrapper.contains('button')).toBe(true);
+  it('loads and displays topics', async (done) => {
+    const wrapper = shallowMount(LbTopics,  {
+      mocks: {
+        $http: $httpSuccess
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.html()).toContain('One mores');
+      expect(wrapper.html()).toContain('So goodOk');
+      expect(wrapper.html()).toContain('Totaly New Topic');
+      expect(wrapper.html()).toContain('Typography');
+      done();
+    })
   })
-})
+});

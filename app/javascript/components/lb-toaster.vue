@@ -13,6 +13,7 @@
 </template>
 <script>
 export default {
+  name: 'lb-toaster',
   computed: {
     toasts () {
       return this.$store.state.toasts
