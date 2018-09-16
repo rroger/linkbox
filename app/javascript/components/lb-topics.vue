@@ -92,14 +92,18 @@ export default {
       this.currentTopic = null
     },
     fetchTopics() {
-      this.$http.get(this.baseUrl).then(response => {
-        const topics = _.map(response.body['data'], (raw) => {
-          const topic = raw.attributes
-          topic.id = raw.id
-          return topic
+      this.$http.get(this.baseUrl).then(
+        (response) => {
+          const topics = _.map(response.body['data'], (raw) => {
+            const topic = raw.attributes
+            topic.id = raw.id
+            return topic
+          })
+          this.topics = topics
+        },
+        () => {
+          this.addToast('Could not load topics')
         })
-        this.topics = topics
-      })
     },
     onSubmit() {
       if (this.currentTopic) {
@@ -120,14 +124,15 @@ export default {
     },
     createTopic() {
       const params = this.newTopicParams()
-      this.$http.post(this.baseUrl, params).then(() => {
-        this.addToast(`Successfully added Topic '${this.newTopicName}'`)
-        this.fetchTopics()
-        this.newTopicName = null
-      },
-      (error) => {
-        this.addToast(`Could not add ${this.newTopicName}' becaus of ${JSON.parse(error)}`)
-      })
+      this.$http.post(this.baseUrl, params).then(
+        (response) => {
+          this.addToast(`Successfully added Topic '${response.body.data.attributes.name}'`)
+          this.fetchTopics()
+          this.newTopicName = null
+        },
+        () => {
+          this.addToast(`Could not add ${this.newTopicName}'`)
+        })
     },
     editTopic() {
       const params = this.newTopicParams()
@@ -138,8 +143,8 @@ export default {
         this.clearForm()
         this.showForm = false
       },
-      (error) => {
-        this.addToast(`Could not edit ${this.currentTopic.name}' becaus of ${JSON.parse(error)}`)
+      () => {
+        this.addToast(`Could not edit ${this.currentTopic.name}'`)
       })
     },
     editInForm(topic) {
@@ -154,8 +159,8 @@ export default {
         this.clearForm()
         this.showForm = false
       },
-      (error) => {
-        this.addToast(`Could not delete ${this.currentTopic.name}' becaus of ${JSON.parse(error)}`)
+      () => {
+        this.addToast(`Could not delete ${this.currentTopic.name}'`)
       })
     },
     isSaveDisabled(){
