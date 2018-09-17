@@ -16,7 +16,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "\n== Rspec =="
+echo "\n== RSpec =="
 bundle exec rspec
 if [ $? -ne 0 ]; then
   echo -e '\033[31mRspec did not run successfully\033[0m'
