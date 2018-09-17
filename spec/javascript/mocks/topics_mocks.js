@@ -12,6 +12,7 @@ export const $httpIndexSuccess = {
     })
   }
 }
+
 export const $httpIndexFail = {
   get(){
     return Promise.reject({ body: { 'data': 'internal server error' } })

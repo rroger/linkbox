@@ -4,8 +4,6 @@ import LbTopics from '../../app/javascript/components/lb-topics.vue'
 import LbConfirmation from '../../app/javascript/components/lb-confirmation.vue'
 import { $httpIndexSuccess, $httpIndexFail } from './mocks/topics_mocks'
 
-
-
 describe('TopicsComponent', () => {
 
   describe('#created', () => {
