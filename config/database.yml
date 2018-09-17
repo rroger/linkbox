@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: linkbox_development
+
+test:
+  <<: *default
+  database: linkbox_test
+
+production:
+  <<: *default
+  database: linkbox_production
+  username: linkbox
+  password: <%= ENV['LINKBOX_DATABASE_PASSWORD'] %>

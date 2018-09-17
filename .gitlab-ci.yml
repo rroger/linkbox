@@ -1,0 +1,82 @@
+image: git.panter.ch:5001/panter/docker-build-images:ruby_2.5.1-yarn-firefox_beta
+
+services:
+- postgres:9.6
+
+variables:
+  POSTGRES_DB: linkbox_test
+  DISABLE_SPRING: 'true'
+  TZ: Europe/Zurich
+  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
+  DANGER_GITLAB_HOST: git.panter.ch
+  DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
+  RAILS_ENV: test
+
+stages:
+- test
+
+before_script:
+- gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
+- bundle install -j $(nproc) --path vendor
+
+danger-review:
+  stage: test
+  allow_failure: true
+  cache: {}
+  dependencies: []
+  before_script:
+  - gem install danger-gitlab --no-document
+  only:
+    variables:
+    - $DANGER_GITLAB_API_TOKEN
+  except:
+    refs:
+    - master
+    variables:
+    - $CI_COMMIT_REF_NAME =~ /^ce-to-ee-.*/
+    - $CI_COMMIT_REF_NAME =~ /.*-stable(-ee)?-prepare-.*/
+  script:
+  - git version
+  - danger --fail-on-errors=true
+
+rubocop:
+  stage: test
+  script:
+  - bundle exec rubocop -D
+
+eslint:
+  stage: test
+  before_script:
+  - yarn install
+  script:
+  - yarn lint
+
+rspec:
+  stage: test
+  before_script:
+  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
+  - bundle install -j $(nproc) --path vendor
+  - yarn install
+  script:
+  - bundle exec rake db:schema:load
+  - bundle exec rspec spec
+  artifacts:
+    paths:
+    - tmp/capybara
+    when: on_failure
+    expire_in: 1 week
+
+reek:
+  stage: test
+  script:
+  - bundle exec reek
+
+brakeman:
+  stage: test
+  script:
+  - bundle exec brakeman -q -z --summary > /dev/null
+
+bundler-audit:
+  stage: test
+  script:
+  - bundle exec bundler-audit
