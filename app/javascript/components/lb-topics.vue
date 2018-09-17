@@ -126,9 +126,9 @@ export default {
       const params = this.newTopicParams()
       this.$http.post(this.baseUrl, params).then(
         (response) => {
-          this.addToast(`Successfully added Topic '${response.body.data.attributes.name}'`)
           this.fetchTopics()
-          this.newTopicName = null
+          this.clearForm()
+          this.addToast(`Successfully added Topic '${response.body.data.attributes.name}'`)
         },
         () => {
           this.addToast(`Could not add ${this.newTopicName}'`)
@@ -137,15 +137,16 @@ export default {
     editTopic() {
       const params = this.newTopicParams()
       params.data.id = this.currentTopic.id
-      this.$http.put(`${this.baseUrl}/${this.currentTopic.id}`, params).then(() => {
-        this.addToast(`Successfully edited Topic '${this.newTopicName}'`)
-        this.fetchTopics()
-        this.clearForm()
-        this.showForm = false
-      },
-      () => {
-        this.addToast(`Could not edit ${this.currentTopic.name}'`)
-      })
+      this.$http.put(`${this.baseUrl}/${this.currentTopic.id}`, params).then(
+        (response) => {
+          this.addToast(`Successfully edited Topic '${response.body.data.attributes.name}'`)
+          this.fetchTopics()
+          this.clearForm()
+          this.showForm = false
+        },
+        () => {
+          this.addToast(`Could not edit ${this.currentTopic.name}'`)
+        })
     },
     editInForm(topic) {
       this.currentTopic = topic

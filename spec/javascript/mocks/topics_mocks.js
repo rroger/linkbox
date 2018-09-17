@@ -1,5 +1,5 @@
 export const $httpIndexSuccess = {
-  get(){
+  get() {
     return Promise.resolve({
       body: {
         'data': [
@@ -14,7 +14,25 @@ export const $httpIndexSuccess = {
 }
 
 export const $httpIndexFail = {
-  get(){
+  get() {
     return Promise.reject({ body: { 'data': 'internal server error' } })
   }
 }
+
+export const $httpCreateSuccess = {
+  post() {
+    return Promise.resolve({
+      body: {
+        'data': {'id':'88','type':'topic','attributes':{'name':'Newly Created Topic'}},
+      }
+    })
+  }
+}
+
+export const $httpCreateFail = {
+  post() {
+    return Promise.reject({ body: { 'data': 'internal server error' } })
+  }
+}
+
+
