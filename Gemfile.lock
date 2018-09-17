@@ -48,17 +48,11 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
-    autoprefixer-rails (9.1.4)
-      execjs
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     bindex (0.5.0)
-    bootstrap (4.1.3)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
     brakeman (4.3.1)
     builder (3.2.3)
     bundler-audit (0.6.0)
@@ -109,10 +103,6 @@ GEM
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
-    jquery-rails (4.3.3)
-      rails-dom-testing (>= 1, < 3)
-      railties (>= 4.2.0)
-      thor (>= 0.14, < 2.0)
     kramdown (1.17.0)
     kwalify (0.7.2)
     launchy (2.4.3)
@@ -148,7 +138,6 @@ GEM
     parser (2.5.1.2)
       ast (~> 2.4.0)
     pg (0.21.0)
-    popper_js (1.14.3)
     powerpack (0.1.2)
     public_suffix (3.0.3)
     puma (3.12.0)
@@ -226,12 +215,6 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.0.7)
-      railties (>= 4.0.0, < 6)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
     scss_lint (0.57.0)
       rake (>= 0.9, < 13)
       sass (~> 3.5.5)
@@ -252,7 +235,6 @@ GEM
       sprockets (>= 3.0.0)
     thor (0.20.0)
     thread_safe (0.3.6)
-    tilt (2.0.8)
     tomlrb (1.2.7)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
@@ -283,7 +265,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap (~> 4.1.3)
   brakeman
   bundler-audit
   byebug
@@ -294,7 +275,6 @@ DEPENDENCIES
   figaro
   geckodriver-helper
   jbuilder (~> 2.5)
-  jquery-rails
   listen (>= 3.0.5, < 3.2)
   mdl
   pg (~> 0.18)
@@ -304,7 +284,6 @@ DEPENDENCIES
   rspec-rails (~> 3.7)
   rubocop
   rubocop-rspec
-  sass-rails (~> 5.0)
   scss_lint
   selenium-webdriver
   spring

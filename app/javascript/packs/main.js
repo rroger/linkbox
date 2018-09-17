@@ -1,6 +1,7 @@
 import Vue from 'vue/dist/vue.js';
 import VueResource from 'vue-resource';
 import App from '../app.vue';
+import 'bootstrap/dist/js/bootstrap';
 
 Vue.use(VueResource);
 
