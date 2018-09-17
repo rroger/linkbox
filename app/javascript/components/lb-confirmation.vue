@@ -1,9 +1,10 @@
 <template>
-<div>
+<div v-bind:class="{ 'modal-background': showConfirmation }">
   <transition
       name="custom-classes-transition"
-      enter-active-class="animated pulse"
-      leave-active-class="animated hinge"
+      enter-active-class="animated zoomIn"
+      leave-active-class="animated zoomOut"
+      :duration="250"
   >
     <div v-if="showConfirmation" class="modal-mask">
       <div class="modal-wrapper">
@@ -46,6 +47,19 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+
+.modal-background {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: table;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
+}
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -53,9 +67,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {

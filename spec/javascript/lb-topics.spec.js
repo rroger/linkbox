@@ -1,3 +1,5 @@
+/*eslint quotes: "off" */
+
 import Vue from 'vue/dist/vue.js'
 import { shallowMount } from '@vue/test-utils'
 import LbTopics from '../../app/javascript/components/lb-topics.vue'
@@ -6,7 +8,7 @@ import * as mocks from './mocks/topics_mocks'
 
 describe('TopicsComponent', () => {
   let toastSpy = null
-  let addToast = (toastMessage) => { console.log(`Toast: ${toastMessage}`)}
+  let addToast = (toastMessage) => { return `Toast: ${toastMessage}` }
 
   describe('#created', () => {
     it('called fetchTopics', () =>  {
@@ -253,22 +255,260 @@ describe('TopicsComponent', () => {
         })
       })
     })
-
   })
 
   describe('#editTopic', () => {
+    describe('success', () => {
+      let wrapper = null
 
+      beforeEach(() => {
+        wrapper = shallowMount(LbTopics,  {
+          mocks: {
+            components: {
+              'lb-confirmation': LbConfirmation
+            },
+            $http: { get: mocks.$httpIndexSuccess.get, put: mocks.$httpUpdateSuccess.put },
+          },
+          methods: {
+            fetchTopics() {},
+            addToast: addToast
+          }
+        })
+        wrapper.vm.newTopicName = 'Existing Topic'
+        wrapper.vm.currentTopic = { id: 222, name: 'Existing Topic'}
+        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
+      })
+
+      it('toasts success', (done) => {
+        wrapper.vm.editTopic()
+        Vue.nextTick(() => {
+          expect(toastSpy).toHaveBeenCalledWith("Successfully edited Topic 'Newly Edited Topic'")
+          done()
+        })
+      })
+
+      it('re-fetches topics', (done) => {
+        const spy = jest.spyOn(wrapper.vm, 'fetchTopics')
+        wrapper.vm.editTopic()
+
+        Vue.nextTick(() => {
+          expect(spy).toHaveBeenCalledTimes(1)
+          done()
+        })
+      })
+
+      it('clears Form', (done) => {
+        wrapper.vm.editTopic()
+
+        Vue.nextTick(() => {
+          expect(wrapper.vm.newTopicName).toEqual(null)
+          expect(wrapper.vm.currentTopic).toEqual(null)
+          done()
+        })
+      })
+    })
+
+    describe('failure', () => {
+      let wrapper = null
+      let currentTopic = { id: 222, name: 'Existing Topic'}
+
+      beforeEach(() => {
+        wrapper = shallowMount(LbTopics,  {
+          mocks: {
+            components: {
+              'lb-confirmation': LbConfirmation
+            },
+            $http: { get: mocks.$httpIndexSuccess.get, put: mocks.$httpUpdateFail.put },
+          },
+          methods: {
+            fetchTopics() {},
+            addToast: addToast
+          }
+        })
+        wrapper.vm.newTopicName = 'Edited Topic Name'
+        wrapper.vm.currentTopic = currentTopic
+        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
+      })
+
+      it('toasts failure', (done) => {
+        wrapper.vm.editTopic()
+
+        Vue.nextTick(() => {
+          expect(wrapper.vm.newTopicName).toEqual('Edited Topic Name')
+          expect(wrapper.vm.currentTopic).toEqual(currentTopic)
+          done()
+        })
+      })
+
+      it('does not change form', (done) => {
+        wrapper.vm.editTopic()
+
+        Vue.nextTick(() => {
+          expect(wrapper.vm.currentTopic).toEqual(currentTopic)
+          expect(wrapper.vm.newTopicName).toEqual('Edited Topic Name')
+          done()
+        })
+      })
+
+      it('throws exception when currentTopic is null', () => {
+        wrapper.vm.currentTopic = null
+        expect(wrapper.vm.editTopic).toThrow('Exception: no Topic selected for edit')
+      })
+    })
   })
 
   describe('#editInForm', () => {
+    it('sets correct values', () => {
+      const wrapper = shallowMount(LbTopics,  {
+        mocks: {
+          components: {
+            'lb-confirmation': LbConfirmation
+          },
+          $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateSuccess.post },
+        },
+        methods: {
+          fetchTopics() {},
+        }
+      })
+      expect(wrapper.vm.showForm).toBeFalsy()
+      const currentTopic = { id: '22', name: 'Typo'}
+      wrapper.vm.editInForm(currentTopic)
 
+      expect(wrapper.vm.currentTopic).toEqual(currentTopic)
+      expect(wrapper.vm.newTopicName).toEqual('Typo')
+      expect(wrapper.vm.showForm).toBeTruthy()
+    })
   })
 
   describe('#deleteTopic', () => {
+    describe('success', () => {
+      let wrapper = null
 
+      beforeEach(() => {
+        wrapper = shallowMount(LbTopics,  {
+          mocks: {
+            components: {
+              'lb-confirmation': LbConfirmation
+            },
+            $http: { get: mocks.$httpIndexSuccess.get, delete: mocks.$httpDeleteSuccess.delete },
+          },
+          methods: {
+            fetchTopics() {},
+            addToast: addToast
+          }
+        })
+        wrapper.vm.newTopicName = 'Existing Topic'
+        wrapper.vm.currentTopic = { id: 222, name: 'Existing Topic'}
+        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
+      })
+
+      it('toasts success', (done) => {
+        wrapper.vm.deleteTopic()
+        Vue.nextTick(() => {
+          expect(toastSpy).toHaveBeenCalledWith("Successfully deleted Topic 'Existing Topic'")
+          done()
+        })
+      })
+
+      it('re-fetches topics', (done) => {
+        const spy = jest.spyOn(wrapper.vm, 'fetchTopics')
+        wrapper.vm.deleteTopic()
+
+        Vue.nextTick(() => {
+          expect(spy).toHaveBeenCalledTimes(1)
+          done()
+        })
+      })
+
+      it('clears Form', (done) => {
+        wrapper.vm.deleteTopic()
+
+        Vue.nextTick(() => {
+          expect(wrapper.vm.newTopicName).toEqual(null)
+          expect(wrapper.vm.currentTopic).toEqual(null)
+          done()
+        })
+      })
+    })
+
+    describe('failure', () => {
+      let wrapper = null
+      let currentTopic = { id: 222, name: 'Existing Topic'}
+
+      beforeEach(() => {
+        wrapper = shallowMount(LbTopics,  {
+          mocks: {
+            components: {
+              'lb-confirmation': LbConfirmation
+            },
+            $http: { get: mocks.$httpIndexSuccess.get, delete: mocks.$httpDeleteFail.delete },
+          },
+          methods: {
+            fetchTopics() {},
+            addToast: addToast
+          }
+        })
+        wrapper.vm.newTopicName = 'Existing Topic'
+        wrapper.vm.currentTopic = currentTopic
+        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
+      })
+
+      it('does not change form', (done) => {
+        wrapper.vm.deleteTopic()
+
+        Vue.nextTick(() => {
+          expect(wrapper.vm.newTopicName).toEqual('Existing Topic')
+          expect(wrapper.vm.currentTopic).toEqual(currentTopic)
+          done()
+        })
+      })
+
+      it('toast failure', (done) => {
+        wrapper.vm.deleteTopic()
+
+        Vue.nextTick(() => {
+          expect(toastSpy).toHaveBeenCalledWith("Could not delete 'Existing Topic'")
+          done()
+        })
+      })
+
+      it('throws exception when currentTopic is null', () => {
+        wrapper.vm.currentTopic = null
+        expect(wrapper.vm.editTopic).toThrow('Exception: no Topic selected for edit')
+      })
+    })
   })
 
   describe('#isSaveDisabled', () => {
+    it ('works', () => {
+      const wrapper = shallowMount(LbTopics,  {
+        mocks: {
+          components: {
+            'lb-confirmation': LbConfirmation
+          },
+          $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateSuccess.post },
+        },
+        methods: {
+          fetchTopics() {},
+        }
+      })
 
+      const testMatrix = [
+        { newTopicName: '',       currentTopic: { id: '22', name: 'Typo'}, result: true },
+        { newTopicName: null,     currentTopic: { id: '22', name: 'Typo'}, result: true },
+        { newTopicName: 'Typo',   currentTopic: { id: '22', name: 'Typo'}, result: true },
+        { newTopicName: 'New',    currentTopic: { id: '22', name: 'Typo'}, result: false },
+        { newTopicName: '',       currentTopic: null,                      result: true },
+        { newTopicName: null,     currentTopic: null,                      result: true },
+        { newTopicName: 'New',    currentTopic: null,                      result: null },
+      ]
+
+      for (let testRow of testMatrix) {
+        wrapper.vm.newTopicName = testRow.newTopicName
+        wrapper.vm.currentTopic = testRow.currentTopic
+
+        expect(wrapper.vm.isSaveDisabled()).toEqual(testRow.result)
+      }
+    })
   })
 })

@@ -135,6 +135,7 @@ export default {
         })
     },
     editTopic() {
+      if (!this.currentTopic) { throw 'Exception: no Topic selected for edit' }
       const params = this.newTopicParams()
       params.data.id = this.currentTopic.id
       this.$http.put(`${this.baseUrl}/${this.currentTopic.id}`, params).then(
@@ -154,14 +155,15 @@ export default {
       this.showForm = true
     },
     deleteTopic() {
+      if (!this.currentTopic) { throw 'Exception: no Topic selected for edit' }
       this.$http.delete(`${this.baseUrl}/${this.currentTopic.id}`).then(() => {
-        this.addToast(`Successfully deleted Topic '${this.newTopicName}'`)
+        this.addToast(`Successfully deleted Topic '${this.currentTopic.name}'`)
         this.fetchTopics()
         this.clearForm()
         this.showForm = false
       },
       () => {
-        this.addToast(`Could not delete ${this.currentTopic.name}'`)
+        this.addToast(`Could not delete '${this.currentTopic.name}'`)
       })
     },
     isSaveDisabled(){

@@ -35,4 +35,30 @@ export const $httpCreateFail = {
   }
 }
 
+export const $httpUpdateSuccess = {
+  put() {
+    return Promise.resolve({
+      body: {
+        'data': {'id':'88','type':'topic','attributes':{'name':'Newly Edited Topic'}},
+      }
+    })
+  }
+}
 
+export const $httpUpdateFail = {
+  put() {
+    return Promise.reject({ body: { 'data': 'internal server error' } })
+  }
+}
+
+export const $httpDeleteSuccess = {
+  delete() {
+    return Promise.resolve({})
+  }
+}
+
+export const $httpDeleteFail = {
+  delete() {
+    return Promise.reject({ body: { 'data': 'internal server error' } })
+  }
+}
