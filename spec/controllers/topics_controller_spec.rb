@@ -2,15 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::TopicsController, type: :controller do
+RSpec.describe Api::V1::TopicsController do
   let(:topic) { build(:topic) }
-  let(:valid_attributes) { TopicSerializer.new(topic).as_json }
-
   let(:invalid_attributes) { { data: { attributes: { name: '' } } } }
 
   describe 'GET #index' do
     it 'returns a success response' do
-      topic.save!
+      create :topic
       get :index, params: {}
       expect(response).to be_successful
     end
@@ -26,6 +24,8 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid params' do
+      let(:valid_attributes) { { data: { id: nil, type: 'topic', attributes: { name: 'Architecture' } } } }
+
       it 'creates a new Topic' do
         expect do
           post :create, params: valid_attributes
@@ -34,7 +34,9 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
       it 'returns the created topic' do
         post :create, params: valid_attributes
-        expect(JSON.parse(response.body)).to eq TopicSerializer.new(Topic.last).as_json
+        expect(response.body).to eq(
+          "{\"data\":{\"id\":\"#{Topic.last.id}\",\"type\":\"topic\",\"attributes\":{\"name\":\"Architecture\"}}}"
+        )
       end
     end
 
@@ -48,7 +50,7 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let!(:new_attributes) do
+      let(:new_attributes) do
         TopicSerializer.new(build(:topic)).as_json
       end
 
