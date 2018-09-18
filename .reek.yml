@@ -8,6 +8,9 @@ detectors:
       max_calls: 2
     IrresponsibleModule:
       enabled: false
+    UncommunicativeModuleName:
+      accept:
+        - "V1"
 
 directories:
     "app/helpers":
@@ -29,12 +32,13 @@ directories:
       InstanceVariableAssumption:
         enabled: false
 
+
+
 exclude_paths:
     - tmp
     - spec
     - vendor
     - log
     - coverage
-    - config
     - bin
     - db/migrate

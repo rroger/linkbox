@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-# :reek:UncommunicativeModuleName: disable
 module Api
   module V1
     class TopicsController < ApiController
       before_action :set_topic, only: %i[show update destroy]
 
       def index
-        render_topics(Topic.all.to_a)
+        render_topics(Topic.all)
       end
 
       def show
@@ -53,4 +52,3 @@ module Api
     end
   end
 end
-# :reek:UncommunicativeModuleName: enable
