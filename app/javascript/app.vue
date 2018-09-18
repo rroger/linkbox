@@ -22,12 +22,12 @@ export default {
   data: function () {
     return {
       message: 'Hello Vue!'
-    };
+    }
   },
   methods: {
     onSubmit() {},
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
