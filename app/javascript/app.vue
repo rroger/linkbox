@@ -12,18 +12,7 @@
       </form>
     </nav>
     <div class="container-fluid main-container">
-      <div class="row">
-        <div class="col-md-6  left-outlet">
-          <div class="container">
-            Some text
-          </div>
-        </div>
-        <div class="col-md-6 right-outlet">
-          <div class="container">
-            And other
-          </div>
-        </div>
-      </div>
+      <router-view></router-view>
     </div>
   </div>
 </template>
