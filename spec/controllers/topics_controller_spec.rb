@@ -56,6 +56,7 @@ RSpec.describe Api::V1::TopicsController do
 
   describe 'PUT #update' do
     context 'with valid params' do
+      let(:new_attributes) do
         TopicSerializer.new(build(:topic)).as_json
       end
 
