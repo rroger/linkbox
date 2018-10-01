@@ -16,3 +16,9 @@ bin/fastcheck
 bin/check
 ```
 
+### Improve size of SVG images
+
+```sh
+svgo app/javascript/images/add.svg
+```
+

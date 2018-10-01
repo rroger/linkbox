@@ -18,6 +18,7 @@
     "vue-template-compiler": "^2.5.17"
   },
   "devDependencies": {
+    "svgo": "^1.1.1",
     "webpack-dev-server": "2.11.2"
   }
 }
