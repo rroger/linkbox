@@ -1,18 +1,12 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-light">
-      <form class="form-inline" v-on:submit.prevent="onSubmit">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="add-button">
-              <div class="add-frame">
-                <img src="./images/add-24-px.svg" class="add-sign" />
-              </div>
-            </div>
-          </div>
-          <input class="btn btn-primary" type="submit" @click="sendtest()">
-        </div>
-      </form>
+      <button class="add-button">
+        <span class="add-frame">
+          <img src="./images/add.svg" class="add-sign" />
+        </span>
+        <span class="add-text">ADD LINK</span>
+      </button>
     </nav>
     <div class="container-fluid main-container">
       <router-view></router-view>
@@ -38,21 +32,31 @@ export default {
 
   .add-button {
     width: 123px;
-    height: 30px;
+    height: 32px;
     background-color: #ffffff;
+    padding-left: 0;
+    margin-left: 50px;
+
 
     .add-frame {
       width: 28px;
       height: 28px;
       background-color: $dark-gray;
+      display: inline-block;
+      margin-left: -4px;
 
       .add-sign {
         width: 24px;
         height: 24px;
         object-fit: contain;
-        fill: white;
+        fill: #ffffff;
       }
+
     }
 
+    .add-text {
+      vertical-align: middle;
+      font-weight: 600;
+    }
   }
 </style>
