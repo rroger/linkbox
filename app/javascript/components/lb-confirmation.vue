@@ -47,6 +47,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@import "../stylesheets/variables";
 
 .modal-background {
   position: fixed;

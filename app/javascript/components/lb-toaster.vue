@@ -22,7 +22,7 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-@import "../../assets/stylesheets/_variables.scss";
+@import "../stylesheets/variables";
 
 .toasts {
   font-size: 10px;
