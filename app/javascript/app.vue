@@ -39,6 +39,7 @@ export default {
     padding: 0;
     margin: 0;
     overflow-x: hidden;
+    border: white 1px solid;
 
 
     .add-sign {
