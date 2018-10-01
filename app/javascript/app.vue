@@ -2,13 +2,11 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark">
       <button class="add-button ml-5">
-        <span class="add-frame">
-          <img src="./images/add.svg" class="add-sign" />
-        </span>
+        <img src="./images/add.svg" class="add-sign" />
         <span class="add-text">ADD LINK</span>
       </button>
 
-      <ul class="navbar-nav ml-auto mr-5">
+      <ul class="navbar-nav ml-auto mr-5 nav-links-right">
         <li class="nav-item">
           <a class="nav-link " href="#">LIBRARY</a>
         </li>
@@ -25,14 +23,6 @@
 
 <script>
 export default {
-  data: function () {
-    return {
-      message: 'Hello Vue!'
-    }
-  },
-  methods: {
-    onSubmit() {},
-  }
 }
 </script>
 
@@ -41,22 +31,22 @@ export default {
 
   .add-button {
     width: 123px;
-    height: 32px;
+    height: 30px;
     background-color: white;
-    padding-left: 0;
     font-size: 16px;
     font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
     letter-spacing: 0.1px;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+
 
     .add-sign {
       width: 28px;
       height: 28px;
-      object-fit: contain;
       fill: white;
       background-color: $dark-gray;
+      float: left;
     }
 
     .add-text {
@@ -67,6 +57,10 @@ export default {
 
   .nav-link {
     color: white !important;
+  }
+
+  .nav-links-right {
+    font-size: 12px;
   }
 
   .router-link-active{
