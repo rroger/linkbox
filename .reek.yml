@@ -8,9 +8,6 @@ detectors:
       max_calls: 2
     IrresponsibleModule:
       enabled: false
-    UncommunicativeModuleName:
-      accept:
-        - "V1"
 
 directories:
     "app/helpers":
@@ -28,11 +25,12 @@ directories:
         enabled: false
       InstanceVariableAssumption:
         enabled: false
+      UncommunicativeModuleName:
+        accept:
+        - "V1"
     "app/mailers":
       InstanceVariableAssumption:
         enabled: false
-
-
 
 exclude_paths:
     - tmp

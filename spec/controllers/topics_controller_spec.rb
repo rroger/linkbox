@@ -34,8 +34,14 @@ RSpec.describe Api::V1::TopicsController do
 
       it 'returns the created topic' do
         post :create, params: valid_attributes
-        expect(response.body).to eq(
-          "{\"data\":{\"id\":\"#{Topic.last.id}\",\"type\":\"topic\",\"attributes\":{\"name\":\"Architecture\"}}}"
+        expect(JSON.parse(response.body, symbolize_names: true)).to eq(
+          data: {
+            id: Topic.last.id.to_s,
+            type: 'topic',
+            attributes: {
+              name: 'Architecture'
+            }
+          }
         )
       end
     end
