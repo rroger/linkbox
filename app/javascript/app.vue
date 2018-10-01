@@ -42,23 +42,21 @@ export default {
   .add-button {
     width: 123px;
     height: 32px;
-    background-color: #ffffff;
+    background-color: white;
     padding-left: 0;
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.1px;
 
-    .add-frame {
+    .add-sign {
       width: 28px;
       height: 28px;
+      object-fit: contain;
+      fill: white;
       background-color: $dark-gray;
-      display: inline-block;
-      margin-left: -4px;
-
-      .add-sign {
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        fill: #ffffff;
-      }
-
     }
 
     .add-text {
