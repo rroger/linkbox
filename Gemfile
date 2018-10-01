@@ -8,7 +8,6 @@ git_source(:github) do |repo_name|
 end
 
 gem 'fast_jsonapi'
-gem 'figaro'
 gem 'jbuilder', '~> 2.5'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
