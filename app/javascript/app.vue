@@ -1,12 +1,21 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-light">
-      <button class="add-button">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <button class="add-button ml-5">
         <span class="add-frame">
           <img src="./images/add.svg" class="add-sign" />
         </span>
         <span class="add-text">ADD LINK</span>
       </button>
+
+      <ul class="navbar-nav ml-auto mr-5">
+        <li class="nav-item">
+          <a class="nav-link " href="#">LIBRARY</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">TOPICS</a>
+        </li>
+      </ul>
     </nav>
     <div class="container-fluid main-container">
       <router-view></router-view>
@@ -35,8 +44,6 @@ export default {
     height: 32px;
     background-color: #ffffff;
     padding-left: 0;
-    margin-left: 50px;
-
 
     .add-frame {
       width: 28px;
@@ -58,5 +65,13 @@ export default {
       vertical-align: middle;
       font-weight: 600;
     }
+  }
+
+  .nav-link {
+    color: white !important;
+  }
+
+  .router-link-active{
+    border-bottom: white 3px solid;
   }
 </style>
