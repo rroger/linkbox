@@ -181,6 +181,7 @@ export default {
     border: 1px solid $dark-gray;
     padding: 10px;
   }
+
   .topics-add {
     color: $dark-gray;
     border-color: transparent !important;
@@ -198,7 +199,7 @@ export default {
     button {
       margin-top: 10px;
       margin-bottom: 10px;
-      padding: 0px;
+      padding: 0;
       width: 48%;
       height: 48px;
       border: 1.5px solid !important;
@@ -235,11 +236,12 @@ export default {
   }
 
   .topics-row:hover {
+    background-color: $light-gray;
+
     .edit-button {
       color: $dark-gray;
       border-color: $light-gray;
     }
-    background-color: $light-gray;
   }
 }
 </style>

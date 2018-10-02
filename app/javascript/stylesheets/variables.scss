@@ -1,5 +1,5 @@
 $dark-gray: #414042;
-$light-gray: #eeeeee;
+$light-gray: #eee;
 $gray: #9b9b9b;
 $background-gray: #f6f6f6;
 $green-gray: #93a8ac;
@@ -16,14 +16,7 @@ $theme-colors: (
 $enable-rounded: false;
 
 ::-webkit-input-placeholder {
-  font-size: 11px!important;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-     font-size: 11px!important;
-}
-::-moz-placeholder {  /* Firefox 19+ */
-     font-size: 11px!important;
+  font-size: 11px !important;
 }
 
 textarea:hover,
@@ -37,12 +30,14 @@ button:active,
 button:hover,
 label:focus,
 .btn:active,
-.btn.active
-{
-    outline:0px !important;
-    -webkit-appearance:none;
+.btn.active {
+  outline: 0 !important;
+  -webkit-appearance: none;
 }
-.btn:focus, .btn:active:focus, .btn.active:focus{
-  outline:none;
-  box-shadow:none;
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus {
+  outline: none;
+  box-shadow: none;
 }

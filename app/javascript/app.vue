@@ -16,6 +16,6 @@ export default {
   components: {
     'lb-navigation': LbNavigation,
     'lb-toaster': LbToaster
-    }
+  }
 }
 </script>

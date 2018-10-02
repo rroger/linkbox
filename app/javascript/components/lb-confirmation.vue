@@ -80,13 +80,14 @@ export default {
   text-align: center;
   max-width: 800px;
   min-height: 300px;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+
   button {
     min-width: 30%;
     height: 48px;

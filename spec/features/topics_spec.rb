@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Topics page', :js do
   let!(:topics) { [create(:topic, name: 'AI'), create(:topic, name: 'Style')] }
 
-  before { visit root_path }
+  before { visit '/#/topics' }
+
   it 'can list topics' do
     topics.each do |topic|
       expect(page).to have_content topic.name
