@@ -12,7 +12,7 @@
         <a class="nav-link " href="#">LIBRARY</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">TOPICS</a>
+        <router-link to="/topics" class="nav-link">TOPICS</router-link>
       </li>
     </ul>
   </nav>
