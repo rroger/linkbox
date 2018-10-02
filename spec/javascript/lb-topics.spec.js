@@ -500,7 +500,7 @@ describe('TopicsComponent', () => {
         { newTopicName: 'New',    currentTopic: { id: '22', name: 'Typo'}, result: false },
         { newTopicName: '',       currentTopic: null,                      result: true },
         { newTopicName: null,     currentTopic: null,                      result: true },
-        { newTopicName: 'New',    currentTopic: null,                      result: null },
+        { newTopicName: 'New',    currentTopic: null,                      result: false },
       ]
 
       for (let testRow of testMatrix) {

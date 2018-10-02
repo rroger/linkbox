@@ -167,7 +167,7 @@ export default {
       })
     },
     isSaveDisabled(){
-      return !this.newTopicName || (this.currentTopic && this.currentTopic.name === this.newTopicName)
+      return !this.newTopicName || !!(this.currentTopic && this.currentTopic.name === this.newTopicName)
     }
   }
 }
