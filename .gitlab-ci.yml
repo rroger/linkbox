@@ -51,6 +51,13 @@ eslint:
   script:
   - yarn lint
 
+stylelint:
+  stage: test
+  before_script:
+  - yarn install
+  script:
+  - yarn style-lint
+
 rspec:
   stage: test
   before_script:

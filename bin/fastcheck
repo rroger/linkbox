@@ -7,6 +7,14 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+echo "\n== StyleLint =="
+yarn style-lint
+if [ $? -ne 0 ]; then
+  echo 'StyleLint detected issues.'
+  exit 1
+fi
+
+
 echo "\n== Rubocop =="
 bundle exec rubocop -D
 if [ $? -ne 0 ]; then

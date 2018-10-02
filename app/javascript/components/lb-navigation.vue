@@ -1,0 +1,65 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="add-button ml-5">
+      <img src="../images/add.svg" class="add-sign" />
+      <span class="add-text pl-2 pr-2">
+        ADD LINK
+      </span>
+    </button>
+
+    <ul class="navbar-nav ml-auto mr-5 nav-links-right">
+      <li class="nav-item">
+        <a class="nav-link " href="#">LIBRARY</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">TOPICS</a>
+      </li>
+    </ul>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'lb-navigation'
+}
+
+</script>
+
+<style lang="scss" scoped>
+  @import '../stylesheets/variables';
+
+  .add-button {
+    background-color: $background-bright;
+    font-size: $font-size-title;
+    font-weight: $font-weight-title;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    border: $background-bright 1px solid;
+
+    .add-sign {
+      width: 28px;
+      height: 28px;
+      fill: $background-bright;
+      background-color: $dark-gray;
+      float: left;
+    }
+
+    .add-text {
+      vertical-align: middle;
+      font-weight: $font-weight-title;
+    }
+  }
+
+  .nav-link {
+    color: $background-bright !important;
+  }
+
+  .nav-links-right {
+    font-size: $font-size-title-small;
+  }
+
+  .router-link-active {
+    border-bottom: $background-bright 3px solid;
+  }
+</style>
