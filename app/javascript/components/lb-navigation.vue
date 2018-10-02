@@ -2,7 +2,9 @@
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="add-button ml-5">
       <img src="../images/add.svg" class="add-sign" />
-      <span class="add-text">ADD LINK</span>
+      <span class="add-text pl-2 pr-2">
+        ADD LINK
+      </span>
     </button>
 
     <ul class="navbar-nav ml-auto mr-5 nav-links-right">
@@ -27,40 +29,37 @@ export default {
   @import '../stylesheets/variables';
 
   .add-button {
-    width: 123px;
-    height: 30px;
-    background-color: white;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.1px;
+    background-color: $background-bright;
+    font-size: $font-size-title;
+    font-weight: $font-weight-title;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    border: white 1px solid;
+    border: $background-bright 1px solid;
 
     .add-sign {
       width: 28px;
       height: 28px;
-      fill: white;
+      fill: $background-bright;
       background-color: $dark-gray;
       float: left;
     }
 
     .add-text {
       vertical-align: middle;
-      font-weight: 600;
+      font-weight: $font-weight-title;
     }
   }
 
   .nav-link {
-    color: white !important;
+    color: $background-bright !important;
   }
 
   .nav-links-right {
-    font-size: 12px;
+    font-size: $font-size-title-small;
   }
 
-  .router-link-active{
-    border-bottom: white 3px solid;
+  .router-link-active {
+    border-bottom: $background-bright 3px solid;
   }
 </style>
