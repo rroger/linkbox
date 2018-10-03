@@ -6,8 +6,8 @@
           <div class="row">
             <div class="col-lg-12">
               <button class="topics-add btn btn-outline-light" data-test="add-button" @click="toggleFormVisibility">
-                <i v-if="!showForm" class="fas fa-plus"></i>
-                <i v-else class="fas fa-minus"></i>
+                <i class="material-icons md-24 mr-1" v-if="!showForm" >add</i>
+                <i v-else class="material-icons md-24 mr-1">keyboard_arrow_up</i>
                 <span v-if="currentTopic">Edit</span>
                 <span v-else>Add</span>
                 Topic</button>
@@ -186,6 +186,10 @@ export default {
     color: $dark-gray;
     border-color: transparent;
     @include default-font-measure;
+
+    i {
+      vertical-align: sub;
+    }
   }
 
   .topics-counter {
