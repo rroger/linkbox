@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    toasts: JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]')
+    toasts: []
   },
   actions,
   mutations,
