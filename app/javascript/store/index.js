@@ -1,6 +1,6 @@
 import Vue from 'vue/dist/vue.js'
 import Vuex from 'vuex'
-import { mutations, STORAGE_KEY } from './mutations'
+import { mutations } from './mutations'
 import actions from './actions'
 
 Vue.use(Vuex)
