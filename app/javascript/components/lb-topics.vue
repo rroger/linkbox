@@ -173,7 +173,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../stylesheets/variables";
+@import "../stylesheets/shared";
 
 .topics {
   .topics-header {
@@ -182,9 +182,9 @@ export default {
   }
 
   .topics-add {
+    @include default-font-measure;
     color: $dark-gray;
     border-color: transparent;
-    @include default-font-measure;
 
     i {
       vertical-align: sub;
@@ -202,11 +202,11 @@ export default {
     padding: $normal-space;
 
     button {
+      @include default-button;
       margin-top: $normal-space;
       margin-bottom: $normal-space;
       padding: 0;
       width: 48%;
-      @include default-button;
     }
 
     .save-button {

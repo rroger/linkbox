@@ -34,13 +34,13 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-@import "../stylesheets/variables";
+@import "../stylesheets/shared";
 
 .toasts {
   margin-top: $nav-height;
   font-size: $font-size-small;
   text-align: center;
-  font-weight: $font-weight-toast;
+  font-weight: $font-weight-light;
   vertical-align: middle;
   color: $background-gray;
   min-height: $toast-block-height;

@@ -6,7 +6,7 @@ module Api
       before_action :set_topic, only: %i[show update destroy]
 
       def index
-        render_topics(Topic.all.order(name: :asc))
+        render_topics(Topic.all.default_ordered)
       end
 
       def show

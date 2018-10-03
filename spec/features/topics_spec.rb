@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Topics page', :js do
   it 'can add a topic' do
     visit '/#/topics'
-    find(:css, "button[data-test='add-button']").click
+    find_button('Add').click
     fill_in 'topic-name', with: 'TopicSoNew'
     click_on 'Save'
 
@@ -39,9 +39,11 @@ RSpec.describe 'Topics page', :js do
       find(:css, "button[data-test='delete-button']").click
       find(:css, "button[data-test='confirm-button']").click
 
-      expect(find_all("span[data-test='index-topic-name']", text: 'AI').count).to be 0
       expect(Topic.count).to be 1
       expect(page).to have_content "Successfully deleted Topic 'AI'"
+      within(:css, '.main-container') do
+        expect(page).not_to have_content 'AI'
+      end
     end
   end
 end

@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import "../stylesheets/variables";
+@import "../stylesheets/shared";
 
 .modal-background {
   position: fixed;
@@ -78,19 +78,19 @@ export default {
 }
 
 .modal-container {
+  @include default-font-measure;
   text-align: center;
   max-width: $modal-min-width;
   min-height: $modal-min-height;
-  @include default-font-measure;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: $background-bright;
   border-radius: $thicker-border-size;
   box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
 
   button {
+    @include default-button;
     min-width: 35%;
     margin: $normal-space $small-space $small-space $small-space;
-    @include default-button;
   }
 }
 

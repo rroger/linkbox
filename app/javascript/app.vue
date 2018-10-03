@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./stylesheets/variables";
+  @import "./stylesheets/shared";
 
   body {
     font-family: $font-family-base;

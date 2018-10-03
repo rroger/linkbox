@@ -2,4 +2,5 @@
 
 class Topic < ApplicationRecord
   validates :name, presence: true
+  scope :default_ordered, -> { order(name: :asc) }
 end

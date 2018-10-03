@@ -26,15 +26,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../stylesheets/variables';
+  @import '../stylesheets/shared';
 
   nav {
     height: $nav-height;
     background-color: $dark-gray;
   }
   .add-button {
-    background-color: $background-bright;
     @include default-font-measure;
+    background-color: $background-bright;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
