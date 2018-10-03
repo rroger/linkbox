@@ -9,6 +9,11 @@ export default new Vuex.Store({
   state: {
     toasts: []
   },
+  getters: {
+    toasts: state => {
+      return state.toasts
+    }
+  },
   actions,
   mutations,
 })

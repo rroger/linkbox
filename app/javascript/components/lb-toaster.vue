@@ -13,6 +13,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'lb-toaster',
   data() {
@@ -25,9 +27,9 @@ export default {
     }
   },
   computed: {
-    toasts () {
-      return this.$store.state.toasts
-    },
+    ...mapGetters({
+      toasts: 'toasts'
+    }),
   },
 }
 </script>
