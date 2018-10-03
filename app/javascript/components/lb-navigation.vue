@@ -38,7 +38,7 @@ export default {
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    border: $background-bright 1px solid;
+    border: $background-bright $normal-border-size solid;
     line-height: $nav-button-line-height;
 
     .add-sign {
@@ -63,6 +63,6 @@ export default {
   }
 
   .router-link-active {
-    border-bottom: $background-bright 3px solid;
+    border-bottom: $background-bright $very-thick-border-size solid;
   }
 </style>

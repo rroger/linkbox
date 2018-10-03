@@ -9,7 +9,7 @@
     <div v-if="showConfirmation" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container p-3">
-          <i @click="$emit('close')" class="fas fa-times close-x"></i>
+          <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
 
           <div class="modal-body mt-5">
             <slot></slot>
@@ -79,22 +79,23 @@ export default {
 
 .modal-container {
   text-align: center;
-  max-width: 800px;
-  min-height: 300px;
+  max-width: $modal-min-width;
+  min-height: $modal-min-height;
   @include default-font-measure;
   margin: 0 auto;
   background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  border-radius: $thicker-border-size;
+  box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
 
   button {
     min-width: 35%;
-    margin: 25px 5px 5px 5px;
+    margin: $normal-space $small-space $small-space $small-space;
     @include default-button;
   }
 }
 
 .close-x {
   float: right;
+  cursor: pointer;
 }
 </style>

@@ -177,8 +177,8 @@ export default {
 
 .topics {
   .topics-header {
-    border: 2px solid $dark-gray;
-    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
+    border: $thicker-border-size solid $dark-gray;
+    padding: $normal-space $small-space $small-space $small-space;
   }
 
   .topics-add {
@@ -192,18 +192,18 @@ export default {
   }
 
   .topics-counter {
-    font-size: 0.7em;
+    font-size: $font-size-small;
     color: $gray;
     vertical-align: super;
   }
 
   .topics-form {
     width: 100%;
-    padding: 0.5rem;
+    padding: $normal-space;
 
     button {
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: $normal-space;
+      margin-bottom: $normal-space;
       padding: 0;
       width: 48%;
       @include default-button;
@@ -216,27 +216,27 @@ export default {
 
   #topic-name {
     width: 100%;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    border: 0.5px solid $dark-gray;
-    line-height: 2.5rem;
+    margin-bottom: $big-space;
+    padding-left: $big-space;
+    border: $thin-border-size solid $dark-gray;
+    line-height: $nav-button-line-height;
   }
 
   ul {
     @include default-font-measure;
     list-style: none;
-    padding-left: 10px;
-    margin-top: 15px;
+    padding-left: $small-space;
+    margin-top: $big-space;
   }
 
   .topics-row {
+    line-height: $nav-button-line-height;
 
     .edit-button {
       color: transparent;
       border-color: transparent;
       background-color: transparent;
-      line-height: 0.6rem;
-      font-size: 0.6rem;
+      font-size: $font-size-smaller;
       float: right;
     }
   }

@@ -60,7 +60,7 @@ export default {
 
   .toast-type-image {
     height: 0.75 * $toast-line-height;
-    margin-bottom: 0.15em;
+    margin-bottom: 0.1rem;
   }
 }
 </style>
