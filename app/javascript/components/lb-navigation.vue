@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <button class="add-button ml-5">
       <img src="../images/add.svg" class="add-sign" />
       <span class="add-text pl-2 pr-2">
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'lb-navigation'
+  name: 'lb-navigation',
 }
 
 </script>
@@ -28,6 +28,10 @@ export default {
 <style lang="scss" scoped>
   @import '../stylesheets/variables';
 
+  nav {
+    height: $nav-height;
+    background-color: $dark-gray;
+  }
   .add-button {
     background-color: $background-bright;
     @include default-font-measure;

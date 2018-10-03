@@ -1,5 +1,5 @@
 <template>
-  <div class="toasts">
+  <div class="toasts fixed-top">
     <transition-group
     name="custom-classes-transition"
     enter-active-class="animated slideInDown"
@@ -35,6 +35,7 @@ export default {
 @import "../stylesheets/variables";
 
 .toasts {
+  margin-top: $nav-height;
   font-size: $font-size-small;
   text-align: center;
   font-weight: $font-weight-toast;

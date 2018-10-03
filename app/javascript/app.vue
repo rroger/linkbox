@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <lb-navigation></lb-navigation>
-    <lb-toaster></lb-toaster>
-    <div class="container main-container">
-      <router-view></router-view>
-    </div>
+    <main role="main" >
+      <lb-toaster></lb-toaster>
+      <div class="container main-container">
+        <router-view></router-view>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -22,8 +24,13 @@ export default {
 
 <style lang="scss" scoped>
   @import "./stylesheets/variables";
-  
+
   body {
     font-family: $font-family-base;
+    background-color: $background-gray;
+  }
+
+  .main-container {
+    margin-top: $nav-height + 1.5 * $toast-block-height;
   }
 </style>
