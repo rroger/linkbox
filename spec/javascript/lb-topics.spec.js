@@ -108,7 +108,7 @@ describe('TopicsComponent', () => {
         })
         toastSpy = jest.spyOn(wrapper.vm, 'addToast')
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not load topics'])
+          expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not load Topics'])
           done()
         })
       })

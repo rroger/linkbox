@@ -165,7 +165,7 @@ export default {
         this.addToast([TOAST_TYPE.ERROR, `Could not delete '${this.currentTopic.name}'`])
       })
     },
-    isSaveDisabled(){
+    isSaveDisabled() {
       return !this.newTopicName || !!(this.currentTopic && this.currentTopic.name === this.newTopicName)
     }
   }
