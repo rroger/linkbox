@@ -11,7 +11,7 @@ describe('TopicsComponent', () => {
   let addToast = (toastMessage) => { return `Toast: ${toastMessage}` }
 
   describe('#created', () => {
-    it('called fetchTopics', () =>  {
+    it('calls fetchTopics', () =>  {
       const spy = jest.spyOn(LbTopics.methods, 'fetchTopics')
       shallowMount(LbTopics,  {
         mocks: {
@@ -54,8 +54,6 @@ describe('TopicsComponent', () => {
 
       wrapper.vm.toggleFormVisibility()
 
-      expect(wrapper.vm.newTopicName).toBe(null)
-      expect(wrapper.vm.currentTopic).toBe(null)
       expect(spy).toBeCalledTimes(1)
     })
   })
@@ -141,7 +139,7 @@ describe('TopicsComponent', () => {
       expect(spyCreate).toHaveBeenCalledTimes(0)
     })
 
-    it('calles createTopic when currentTopic was null', () => {
+    it('calls createTopic when currentTopic was null', () => {
       wrapper.vm.currentTopic = null
       wrapper.vm.onSubmit()
 
@@ -276,11 +274,12 @@ describe('TopicsComponent', () => {
         })
         wrapper.vm.newTopicName = 'Existing Topic'
         wrapper.vm.currentTopic = { id: 222, name: 'Existing Topic'}
-        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
       })
 
       it('toasts success', (done) => {
+        toastSpy = jest.spyOn(wrapper.vm, 'addToast')
         wrapper.vm.editTopic()
+
         Vue.nextTick(() => {
           expect(toastSpy).toHaveBeenCalledWith(['success', "Successfully edited Topic 'Newly Edited Topic'"])
           done()
