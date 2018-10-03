@@ -33,8 +33,7 @@
           </div>
         </div>
         <ul>
-          <li>Topics <span class="topics-counter">({{ topics.length }})</span></li>
-          <li>&nbsp;</li>
+          <li class="mb-3 mt-4">Topics <span class="topics-counter">({{ topics.length }})</span></li>
           <li v-for="topic in topics" class="topics-row" v-bind:key="topic.name">
             <span data-test="index-topic-name">
               {{ topic.name }}
@@ -51,7 +50,7 @@
         @close="showConfirmation = false"
     >
       <span v-if="currentTopic">
-        Are you sure you want to delete `{{ currentTopic.name }}` from Library?
+        Are you sure you want to delete '{{ currentTopic.name }}' from the Library?
       </span>
     </lb-confirmation>
   </div>
@@ -61,6 +60,7 @@
 /* eslint-disable no-undef */
 import _ from 'lodash'
 import { mapActions } from 'vuex'
+import { TOAST_TYPE} from '../models/toast'
 
 export default {
   name: 'lb-topics',
@@ -102,7 +102,7 @@ export default {
           this.topics = topics
         },
         () => {
-          this.addToast('Could not load topics')
+          this.addToast([TOAST_TYPE.ERROR, 'Could not load topics'])
         })
     },
     onSubmit() {
@@ -128,10 +128,10 @@ export default {
         (response) => {
           this.fetchTopics()
           this.clearForm()
-          this.addToast(`Successfully added Topic '${response.body.data.attributes.name}'`)
+          this.addToast([TOAST_TYPE.SUCCESS, `Successfully added Topic '${response.body.data.attributes.name}'`])
         },
         () => {
-          this.addToast(`Could not add ${this.newTopicName}'`)
+          this.addToast([TOAST_TYPE.ERROR, `Could not add '${this.newTopicName}'`])
         })
     },
     editTopic() {
@@ -140,13 +140,13 @@ export default {
       params.data.id = this.currentTopic.id
       this.$http.put(`${this.baseUrl}/${this.currentTopic.id}`, params).then(
         (response) => {
-          this.addToast(`Successfully edited Topic '${response.body.data.attributes.name}'`)
+          this.addToast([TOAST_TYPE.SUCCESS, `Successfully edited Topic '${response.body.data.attributes.name}'`])
           this.fetchTopics()
           this.clearForm()
           this.showForm = false
         },
         () => {
-          this.addToast(`Could not edit ${this.currentTopic.name}'`)
+          this.addToast([TOAST_TYPE.ERROR, `Could not edit '${this.currentTopic.name}'`])
         })
     },
     editInForm(topic) {
@@ -157,13 +157,13 @@ export default {
     deleteTopic() {
       if (!this.currentTopic) { throw 'Exception: no Topic selected for edit' }
       this.$http.delete(`${this.baseUrl}/${this.currentTopic.id}`).then(() => {
-        this.addToast(`Successfully deleted Topic '${this.currentTopic.name}'`)
+        this.addToast([TOAST_TYPE.SUCCESS, `Successfully deleted Topic '${this.currentTopic.name}'`])
         this.fetchTopics()
         this.clearForm()
         this.showForm = false
       },
       () => {
-        this.addToast(`Could not delete '${this.currentTopic.name}'`)
+        this.addToast([TOAST_TYPE.ERROR, `Could not delete '${this.currentTopic.name}'`])
       })
     },
     isSaveDisabled(){
@@ -178,31 +178,32 @@ export default {
 
 .topics {
   .topics-header {
-    border: 1px solid $dark-gray;
-    padding: 10px;
+    border: 2px solid $dark-gray;
+    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
   }
 
   .topics-add {
     color: $dark-gray;
-    border-color: transparent !important;
+    border-color: transparent;
+    @include default-font-measure;
   }
 
   .topics-counter {
-    font-size: 0.7em !important;
+    font-size: 0.7em;
     color: $gray;
     vertical-align: super;
   }
 
   .topics-form {
     width: 100%;
+    padding: 0.5rem;
 
     button {
       margin-top: 10px;
       margin-bottom: 10px;
       padding: 0;
       width: 48%;
-      height: 48px;
-      border: 1.5px solid !important;
+      @include default-button;
     }
 
     .save-button {
@@ -219,12 +220,14 @@ export default {
   }
 
   ul {
+    @include default-font-measure;
     list-style: none;
     padding-left: 10px;
     margin-top: 15px;
   }
 
   .topics-row {
+
     .edit-button {
       color: transparent;
       border-color: transparent;

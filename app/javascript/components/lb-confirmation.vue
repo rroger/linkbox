@@ -8,22 +8,24 @@
   >
     <div v-if="showConfirmation" class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container p-3">
           <i @click="$emit('close')" class="fas fa-times close-x"></i>
 
           <div class="modal-body mt-5">
             <slot></slot>
           </div>
 
-          <button class="btn btn-outline-primary" @click="$emit('close')">
-            Cancel
-          </button>
+          <div class="mt-3 m-1">
+            <button class="btn btn-outline-primary" @click="$emit('close')">
+              Cancel
+            </button>
 
-          <button class="btn btn-primary" data-test="confirm-button" @click="$emit('close') && doAfterConfirm()">
-            <slot name="confirm-button">
-              Proceed
-            </slot>
-          </button>
+            <button class="btn btn-primary" data-test="confirm-button" @click="$emit('close') && doAfterConfirm()">
+              <slot name="confirm-button">
+                Proceed
+              </slot>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -58,7 +60,6 @@ export default {
   height: 100%;
   display: table;
   background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
 }
 
 .modal-mask {
@@ -80,23 +81,17 @@ export default {
   text-align: center;
   max-width: 800px;
   min-height: 300px;
+  @include default-font-measure;
   margin: 0 auto;
-  padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
 
   button {
-    min-width: 30%;
-    height: 48px;
+    min-width: 35%;
     margin: 25px 5px 5px 5px;
+    @include default-button;
   }
-}
-
-.modal-body {
-  margin: 20px 0;
 }
 
 .close-x {

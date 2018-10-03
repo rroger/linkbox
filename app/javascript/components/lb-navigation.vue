@@ -30,16 +30,16 @@ export default {
 
   .add-button {
     background-color: $background-bright;
-    font-size: $font-size-title;
-    font-weight: $font-weight-title;
+    @include default-font-measure;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
     border: $background-bright 1px solid;
+    line-height: $nav-button-line-height;
 
     .add-sign {
-      width: 28px;
-      height: 28px;
+      width: $nav-button-line-height;
+      height: $nav-button-line-height;
       fill: $background-bright;
       background-color: $dark-gray;
       float: left;
@@ -47,7 +47,6 @@ export default {
 
     .add-text {
       vertical-align: middle;
-      font-weight: $font-weight-title;
     }
   }
 

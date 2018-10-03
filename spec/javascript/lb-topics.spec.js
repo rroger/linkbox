@@ -108,7 +108,7 @@ describe('TopicsComponent', () => {
         })
         toastSpy = jest.spyOn(wrapper.vm, 'addToast')
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith('Could not load topics')
+          expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not load topics'])
           done()
         })
       })
@@ -190,7 +190,7 @@ describe('TopicsComponent', () => {
       it('toasts success', (done) => {
         wrapper.vm.createTopic()
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith("Successfully added Topic 'Newly Created Topic'")
+          expect(toastSpy).toHaveBeenCalledWith(['success', "Successfully added Topic 'Newly Created Topic'"])
           done()
         })
       })
@@ -250,7 +250,7 @@ describe('TopicsComponent', () => {
         wrapper.vm.createTopic()
 
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith("Could not add Newly Created Topic'")
+          expect(toastSpy).toHaveBeenCalledWith(['error', "Could not add 'Newly Created Topic'"])
           done()
         })
       })
@@ -282,7 +282,7 @@ describe('TopicsComponent', () => {
       it('toasts success', (done) => {
         wrapper.vm.editTopic()
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith("Successfully edited Topic 'Newly Edited Topic'")
+          expect(toastSpy).toHaveBeenCalledWith(['success', "Successfully edited Topic 'Newly Edited Topic'"])
           done()
         })
       })
@@ -405,7 +405,7 @@ describe('TopicsComponent', () => {
       it('toasts success', (done) => {
         wrapper.vm.deleteTopic()
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith("Successfully deleted Topic 'Existing Topic'")
+          expect(toastSpy).toHaveBeenCalledWith(['success', "Successfully deleted Topic 'Existing Topic'"])
           done()
         })
       })
@@ -467,7 +467,7 @@ describe('TopicsComponent', () => {
         wrapper.vm.deleteTopic()
 
         Vue.nextTick(() => {
-          expect(toastSpy).toHaveBeenCalledWith("Could not delete 'Existing Topic'")
+          expect(toastSpy).toHaveBeenCalledWith(['error', "Could not delete 'Existing Topic'"])
           done()
         })
       })

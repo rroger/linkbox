@@ -19,3 +19,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  @import "./stylesheets/variables";
+  
+  body {
+    font-family: $font-family-base;
+  }
+</style>

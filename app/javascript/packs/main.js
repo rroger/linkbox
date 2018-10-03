@@ -8,7 +8,6 @@ import { routes } from '../routes'
 import store from '../store'
 import LbConfirmation from '../components/lb-confirmation'
 
-
 Vue.use(VueResource)
 Vue.use(VueRouter)
 const router = new VueRouter({
