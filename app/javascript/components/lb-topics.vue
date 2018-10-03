@@ -94,12 +94,11 @@ export default {
     fetchTopics() {
       this.$http.get(this.baseUrl).then(
         (response) => {
-          const topics = _.map(response.body['data'], (raw) => {
+          this.topics = _.map(response.body['data'], (raw) => {
             const topic = raw.attributes
             topic.id = raw.id
             return topic
           })
-          this.topics = topics
         },
         () => {
           this.addToast([TOAST_TYPE.ERROR, 'Could not load topics'])
