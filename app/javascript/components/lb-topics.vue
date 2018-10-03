@@ -101,7 +101,7 @@ export default {
           })
         },
         () => {
-          this.addToast([TOAST_TYPE.ERROR, 'Could not load topics'])
+          this.addToast([TOAST_TYPE.ERROR, 'Could not load Topics'])
         })
     },
     onSubmit() {
