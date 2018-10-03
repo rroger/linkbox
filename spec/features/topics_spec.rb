@@ -3,13 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Topics page', :js do
-
-  before { visit '/#/topics' }
-
   it 'can add a topic' do
+    visit '/#/topics'
     find(:css, "button[data-test='add-button']").click
     fill_in 'topic-name', with: 'TopicSoNew'
-    find(:css, '.save-button').click
+    click_on 'Save'
 
     expect(page).to have_content 'TopicSoNew'
     expect(Topic.count).to be 1
@@ -19,15 +17,17 @@ RSpec.describe 'Topics page', :js do
   context 'with existing topics' do
     let!(:topics) { [create(:topic, name: 'AI'), create(:topic, name: 'Style')] }
 
+    before { visit '/#/topics' }
+
     it 'can list topics' do
       expect(page).to have_content 'AI'
       expect(page).to have_content 'Style'
     end
 
     it 'can edit a topic' do
-      find_all("button[data-test='topic-edit-button']").first.click
+      find_button('EDIT', match: :first).click
       fill_in 'topic-name', with: 'TopicSoEdited'
-      find(:css, '.save-button').click
+      click_on 'Save'
 
       expect(Topic.count).to be 2
       expect(page).to have_content 'TopicSoEdited'
@@ -35,7 +35,7 @@ RSpec.describe 'Topics page', :js do
     end
 
     it 'can delete a topic' do
-      find_all("button[data-test='topic-edit-button']").first.click
+      find_button('EDIT', match: :first).click
       find(:css, "button[data-test='delete-button']").click
       find(:css, "button[data-test='confirm-button']").click
 
