@@ -16,13 +16,15 @@ ActiveRecord::Schema.define(version: 2018_10_01_124203) do
   enable_extension "plpgsql"
 
   create_table "links", force: :cascade do |t|
-    t.bigint "topic_id_id"
+    t.bigint "topic_id"
+    t.integer "order"
+    t.boolean "completed", default: false
     t.string "url", null: false
     t.string "title"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["topic_id_id"], name: "index_links_on_topic_id_id"
+    t.index ["topic_id"], name: "index_links_on_topic_id"
   end
 
   create_table "topics", force: :cascade do |t|
