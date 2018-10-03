@@ -49,8 +49,6 @@ danger-review:
   allow_failure: true
   cache: {}
   dependencies: []
-  before_script:
-  - gem install danger-gitlab --no-document
   only:
     variables:
     - $DANGER_GITLAB_API_TOKEN
@@ -59,7 +57,7 @@ danger-review:
     - master
   script:
   - git version
-  - danger --fail-on-errors=true
+  - bundle exec danger --fail-on-errors=true
 
 rubocop:
   stage: test
