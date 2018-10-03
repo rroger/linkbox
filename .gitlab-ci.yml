@@ -15,22 +15,21 @@ variables:
 stages:
 - test
 
-.install-gems: &install-gems
-  before_script:
-    - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-    - bundle install -j $(nproc) --path vendor
+.install-bundler:
+  - &install-bundler
+    gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
 
-.install-npm-packages: &install-npm-packages
-  before_script:
-    - yarn install
+.install-gems:
+  - &install-gems
+    bundle install -j $(nproc) --path vendor
 
-.install-all: &install-all
-  before_script:
-    - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-    - bundle install -j $(nproc) --path vendor
-    - yarn install
+.install-npm-packages:
+  - &install-npm-packages
+    yarn install
 
-<<: *install-gems
+before_script:
+  - *install-bundler
+  - *install-gems
 
 danger-review:
   stage: test
@@ -59,19 +58,24 @@ rubocop:
 
 eslint:
   stage: test
-  <<: *install-npm-packages
+  before_script:
+    - *install-npm-packages
   script:
   - yarn lint
 
 stylelint:
   stage: test
-  <<: *install-npm-packages
+  before_script:
+    - *install-npm-packages
   script:
   - yarn style-lint
 
 rspec:
   stage: test
-  <<: *install-all
+  before_script:
+    - *install-npm-packages
+    - *install-bundler
+    - *install-gems
   script:
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
@@ -83,7 +87,10 @@ rspec:
 
 jest:
   stage: test
-  <<: *install-all
+  before_script:
+    - *install-npm-packages
+    - *install-bundler
+    - *install-gems
   script:
     - bundle exec rake db:schema:load
     - yarn jest
