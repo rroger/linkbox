@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :link, class: 'Link' do
     topic { Topic.last || create(:topic) }
-    url { Faker.url }
+    url { Faker::Internet.url }
     title { Faker::Science.scientist }
-    notes { Faker::Science.scenario }
+    notes { Faker::Lorem.sentence }
   end
 end

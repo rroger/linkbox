@@ -3,27 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::LinksController do
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
+  let(:link) { create :link }
 
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
+  let(:valid_attributes) { {} }
+
+  let(:invalid_attributes) { {} }
+
+  subject(:parsed_body) { JSON.parse(response.body, symbolize_names: true) }
 
   describe 'GET #index' do
     it 'returns a success response' do
-      Link.create! valid_attributes
+      link.save!
       get :index, params: {}
       expect(response).to be_successful
+      expect(parsed_body).to eq(data: [{ attributes: {
+                                  completed: link.completed,
+                                  notes: link.notes,
+                                  order: nil,
+                                  title: link.title,
+                                  url: link.url,
+                                  topic: link.topic.name
+                                }, id: link.id.to_s, type: 'link' }])
     end
   end
 
   describe 'GET #show' do
     it 'returns a success response' do
-      link = Link.create! valid_attributes
+      link.save!
       get :show, params: { id: link.to_param }
       expect(response).to be_successful
+      expect(parsed_body).to eq(data: { attributes: {
+                                  completed: link.completed,
+                                  notes: link.notes,
+                                  order: nil,
+                                  title: link.title,
+                                  url: link.url,
+                                  topic: link.topic.name
+                                }, id: link.id.to_s, type: 'link' })
     end
   end
 
@@ -33,11 +49,6 @@ RSpec.describe Api::V1::LinksController do
         expect do
           post :create, params: { link: valid_attributes }
         end.to change(Link, :count).by(1)
-      end
-
-      it 'redirects to the created link' do
-        post :create, params: { link: valid_attributes }
-        expect(response).to redirect_to(Link.last)
       end
     end
 
@@ -61,12 +72,6 @@ RSpec.describe Api::V1::LinksController do
         link.reload
         skip('Add assertions for updated state')
       end
-
-      it 'redirects to the link' do
-        link = Link.create! valid_attributes
-        put :update, params: { id: link.to_param, link: valid_attributes }
-        expect(response).to redirect_to(link)
-      end
     end
 
     context 'with invalid params' do
@@ -84,12 +89,6 @@ RSpec.describe Api::V1::LinksController do
       expect do
         delete :destroy, params: { id: link.to_param }
       end.to change(Link, :count).by(-1)
-    end
-
-    it 'redirects to the api_v1_links list' do
-      link = Link.create! valid_attributes
-      delete :destroy, params: { id: link.to_param }
-      expect(response).to redirect_to(api_v1_links_url)
     end
   end
 end
