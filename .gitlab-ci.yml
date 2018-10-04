@@ -27,9 +27,22 @@ stages:
   - &install-npm-packages
     yarn install
 
-before_script:
+.install-all: &install-all
+  before_script:
   - *install-bundler
   - *install-gems
+  - *install-npm-packages
+
+.install-backend-part: &install-backend-part
+  before_script:
+  - *install-bundler
+  - *install-gems
+
+.install-frontend-part: &install-frontend-part
+  before_script:
+  - *install-npm-packages
+
+<<: *install-backend-part
 
 danger-review:
   stage: test
@@ -58,24 +71,19 @@ rubocop:
 
 eslint:
   stage: test
-  before_script:
-    - *install-npm-packages
+  <<: *install-frontend-part
   script:
   - yarn lint
 
 stylelint:
   stage: test
-  before_script:
-    - *install-npm-packages
+  <<: *install-frontend-part
   script:
   - yarn style-lint
 
 rspec:
   stage: test
-  before_script:
-    - *install-npm-packages
-    - *install-bundler
-    - *install-gems
+  <<: *install-all
   script:
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
@@ -87,10 +95,7 @@ rspec:
 
 jest:
   stage: test
-  before_script:
-    - *install-npm-packages
-    - *install-bundler
-    - *install-gems
+  <<: *install-all
   script:
     - bundle exec rake db:schema:load
     - yarn jest
