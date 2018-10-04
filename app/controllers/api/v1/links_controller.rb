@@ -3,45 +3,51 @@
 module Api
   module V1
     class LinksController < ApplicationController
-      before_action :set_api_v1_link, only: %i[show update destroy]
+      before_action :set_link, only: %i[show update destroy]
 
       def index
-        @api_v1_links = Link.all
+        render_links(Link.all)
       end
 
-      def show; end
+      def show
+        render_links(@link)
+      end
 
       def create
-        @api_v1_link = Link.new(api_v1_link_params)
+        @link = Link.new(link_params)
 
-        if @api_v1_link.save
-          render :json, status: :created, location: @api_v1_link
+        if @link.save
+          render_links(@link, :created)
         else
-          render json: @api_v1_link.errors, status: :unprocessable_entity
+          render json: @link.errors, status: :unprocessable_entity
         end
       end
 
       def update
-        if @api_v1_link.update(api_v1_link_params)
-          render :json, status: :ok, location: @api_v1_link
+        if @link.update(link_params)
+          render_links(@link)
         else
-          render json: @api_v1_link.errors, status: :unprocessable_entity
+          render json: @link.errors, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @api_v1_link.destroy
+        @link.destroy
         head :no_content
       end
 
       private
 
-      def set_api_v1_link
-        @api_v1_link = Link.find(params[:id])
+      def set_link
+        @link = Link.find(params[:id])
       end
 
-      def api_v1_link_params
-        params.require(:api_v1_link).permit(:topic_id, :url, :title, :notes)
+      def link_params
+        params.require(:data).permit(:id, :type, attributes: %i[topic_id url title notes order]).fetch(:attributes, [])
+      end
+
+      def render_links(links, status = :ok)
+        render status, json: ::LinkSerializer.new(links)
       end
     end
   end

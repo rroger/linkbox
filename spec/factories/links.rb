@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :link, class: 'Link' do
-    topic_id ''
-    url 'MyString'
-    title 'MyString'
-    notes 'MyText'
+    topic { Topic.last || create(:topic) }
+    url { Faker.url }
+    title { Faker::Science.scientist }
+    notes { Faker::Science.scenario }
   end
 end

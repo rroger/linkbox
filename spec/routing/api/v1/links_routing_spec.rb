@@ -8,16 +8,8 @@ RSpec.describe Api::V1::LinksController, type: :routing do
       expect(get: '/api/v1/links').to route_to('api/v1/links#index', format: :json)
     end
 
-    it 'routes to #new' do
-      expect(get: '/api/v1/links/new').to route_to('api/v1/links#new', format: :json)
-    end
-
     it 'routes to #show' do
       expect(get: '/api/v1/links/1').to route_to('api/v1/links#show', id: '1', format: :json)
-    end
-
-    it 'routes to #edit' do
-      expect(get: '/api/v1/links/1/edit').to route_to('api/v1/links#edit', id: '1', format: :json)
     end
 
     it 'routes to #create' do
