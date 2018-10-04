@@ -217,7 +217,7 @@ export default {
   #topic-name {
     width: 100%;
     margin-bottom: $big-space;
-    padding-left: $big-space;
+    padding: $normal-space $normal-space $normal-space $big-space;
     border: $thin-border-size solid $dark-gray;
     line-height: $nav-button-line-height;
   }
