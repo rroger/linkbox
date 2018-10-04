@@ -33,7 +33,7 @@
           </div>
         </div>
         <ul>
-          <li class="mb-3 mt-4">Topics <span class="topics-counter">({{ topics.length }})</span></li>
+          <li class="pb-2 mb-1 mt-4 topics-index-title">Topics <span class="topics-counter">({{ topics.length }})</span></li>
           <li v-for="topic in topics" class="topics-row" v-bind:key="topic.name">
             <span data-test="index-topic-name">
               {{ topic.name }}
@@ -212,6 +212,12 @@ export default {
     .save-button {
       float: right;
     }
+
+  }
+
+  .topics-index-title {
+    border-bottom: $mid-gray $thin-border-size solid;
+    padding-left: $normal-space;
   }
 
   #topic-name {
@@ -231,6 +237,7 @@ export default {
 
   .topics-row {
     line-height: $nav-button-line-height;
+    padding-left: $normal-space;
 
     .edit-button {
       color: transparent;
