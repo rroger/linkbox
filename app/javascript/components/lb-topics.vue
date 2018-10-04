@@ -244,6 +244,7 @@ export default {
       border-color: transparent;
       background-color: transparent;
       font-size: $font-size-smaller;
+      height: $nav-button-line-height;
       float: right;
     }
   }
