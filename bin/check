@@ -23,6 +23,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+echo "\n== Jest =="
+yarn test
+if [ $? -ne 0 ]; then
+  echo -e '\033[31mJest did not run successfully\033[0m'
+  exit 1
+fi
+
 echo "\n== Bundler-audit =="
 bundle exec bundler-audit
 if [ $? -ne 0 ]; then

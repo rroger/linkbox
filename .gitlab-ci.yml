@@ -7,7 +7,7 @@ variables:
   POSTGRES_DB: linkbox_test
   DISABLE_SPRING: 'true'
   TZ: Europe/Zurich
-  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB"
+  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB'
   DANGER_GITLAB_HOST: git.panter.ch
   DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
   RAILS_ENV: test
@@ -15,9 +15,34 @@ variables:
 stages:
 - test
 
-before_script:
-- gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-- bundle install -j $(nproc) --path vendor
+.install-bundler:
+  - &install-bundler
+    gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
+
+.install-gems:
+  - &install-gems
+    bundle install -j $(nproc) --path vendor
+
+.install-npm-packages:
+  - &install-npm-packages
+    yarn install
+
+.install-all: &install-all
+  before_script:
+  - *install-bundler
+  - *install-gems
+  - *install-npm-packages
+
+.install-backend-part: &install-backend-part
+  before_script:
+  - *install-bundler
+  - *install-gems
+
+.install-frontend-part: &install-frontend-part
+  before_script:
+  - *install-npm-packages
+
+<<: *install-backend-part
 
 danger-review:
   stage: test
@@ -46,24 +71,19 @@ rubocop:
 
 eslint:
   stage: test
-  before_script:
-  - yarn install
+  <<: *install-frontend-part
   script:
   - yarn lint
 
 stylelint:
   stage: test
-  before_script:
-  - yarn install
+  <<: *install-frontend-part
   script:
   - yarn style-lint
 
 rspec:
   stage: test
-  before_script:
-  - gem install bundler --no-ri --no-rdoc # Bundler is not installed with the image
-  - bundle install -j $(nproc) --path vendor
-  - yarn install
+  <<: *install-all
   script:
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
@@ -72,6 +92,13 @@ rspec:
     - tmp/capybara
     when: on_failure
     expire_in: 1 week
+
+jest:
+  stage: test
+  <<: *install-all
+  script:
+    - bundle exec rake db:schema:load
+    - yarn jest
 
 reek:
   stage: test

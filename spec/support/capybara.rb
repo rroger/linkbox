@@ -15,3 +15,8 @@ Capybara.javascript_driver = (ENV['JS_DRIVER'] || :firefox_headless).to_sym
 Capybara::Screenshot.register_driver(:firefox_headless) do |driver, path|
   driver.browser.save_screenshot(path)
 end
+
+Capybara.configure do |_config|
+  Capybara.app_host = 'http://localhost:5001'
+  Capybara.server_port = 5001
+end
