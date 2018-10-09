@@ -9,7 +9,7 @@
 
     <ul class="navbar-nav ml-auto mr-5 nav-links-right">
       <li class="nav-item">
-        <a class="nav-link " href="#">LIBRARY</a>
+        <router-link to="/library" class="nav-link">LIBRARY</router-link>
       </li>
       <li class="nav-item">
         <router-link to="/topics" class="nav-link">TOPICS</router-link>
