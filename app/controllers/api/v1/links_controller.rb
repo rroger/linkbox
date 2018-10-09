@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        @link = Link.new(link_params)
+        link = Link.new(link_params)
 
-        if @link.save
-          render_links(@link, :created)
+        if link.save
+          render_links(link, :created)
         else
-          render json: @link.errors, status: :unprocessable_entity
+          render json: link.errors, status: :unprocessable_entity
         end
       end
 
@@ -43,7 +43,8 @@ module Api
       end
 
       def link_params
-        params.require(:data).permit(:id, :type, attributes: %i[topic_id url title notes order]).fetch(:attributes, [])
+        params.require(:data).permit(:id, :type,
+                                     attributes: %i[topic_id url title notes order completed]).fetch(:attributes, [])
       end
 
       def render_links(links, status = :ok)
