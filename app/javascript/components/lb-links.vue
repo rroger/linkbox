@@ -1,9 +1,8 @@
 <template>
   <div class="container links">
     <h2>To do</h2>
-      <div class="link"  v-bind:key="link.id" v-for="link in links">
-        <label v-text="link.title" ></label>
-        <a>{{link.url}}</a>
+      <div class="to-do"  v-bind:key="link.id" v-for="link in links">
+        <lb-link-show :link="link"></lb-link-show>
       </div>
     <h2>Completed</h2>
   </div>
@@ -11,9 +10,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import LbLinkShow from './lb-link-show'
 
 export default {
   name: 'lb-links',
+  components: {
+    'lb-link-show': LbLinkShow
+  },
   data() {
     return {}
   },

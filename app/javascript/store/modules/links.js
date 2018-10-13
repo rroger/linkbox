@@ -6,7 +6,6 @@ const state = {
   loading: false
 }
 
-// getters
 const getters = {
   links: state => {
     return state.links

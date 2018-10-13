@@ -6,8 +6,12 @@ export class Link {
     this.notes = notes
     this.order = order
     this.completed = completed
-    this.topic_name = topic_name
-    this.topic_id = topic_id
+    this.topicName = topic_name
+    this.topicId = topic_id
+  }
+
+  htmlId() {
+    return `link-id-${this.id}`
   }
 }
 
