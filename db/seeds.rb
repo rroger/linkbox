@@ -17,3 +17,11 @@ seed_once(Link, title: 'Example 2', url: 'https://example2.com', notes: '', topi
 seed_once(Link, title: 'Example 3', url: 'https://example3.com', notes: '', topic_id: 6)
 seed_once(Link, title: 'Example 4', url: 'https://example4.com', notes: '', topic_id: 5)
 seed_once(Link, title: 'Example 5', url: 'https://example5.com', notes: '', topic_id: 6)
+
+seed_once(Link, title: 'flexbox', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', notes: 'Some other notes', topic_id: 4, completed: true)
+seed_once(Link, title: 'css tricks', url: 'https://css-tricks.com/', notes: 'Hint of Andres', topic_id: 4, completed: true)
+seed_once(Link, title: 'Example 6', url: 'https://example6.com', notes: '', topic_id: 1, completed: true)
+seed_once(Link, title: 'Example 7', url: 'https://example7.com', notes: '', topic_id: 3, completed: true)
+seed_once(Link, title: 'Example 8', url: 'https://example8.com', notes: 'More Notes', topic_id: 6, completed: true)
+seed_once(Link, title: 'Example 9', url: 'https://example9.com', notes: '', topic_id: 5, completed: true)
+seed_once(Link, title: 'Example 10', url: 'https://example10.com', notes: '', topic_id: 6, completed: true)
