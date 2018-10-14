@@ -58,7 +58,6 @@
 
 <script>
 /* eslint-disable no-undef */
-import _ from 'lodash'
 import { mapActions } from 'vuex'
 import { TOAST_TYPE} from '../models/toast'
 

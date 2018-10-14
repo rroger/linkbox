@@ -12,7 +12,15 @@ const getters = {
     return state.links
   },
   linksToDo: state => {
-    return state.links.filter(link => !link.completed)
+    return state.links.filter(link => !link.completed).sort((a, b) => {
+      if (a.order > b.order) {
+        return 1
+      }
+      if (a.order < b.order) {
+        return -1
+      }
+      return 0
+    })
   },
   linksCompleted: state => {
     return state.links.filter(link => link.completed)
@@ -36,8 +44,7 @@ const actions = {
   },
 
   updateLinksToDo ({ commit }, toDoList) {
-    console.log('debug: ', toDoList)
-    _.map(toDoList, (toDo, index) => {
+    toDoList.map((toDo, index) => {
       toDo.order = index
       commit('updateLink', toDo)
       linksApiService().updateLink(toDo)
@@ -51,7 +58,7 @@ const mutations = {
   },
   updateLink(state, linkUpdate) {
     const link = state.links.find((link) =>  link.id === linkUpdate.id)
-    _.assign(link, linkUpdate)
+    Object.assign(link, linkUpdate)
   },
   setLoading(state, loading) {
     state.loading = loading

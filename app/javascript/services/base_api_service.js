@@ -1,5 +1,4 @@
 import Vue from 'vue/dist/vue.js'
-import _ from 'lodash'
 /* eslint-disable no-undef */
 
 import store from '../store'
@@ -17,8 +16,8 @@ export class BaseApiService {
   fetchAll(url, itemClass) {
     return this.$http.get(url).then(
       (response) => {
-        return _.map(response.body['data'], (raw) => {
-          return new itemClass(_.extend(raw.attributes, { id: raw.id}))
+        return response.body['data'].map((raw) => {
+          return new itemClass(Object.assign(raw.attributes, { id: raw.id}))
         })
       },
       (error) => {

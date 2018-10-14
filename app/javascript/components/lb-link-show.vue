@@ -15,10 +15,10 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <button data-toggle="collapse" :data-target="anchor(link)">
+        <button data-toggle="collapse" :data-target="anchor(link)" class="collapsed" aria-expanded="false">
           <span>NOTES</span><i></i>
         </button>
-        <div v-bind:id="link.htmlId()" class="notes">
+        <div v-bind:id="link.htmlId()" class="notes collapse" >
           {{ link.notes }}
         </div>
       </div>

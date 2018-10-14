@@ -4797,10 +4797,6 @@ loud-rejection@^1.0.0:
     currently-unhandled "^0.4.1"
     signal-exit "^3.0.0"
 
-lowdash@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/lowdash/-/lowdash-1.2.0.tgz#d807b966da490ce449324a066b61dd2ff31089fa"
-
 lowercase-keys@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.0.tgz#4e3366b39e7f5457e35f1324bdf6f88d0bfc7306"

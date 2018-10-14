@@ -17,7 +17,8 @@ export class LinksApiService extends BaseApiService {
     const params = this.linkParams(link)
     return this.$http.put(`${this.url}/${link.id}`, params).then(
       (response) => {
-        new Link(_.extend(response.data.attributes, { id: response.data.id}))
+        const raw = response.body['data']
+        return new Link(Object.assign(raw['attributes'], { id: raw['id']}))
       },
       (error) => {
         this.errorToast(`Could not update ${link.title}`)
@@ -32,7 +33,7 @@ export class LinksApiService extends BaseApiService {
         attributes: {}
       }
     }
-    _.assign(params.data.attributes, link)
+    Object.assign(params.data.attributes, link)
     if (link.id) {
       params.id = link.id
     }
