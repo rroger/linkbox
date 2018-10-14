@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class LinksController < ApplicationController
+    class LinksController < ApiController
       before_action :set_link, only: %i[show update destroy]
 
       def index
