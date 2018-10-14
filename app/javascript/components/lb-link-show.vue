@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="col-md-10">
-        <a v-bind:href="link.url">{{ link.title }}</a>
+        <a v-bind:href="link.url" target="_blank">{{ link.title }}</a>
       </div>
       <div class="col-md-2">
         {{ link.completed }}
