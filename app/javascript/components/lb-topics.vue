@@ -1,7 +1,7 @@
 <template>
   <div class="container topics">
     <div class="row mt-2">
-      <div class="offset-lg-4 col-lg-4">
+      <div class="offset-lg-3 col-lg-6">
         <div class="topics-header">
           <div class="row">
             <div class="col-lg-12">
@@ -192,7 +192,6 @@ export default {
 
   .topics-counter {
     font-size: $font-size-small;
-    color: $gray;
     vertical-align: super;
   }
 
