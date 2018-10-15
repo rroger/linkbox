@@ -1,4 +1,5 @@
 import { LinksApiService } from '../../services/links_api_service'
+import { TOAST_TYPE } from '../../models/toast'
 
 let _linksApiService = null
 
@@ -12,6 +13,7 @@ const getters = {
     return state.links
   },
   linksToDo: state => {
+    if (state.links.length === 0) return []
     return state.links.filter(link => !link.completed).sort((a, b) => {
       if (a.order > b.order) {
         return 1
@@ -23,6 +25,7 @@ const getters = {
     })
   },
   linksCompleted: state => {
+    if (state.links.length === 0) return []
     return state.links.filter(link => link.completed)
   },
   linksToDoCount: (state, getters) => {
@@ -34,20 +37,27 @@ const getters = {
 }
 
 const actions = {
-  fetchLinks ({ commit }) {
+  fetchLinks ({ commit, dispatch }) {
     commit('setLoading', true)
     return linksApiService().fetchLinks()
       .then((response) => {
         commit('setLinks', response)
       })
+      .catch(() => {
+        dispatch('addToast', [TOAST_TYPE.ERROR, 'Could not load Links'])
+      })
       .finally(() => commit('setLoading', false))
   },
 
-  updateLinksToDo ({ commit }, toDoList) {
+  updateLinksToDo ({ commit, dispatch }, toDoList) {
     toDoList.map((toDo, index) => {
       toDo.order = index
       commit('updateLink', toDo)
       linksApiService().updateLink(toDo)
+        .then(() => {})
+        .catch(() => {
+          dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update ${toDo.title}`])
+        })
     })
   }
 }

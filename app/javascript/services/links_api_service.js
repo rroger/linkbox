@@ -21,9 +21,9 @@ export class LinksApiService extends BaseApiService {
         return new Link(Object.assign(raw['attributes'], { id: raw['id']}))
       },
       (error) => {
-        this.errorToast(`Could not update ${link.title}`)
-        return error
-      })
+        throw error
+      }
+    )
   }
 
   linkParams(link) {
