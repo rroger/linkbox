@@ -88,7 +88,7 @@ export default {
 
     .expand-completed {
       cursor: pointer;
-      float:right;
+      float: right;
     }
   }
 </style>
