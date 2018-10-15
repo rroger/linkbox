@@ -39,6 +39,7 @@ RSpec.describe 'Links', :js do
 
     it 'can sort items by drag and drop' do
       pending('drag and drop with Capybara on headless firefox seems not to work')
+      # also tested with headless chrome, does not work either
       link2 = create :link, order: 6, title: 'second_link', topic: create(:topic, name: 'Trees')
       page.driver.browser.navigate.refresh
 
@@ -49,14 +50,20 @@ RSpec.describe 'Links', :js do
 
 
       # this is uglier but does not work either
+      # element = page.driver.browser.find_element(xpath: "(//div[contains(@class, 'link')])[2]")
       element = page.driver.browser.find_element(xpath: "//span[contains(text(),'Trees')]")
-      target = page.driver.browser.find_element(xpath: "//span[contains(text(),'Cars')]")
+      target = page.driver.browser.find_element(xpath: "//h2[contains(text(),'To do')]")
+      # target = page.driver.browser.find_element(xpath: "//span[contains(text(),'Cars')]")
       # page.driver.browser.action.drag_and_drop(element, target).perform
-      page.driver.browser.action.drag_and_drop_by(element, 10, -150).perform
+      # page.driver.browser.action.drag_and_drop_by(element, 10, -150).perform
+
+      selenium_webdriver = page.driver.browser
+      selenium_webdriver.action.click_and_hold(element)
+          .move_to(target)
+          .release.perform
 
       sleep 1.5
 
-      save_and_open_page
       expect(Link.find(link.id).order).to eq 1
       expect(Link.find(link2.id).order).to eq 0
     end
