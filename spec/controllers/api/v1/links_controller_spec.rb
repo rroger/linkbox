@@ -13,15 +13,19 @@ RSpec.describe Api::V1::LinksController do
       link.save!
       get :index, params: {}
       expect(response).to be_successful
-      expect(parsed_body).to eq(data: [{ attributes: {
-                                  completed: link.completed,
-                                  notes: link.notes,
-                                  order: nil,
-                                  title: link.title,
-                                  url: link.url,
-                                  topic_name: link.topic.name,
-                                  topic_id: link.topic.id
-                                }, id: link.id.to_s, type: 'link' }])
+      expect(parsed_body).to eq(data: [
+                                  { attributes: {
+                                    completed: link.completed,
+                                    notes: link.notes,
+                                    order: nil,
+                                    title: link.title,
+                                    url: link.url,
+                                    topic_name: link.topic.name,
+                                    topic_id: link.topic.id
+                                  },
+                                    id: link.id.to_s,
+                                    type: 'link' }
+                                ])
     end
   end
 
@@ -30,15 +34,19 @@ RSpec.describe Api::V1::LinksController do
       link.save!
       get :show, params: { id: link.to_param }
       expect(response).to be_successful
-      expect(parsed_body).to eq(data: { attributes: {
-                                  completed: link.completed,
-                                  notes: link.notes,
-                                  order: nil,
-                                  title: link.title,
-                                  url: link.url,
-                                  topic_name: link.topic.name,
-                                  topic_id: link.topic.id
-                                }, id: link.id.to_s, type: 'link' })
+      expect(parsed_body).to eq(data: {
+                                  attributes: {
+                                    completed: link.completed,
+                                    notes: link.notes,
+                                    order: nil,
+                                    title: link.title,
+                                    url: link.url,
+                                    topic_name: link.topic.name,
+                                    topic_id: link.topic.id
+                                  },
+                                  id: link.id.to_s,
+                                  type: 'link'
+                                })
     end
   end
 
