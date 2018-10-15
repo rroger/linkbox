@@ -13,7 +13,7 @@ RSpec.describe 'Links', :js do
   context 'with existing links' do
     let!(:link) do
       create(:link, title: 'topics', url: 'http://localhost:5001/#/library',
-                    topic: create(:topic, name: 'Cars'))
+                  order: 3, topic: create(:topic, name: 'Cars'))
     end
 
     before { visit '/#/library' }
@@ -35,6 +35,30 @@ RSpec.describe 'Links', :js do
       expect(current_url).to match 'http://localhost:5001/#/library'
       # https://github.com/teamcapybara/capybara#working-with-windows would be nice,
       # but it does not work
+    end
+
+    it 'can sort items by drag and drop' do
+      pending('drag and drop with Capybara on headless firefox seems not to work')
+      link2 = create :link, order: 6, title: 'second_link', topic: create(:topic, name: 'Trees')
+      page.driver.browser.navigate.refresh
+
+      # This would be nice, but does not work
+      # element = find('span', text: 'Trees')
+      # target = find('span', text: 'Cars')
+      # element.drag_to target
+
+
+      # this is uglier but does not work either
+      element = page.driver.browser.find_element(xpath: "//span[contains(text(),'Trees')]")
+      target = page.driver.browser.find_element(xpath: "//span[contains(text(),'Cars')]")
+      # page.driver.browser.action.drag_and_drop(element, target).perform
+      page.driver.browser.action.drag_and_drop_by(element, 10, -150).perform
+
+      sleep 1.5
+
+      save_and_open_page
+      expect(Link.find(link.id).order).to eq 1
+      expect(Link.find(link2.id).order).to eq 0
     end
   end
 end
