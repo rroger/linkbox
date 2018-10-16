@@ -13,5 +13,9 @@ export class Link {
   htmlId() {
     return `link-id-${this.id}`
   }
+
+  htmlIdWithAnchor() {
+    return `#link-id-${this.id}`
+  }
 }
 

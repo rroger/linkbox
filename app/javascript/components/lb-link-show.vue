@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-md-12 additional">
-        <span v-bind:class="{ 'notes-button': link.notes }" data-toggle="collapse" :data-target="anchor(link)" class="collapsed" aria-expanded="false">
+        <span v-bind:class="{ 'notes-button': link.notes }" data-toggle="collapse" :data-target="link.htmlIdWithAnchor()" class="collapsed" aria-expanded="false">
           <span>NOTES </span>
           <i v-show="link.notes" class="material-icons mr-1">keyboard_arrow_down</i>
         </span>
@@ -34,11 +34,6 @@ export default {
   props: {
     link: Link,
   },
-  methods: {
-    anchor(link) {
-      return `#${link.htmlId()}`
-    }
-  }
 }
 </script>
 

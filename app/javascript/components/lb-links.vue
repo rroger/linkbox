@@ -37,9 +37,6 @@ export default {
     'lb-link-show': LbLinkShow,
     'draggable': Draggable,
   },
-  data() {
-    return {}
-  },
   created() {
     this.fetchLinks()
 
@@ -76,9 +73,6 @@ export default {
     h2 {
       @include default-font-measure;
       max-width: 800px;
-    }
-
-    .to-do {
     }
 
     .count {

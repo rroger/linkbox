@@ -13,7 +13,7 @@ RSpec.describe 'Links', :js do
   context 'with existing links' do
     let!(:link) do
       create(:link, title: 'topics', url: 'http://localhost:5001/#/library',
-                  order: 3, topic: create(:topic, name: 'Cars'))
+                    order: 3, topic: create(:topic, name: 'Cars'))
     end
 
     before { visit '/#/library' }
@@ -48,7 +48,6 @@ RSpec.describe 'Links', :js do
       # target = find('span', text: 'Cars')
       # element.drag_to target
 
-
       # this is uglier but does not work either
       # element = page.driver.browser.find_element(xpath: "(//div[contains(@class, 'link')])[2]")
       element = page.driver.browser.find_element(xpath: "//span[contains(text(),'Trees')]")
@@ -59,8 +58,8 @@ RSpec.describe 'Links', :js do
 
       selenium_webdriver = page.driver.browser
       selenium_webdriver.action.click_and_hold(element)
-          .move_to(target)
-          .release.perform
+                        .move_to(target)
+                        .release.perform
 
       sleep 1.5
 
