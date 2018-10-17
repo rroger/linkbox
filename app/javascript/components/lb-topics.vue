@@ -18,7 +18,7 @@
               <form v-show="showForm" class="mt-4 topics-form" v-on:submit.prevent="onSubmit">
                 <div class="row">
                   <div class=col-md-12>
-                    <input v-model="newTopicName" id="topic-name" name="topic-name" type="text" placeholder="| Sketch">
+                    <input v-model="newTopicName" id="topic-name" ref="topicNameInput" name="topic-name" type="text" placeholder="| Sketch">
                   </div>
                 </div>
                 <div class="row">
@@ -84,6 +84,10 @@ export default {
       this.showForm = !this.showForm
       if (!this.showForm) {
         this.clearForm()
+      } else {
+        this.$nextTick(() => {
+          this.$refs.topicNameInput.focus()
+        })
       }
     },
     clearForm() {
@@ -127,6 +131,9 @@ export default {
           this.fetchTopics()
           this.clearForm()
           this.addToast([TOAST_TYPE.SUCCESS, `Successfully added Topic '${response.body.data.attributes.name}'`])
+          this.$nextTick(() => {
+            this.$refs.topicNameInput.focus()
+          })
         },
         () => {
           this.addToast([TOAST_TYPE.ERROR, `Could not add '${this.newTopicName}'`])
@@ -151,6 +158,7 @@ export default {
       this.currentTopic = topic
       this.newTopicName = topic.name
       this.showForm = true
+      document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     deleteTopic() {
       if (!this.currentTopic) { throw 'Exception: no Topic selected for edit' }

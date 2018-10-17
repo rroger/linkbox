@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <lb-navigation></lb-navigation>
-    <main role="main" >
+    <main role="main">
       <lb-toaster></lb-toaster>
       <div class="container main-container">
         <router-view></router-view>
@@ -32,6 +32,7 @@ export default {
 
   .main-container {
     margin-top: $nav-height + 1.5 * $toast-block-height;
-    max-width: $max-width;
+    max-width: 100vw;
+    padding: 0;
   }
 </style>

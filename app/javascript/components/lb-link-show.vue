@@ -8,9 +8,15 @@
         </span>
       </div>
     </div>
-    <div class="row link-url">
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12 link-url">
         <a v-bind:href="link.url" target="_blank">{{ link.title }}</a>
+        <button @click="toggleCompleted()"
+                v-bind:class="{ 'btn-outline-primary': !link.completed, 'btn-primary': link.completed, opaque: !link.completed}"
+                class="pull-right btn complete-button">
+          <i v-if="link.completed" class="material-icons mr-1 completed-icon">done</i>
+          COMPLETE
+        </button>
       </div>
     </div>
     <div class="row">
@@ -31,7 +37,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { Link } from '../models/link'
+
 export default {
   name: 'lb-link-show',
   props: {
@@ -43,6 +51,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'updateLink'
+    ]),
+    toggleCompleted() {
+      this.link.completed = !this.link.completed
+      this.updateLink({id: this.link.id, completed: this.link.completed})
+    },
     toggleShowNotes() {
       this.showNotes = !this.showNotes
     }
@@ -72,6 +87,7 @@ export default {
     .link-url {
       margin-top: $small-space;
       font-weight: normal;
+      padding-right: 0;
     }
 
     .additional {
@@ -85,6 +101,22 @@ export default {
 
     .notes-button {
       cursor: pointer;
+    }
+
+    .complete-button {
+      float: right;
+      font-size: $font-size-very-small;
+      font-weight: bold;
+    }
+
+    .completed-icon {
+      font-size: $font-size-small;
+      font-weight: bolder;
+      vertical-align: sub;
+    }
+
+    .opaque {
+      opacity: 0.5;
     }
 
     .notes {

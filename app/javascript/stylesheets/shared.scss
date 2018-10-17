@@ -5,6 +5,7 @@ $light-gray: #f4f4f4;
 $gray: #9b9b9b;
 $mid-gray: #e9e9e9;
 $green-gray: #93a8ac;
+$mid-dark-gray: #4a4a4a;
 $red: #92140c;
 $background-gray: #f6f6f6;
 $background-bright: #fff;
@@ -32,7 +33,6 @@ $max-width: 50rem;
 $normal-form-element-width: 22rem;
 $normal-form-element-height: 3rem;
 
-
 $modal-min-width: 45rem;
 $modal-min-height: 18rem;
 
@@ -55,6 +55,7 @@ $very-thick-border-size: 3px;
 }
 
 // #### Classes ####
+
 .modal-background {
   position: fixed;
   z-index: 9998;
@@ -95,7 +96,7 @@ $theme-colors: (
 $enable-rounded: false;
 
 ::placeholder {
-  font-size: $font-size-small !important;
+  font-size: $font-size-small;
 }
 
 textarea:hover,

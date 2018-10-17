@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: "off"*/
 import { LinksApiService } from '../../services/links_api_service'
 import { TOAST_TYPE } from '../../models/toast'
 
@@ -25,7 +26,15 @@ const getters = {
   },
   linksCompleted: state => {
     if (state.links.length === 0) { return [] }
-    return state.links.filter(link => link.completed)
+    return state.links.filter(link => link.completed).sort((a, b) => {
+      if (a.title.toLowerCase() > b.title.toLowerCase()) {
+        return 1
+      }
+      if (a.title.toLowerCase() < b.title.toLowerCase()) {
+        return -1
+      }
+      return 0
+    })
   },
   linksToDoCount: (state, getters) => {
     return getters.linksToDo.length
@@ -48,31 +57,32 @@ const actions = {
 
   updateLinksToDo ({ commit, dispatch }, toDoList) {
     toDoList.forEach((toDo, index) => {
-      toDo.order = index
-      linksApiService.updateLink(toDo)
-        .then(() => {
-          commit('updateLink', toDo)
-        })
-        .catch(() => {
-          dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update ${toDo.title}`])
-        })
+      toDo.order = index + 1
+      dispatch('updateLink', { id: toDo.id, order: toDo.order })
     })
   },
 
+  updateLink({ commit, dispatch }, newValues) {
+    return linksApiService.updateLink(newValues)
+      .then((link) => {
+        commit('updateLink', link)
+      })
+      .catch((error) => {
+        dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update Link: ${newValues}`])
+        throw(error)
+      })
+  },
+
   addLink ({ commit, dispatch }, newLink) {
-    return new Promise((resolve, reject) => {
-      linksApiService().createLink(newLink)
-        .then((link) => {
-          dispatch('addToast', [TOAST_TYPE.SUCCESS, `Successfully added Link '${link.title}'`])
-          // dispatch('fetchLinks')
-          commit('addLink', link)
-          resolve()
-        })
-        .catch(() => {
-          dispatch('addToast', [TOAST_TYPE.ERROR, `Could not create ${newLink.title}`])
-          reject()
-        })
-    })
+    return linksApiService.createLink(newLink)
+      .then((link) => {
+        dispatch('addToast', [TOAST_TYPE.SUCCESS, `Successfully added Link "${link.title}"`])
+        commit('addLink', link)
+      })
+      .catch((error) => {
+        dispatch('addToast', [TOAST_TYPE.ERROR, `Could not create Link "${newLink.title}"`])
+        throw(error)
+      })
   }
 }
 

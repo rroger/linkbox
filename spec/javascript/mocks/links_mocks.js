@@ -57,7 +57,15 @@ export const $httpUpdateSuccess = {
   put() {
     return Promise.resolve({
       data: {
-        'data': {'id':'88','type':'topic','attributes':{'name':'Newly Edited Topic'}},
+        data: {
+          id: 88,
+          type :'link',
+          attributes: {
+            title: 'News',
+            url: 'https://a.ch',
+            order: 4
+          }
+        },
       }
     })
   }
@@ -65,6 +73,36 @@ export const $httpUpdateSuccess = {
 
 export const $httpUpdateFail = {
   put() {
+    return Promise.reject({ data: { 'data': 'internal server error' } })
+  }
+}
+
+
+export const $httpCreateSuccess = {
+  newItem: { title: 'Types', url: 'https://t.ch', topicId: 2, notes: 'some' },
+  post() {
+    return Promise.resolve({
+      data: {
+        data: {
+          id: 2,
+          type: 'link',
+          attributes: {
+            title: 'Types',
+            url: 'https://t.ch',
+            notes: 'some',
+            order: 0,
+            topic_id: 2,
+            topic_name: 'Architecture',
+            topic_color: '#ab2123'
+          }
+        }
+      }
+    })
+  }
+}
+
+export const $httpCreateFail = {
+  post() {
     return Promise.reject({ data: { 'data': 'internal server error' } })
   }
 }
