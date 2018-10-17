@@ -116,7 +116,7 @@ export default {
       .completed-title {
         cursor: pointer;
       }
-
+    
       .completed-links {
         max-width: $max-width;
       }

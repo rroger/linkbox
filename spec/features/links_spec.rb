@@ -13,7 +13,6 @@ RSpec.describe 'Links', :js do
   it 'can add new links', :js do
     create(:topic, name: 'Topic new')
     visit '/#/library'
-    click_button 'ADD LINK'
     fill_in 'Link Title', with: 'Zeit'
     fill_in 'link-url', with: 'https://zeit.de'
     fill_in 'Notes', with: 'some notes'

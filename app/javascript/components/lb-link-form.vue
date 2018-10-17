@@ -10,11 +10,11 @@
             <input id="link-url" v-model="newLink.url" v-focus type="text" placeholder="URL" class="form-control">
 
             <label for="link-title" hidden>Link Title</label>
-            <input id="link-title" v-model="newLink.title" type="text" placeholder="Title" class="form-control">
+            <input id="link-title" v-model="newLink.title" type="text" placeholder="Link Title" class="form-control">
 
             <label for="link-notes" hidden>Link Notes</label>
-            <textarea id="link-notes" v-model="newLink.notes" type="textarea" placeholder="Notes" class="form-control">
-            </textarea>
+            <input id="link-notes" v-model="newLink.notes" type="text" placeholder="Notes" class="form-control">
+
             <label for="link-topic" hidden>Link Topic</label>
             <select id="link-topic" v-model="newLink.topicId" class="form-control">
               <option v-for="topic in topics" v-bind:key="topic.id" v-bind:value="topic.id">
@@ -34,7 +34,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { BaseApiService } from '../services/base_api_service'
 import { Topic } from '../models/topic'
 import { Link } from '../models/link'
-import { TOAST_TYPE } from '../models/toast'
+import { TOAST_TYPE} from '../models/toast'
 
 export default {
   name: 'lb-link-form',
@@ -105,7 +105,7 @@ export default {
       width: $normal-form-element-width;
     }
 
-    input, select, button, textarea {
+    input, select, button {
       width: $normal-form-element-width;
       height: $normal-form-element-height;
       padding: $normal-space;
@@ -113,7 +113,7 @@ export default {
       float: none;
     }
 
-    input, select, textarea {
+    input, select {
       font-size: $font-size-title-small;
       font-weight: normal;
       color: $dark-gray;
