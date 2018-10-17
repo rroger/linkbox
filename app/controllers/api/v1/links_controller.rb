@@ -14,7 +14,7 @@ module Api
       end
 
       def create
-        link = Link.new(link_params)
+        link = Link.new(link_params.merge(order: 0))
 
         if link.save
           render_links(link, :created)
@@ -46,7 +46,7 @@ module Api
         params.require(:data).permit(
           :id,
           :type,
-          attributes: %i[topic_id topicId topic_name topicName url title notes order completed]
+          attributes: %i[topic_id url title notes order completed]
         ).fetch(:attributes, [])
       end
 
