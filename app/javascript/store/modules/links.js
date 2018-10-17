@@ -52,9 +52,10 @@ const actions = {
   updateLinksToDo ({ commit, dispatch }, toDoList) {
     toDoList.map((toDo, index) => {
       toDo.order = index
-      commit('updateLink', toDo)
       linksApiService().updateLink(toDo)
-        .then(() => {})
+        .then(() => {
+          commit('updateLink', toDo)
+        })
         .catch(() => {
           dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update ${toDo.title}`])
         })
