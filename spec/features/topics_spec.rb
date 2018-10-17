@@ -37,7 +37,7 @@ RSpec.describe 'Topics page', :js do
     it 'can delete a topic' do
       click_button 'EDIT', match: :first
       click_button 'Delete'
-      sleep(0.1)
+      sleep(0.3)
       click_button 'Proceed'
 
       expect(Topic.count).to be 1
