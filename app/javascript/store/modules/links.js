@@ -3,6 +3,12 @@ import { TOAST_TYPE } from '../../models/toast'
 
 let _linksApiService = null
 
+function linksApiService() {
+  if (_linksApiService) return _linksApiService
+  _linksApiService = new LinksApiService()
+  return _linksApiService
+}
+
 const state = {
   links: [],
   loading: false
@@ -74,12 +80,6 @@ const mutations = {
   setLoading(state, loading) {
     state.loading = loading
   }
-}
-
-function linksApiService() {
-  if (_linksApiService) return _linksApiService
-  _linksApiService = new LinksApiService()
-  return _linksApiService
 }
 
 export default {
