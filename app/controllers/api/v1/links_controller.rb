@@ -43,8 +43,11 @@ module Api
       end
 
       def link_params
-        params.require(:data).permit(:id, :type,
-                                     attributes: %i[topic_id url title notes order completed]).fetch(:attributes, [])
+        params.require(:data).permit(
+          :id,
+          :type,
+          attributes: %i[topic_id topicId topic_name topicName url title notes order completed]
+        ).fetch(:attributes, [])
       end
 
       def render_links(links, status = :ok)
