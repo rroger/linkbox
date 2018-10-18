@@ -15,11 +15,14 @@
     </div>
     <div class="row">
       <div class="col-md-12 additional">
-        <span v-bind:class="{ 'notes-button': link.notes }" data-toggle="collapse" :data-target="link.htmlIdWithAnchor()" class="collapsed" aria-expanded="false">
+        <span v-bind:class="{ 'notes-button': link.notes }" class="">
           <span>NOTES </span>
-          <i v-show="link.notes" class="material-icons mr-1">keyboard_arrow_down</i>
+          <span @click="showNotes = !showNotes">
+            <i v-if="link.notes && showNotes" class="material-icons mr-1">keyboard_arrow_up</i>
+            <i v-if="link.notes && !showNotes" class="material-icons mr-1">keyboard_arrow_down</i>
+          </span>
         </span>
-        <div v-bind:id="link.htmlId()" class="notes collapse" >
+        <div v-if="showNotes" class="notes" >
           {{ link.notes }}
         </div>
       </div>
@@ -33,6 +36,11 @@ export default {
   name: 'lb-link-show',
   props: {
     link: Link,
+  },
+  data() {
+    return {
+      showNotes: false
+    }
   },
 }
 </script>
