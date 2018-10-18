@@ -9,19 +9,25 @@
           <lb-link-show :link="link"></lb-link-show>
         </div>
     </draggable>
-    <h2 class="mt-3 mb-3">
-      Completed
-      <span class="count">({{ linksCompletedCount }})</span>
-      <i v-show="linksCompletedCount > 0"
-         class="expand-completed material-icons md 24 mr-1 collapsed pull-right"
-         data-toggle="collapse"
-         data-target="#completed-links"
-         aria-expanded="false">
-        keyboard_arrow_down
-      </i>
-    </h2>
-    <div id="completed-links" class="completed collapse"  v-bind:key="link.id" v-for="link in linksCompleted">
-      <lb-link-show :link="link"></lb-link-show>
+    <div v-show="linksCompletedCount > 0" class="completed-section">
+      <h2 class="mb-3 pt-4">
+        Completed
+        <span class="count">({{ linksCompletedCount }})</span>
+        <span class="pull-right"
+              @click="showCompletedSection = !showCompletedSection">
+          <i v-if="!showCompletedSection"
+             class="expand-completed material-icons mr-1">
+            keyboard_arrow_down
+          </i>
+          <i v-if="showCompletedSection"
+             class="expand-completed material-icons mr-1">
+            keyboard_arrow_up
+          </i>
+        </span>
+      </h2>
+      <div v-if="showCompletedSection" class="completed"  v-bind:key="link.id" v-for="link in linksCompleted">
+        <lb-link-show :link="link"></lb-link-show>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +46,11 @@ export default {
   created() {
     this.fetchLinks()
 
+  },
+  data() {
+    return {
+      showCompletedSection: false,
+    }
   },
   computed: {
     ...mapGetters([
