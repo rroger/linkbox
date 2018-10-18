@@ -107,20 +107,6 @@ describe('store/modules/links', () => {
           }
         )
       })
-
-      it('sets loading to true and false', (done) => {
-        linksModule.linksApiService().$http = mocks.$httpIndexFail
-        let commit = jest.fn()
-        let dispatch = jest.fn()
-
-        linksModule.actions.fetchLinks({commit, dispatch}).finally(
-          () => {
-            expect(commit).toHaveBeenCalledWith('setLoading', true)
-            expect(commit).toHaveBeenCalledWith('setLoading', false)
-            done()
-          }
-        )
-      })
     })
 
     describe('#updateLinksToDo', () => {
@@ -197,20 +183,6 @@ describe('store/modules/links', () => {
         linksModule.mutations.updateLink(state, updatedLink)
 
         expect(state.links[0].order).toEqual(400)
-      })
-    })
-
-    describe('#setLoading', () => {
-      it('sets loading to true', () => {
-        linksModule.mutations.setLoading(state, true)
-
-        expect(state.loading).toBeTruthy()
-      })
-
-      it('sets loading to false', () => {
-        linksModule.mutations.setLoading(state, false)
-
-        expect(state.loading).toBeFalsy()
       })
     })
   })
