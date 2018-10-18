@@ -11,7 +11,6 @@ function linksApiService() {
 
 const state = {
   links: [],
-  loading: false
 }
 
 const getters = {
@@ -44,7 +43,6 @@ const getters = {
 
 const actions = {
   fetchLinks ({ commit, dispatch }) {
-    commit('setLoading', true)
     return linksApiService().fetchLinks()
       .then((response) => {
         commit('setLinks', response)
@@ -52,7 +50,6 @@ const actions = {
       .catch(() => {
         dispatch('addToast', [TOAST_TYPE.ERROR, 'Could not load Links'])
       })
-      .finally(() => commit('setLoading', false))
   },
 
   updateLinksToDo ({ commit, dispatch }, toDoList) {
@@ -76,9 +73,6 @@ const mutations = {
   updateLink(state, linkUpdate) {
     const link = state.links.find((link) =>  link.id === linkUpdate.id)
     Object.assign(link, linkUpdate)
-  },
-  setLoading(state, loading) {
-    state.loading = loading
   }
 }
 
