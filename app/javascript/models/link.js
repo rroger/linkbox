@@ -9,13 +9,5 @@ export class Link {
     this.topicName = topic_name
     this.topicId = topic_id
   }
-
-  htmlId() {
-    return `link-id-${this.id}`
-  }
-
-  htmlIdWithAnchor() {
-    return `#link-id-${this.id}`
-  }
 }
 
