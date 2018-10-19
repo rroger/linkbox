@@ -29,13 +29,13 @@ RSpec.describe Api::V1::LinksController do
             id: Link.last.id.to_s,
             type: 'link',
             attributes: {
-                completed: false,
-                notes: nil,
-                order: 0,
-                title: 'Newly created Link',
-                url: 'https://new-created.ch',
-                topic_id: topic.id,
-                topic_name: topic.name
+              completed: false,
+              notes: nil,
+              order: 0,
+              title: 'Newly created Link',
+              url: 'https://new-created.ch',
+              topic_id: topic.id,
+              topic_name: topic.name
             }
           }
         )
