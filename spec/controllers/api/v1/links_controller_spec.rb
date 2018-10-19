@@ -3,52 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::LinksController do
-  let(:link) { build :link }
   let(:invalid_attributes) { { data: { attributes: { url: '' } } } }
 
   subject(:parsed_body) { JSON.parse(response.body, symbolize_names: true) }
-
-  describe 'GET #index' do
-    it 'returns a success response' do
-      link.save!
-      get :index, params: {}
-      expect(response).to be_successful
-      expect(parsed_body).to eq(data: [
-                                  { attributes: {
-                                    completed: link.completed,
-                                    notes: link.notes,
-                                    order: nil,
-                                    title: link.title,
-                                    url: link.url,
-                                    topic_name: link.topic.name,
-                                    topic_id: link.topic.id
-                                  },
-                                    id: link.id.to_s,
-                                    type: 'link' }
-                                ])
-    end
-  end
-
-  describe 'GET #show' do
-    it 'returns a success response' do
-      link.save!
-      get :show, params: { id: link.to_param }
-      expect(response).to be_successful
-      expect(parsed_body).to eq(data: {
-                                  attributes: {
-                                    completed: link.completed,
-                                    notes: link.notes,
-                                    order: nil,
-                                    title: link.title,
-                                    url: link.url,
-                                    topic_name: link.topic.name,
-                                    topic_id: link.topic.id
-                                  },
-                                  id: link.id.to_s,
-                                  type: 'link'
-                                })
-    end
-  end
 
   describe 'POST #create' do
     context 'with valid params' do
@@ -72,13 +29,13 @@ RSpec.describe Api::V1::LinksController do
             id: Link.last.id.to_s,
             type: 'link',
             attributes: {
-              completed: false,
-              notes: nil,
-              order: nil,
-              title: 'Newly created Link',
-              url: 'https://new-created.ch',
-              topic_id: topic.id,
-              topic_name: topic.name
+                completed: false,
+                notes: nil,
+                order: 0,
+                title: 'Newly created Link',
+                url: 'https://new-created.ch',
+                topic_id: topic.id,
+                topic_name: topic.name
             }
           }
         )
@@ -93,41 +50,85 @@ RSpec.describe Api::V1::LinksController do
     end
   end
 
-  describe 'PUT #update' do
-    context 'with valid params' do
-      let(:new_attributes) do
-        LinkSerializer.new(Link.new(topic: create(:topic),
-                                    url: 'https://new.ch',
-                                    title: 'new link',
-                                    notes: 'new notes',
-                                    order: 2,
-                                    completed: true)).as_json
+  context('with existing link') do
+    let!(:link) { create :link }
+
+    describe 'GET #index' do
+      it 'returns a success response' do
+        get :index, params: {}
+
+        expect(response).to be_successful
+        expect(parsed_body).to eq(data: [
+                                    { attributes: {
+                                      completed: link.completed,
+                                      notes: link.notes,
+                                      order: 0,
+                                      title: link.title,
+                                      url: link.url,
+                                      topic_name: link.topic.name,
+                                      topic_id: link.topic.id
+                                    },
+                                      id: link.id.to_s,
+                                      type: 'link' }
+                                  ])
       end
+    end
 
-      it 'updates the requested link' do
-        link.save!
+    describe 'GET #show' do
+      it 'returns a success response' do
+        get :show, params: { id: link.to_param }
 
-        put :update, params: { id: link.to_param, data: new_attributes['data'] }
-        link.reload
-        expect(link).to have_attributes(new_attributes['data']['attributes'].except('topic_name'))
+        expect(response).to be_successful
+        expect(parsed_body).to eq(data: {
+                                    attributes: {
+                                      completed: link.completed,
+                                      notes: link.notes,
+                                      order: 0,
+                                      title: link.title,
+                                      url: link.url,
+                                      topic_name: link.topic.name,
+                                      topic_id: link.topic.id
+                                    },
+                                    id: link.id.to_s,
+                                    type: 'link'
+                                  })
       end
     end
 
-    context 'with invalid params' do
-      it 'returns status unprocessable_entity' do
-        link.save!
-        put :update, params: { id: link.to_param, data: invalid_attributes[:data] }
-        expect(response).to have_http_status(:unprocessable_entity)
+    describe 'PUT #update' do
+      context 'with valid params' do
+        let(:new_attributes) do
+          LinkSerializer.new(Link.new(topic: create(:topic),
+                                      url: 'https://new.ch',
+                                      title: 'new link',
+                                      notes: 'new notes',
+                                      order: 2,
+                                      completed: true)).as_json
+        end
+
+        it 'updates the requested link' do
+          put :update, params: { id: link.to_param, data: new_attributes['data'] }
+
+          link.reload
+          expect(link).to have_attributes(new_attributes['data']['attributes'].except('topic_name'))
+        end
+      end
+
+      context 'with invalid params' do
+        it 'returns status unprocessable_entity' do
+          put :update, params: { id: link.to_param, data: invalid_attributes[:data] }
+
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
       end
     end
-  end
 
-  describe 'DELETE #destroy' do
-    it 'destroys the requested link' do
-      link.save!
-      expect do
-        delete :destroy, params: { id: link.to_param }
-      end.to change(Link, :count).by(-1)
+    describe 'DELETE #destroy' do
+      it 'destroys the requested link' do
+        expect do
+          delete :destroy, params: { id: link.to_param }
+        end.to change(Link, :count).by(-1)
+      end
     end
   end
 end
