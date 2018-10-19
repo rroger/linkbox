@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2018_10_01_124203) do
 
   create_table "links", force: :cascade do |t|
     t.bigint "topic_id"
-    t.integer "order"
+    t.integer "order", default: 0
     t.boolean "completed", default: false
     t.string "url", null: false
     t.string "title"

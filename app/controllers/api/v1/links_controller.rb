@@ -14,7 +14,7 @@ module Api
       end
 
       def create
-        link = Link.new(link_params.merge(order: 0))
+        link = Link.new(link_params)
 
         if link.save
           render_links(link, :created)
