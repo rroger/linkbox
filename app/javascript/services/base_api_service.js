@@ -7,16 +7,26 @@ export class BaseApiService {
     this.$http = Vue.http
   }
 
-  fetchAll(url, itemClass) {
+  fetchAll(url, Klass) {
     return this.$http.get(url).then(
       (response) => {
-        return response.body['data'].map((raw) => {
-          return new itemClass(Object.assign(raw.attributes, { id: raw.id}))
-        })
-      },
-      (error) => {
-        throw(error)
+        return this.createObjectsFromResponse(response, Klass)
       }
     )
+  }
+
+  createObjectsFromResponse(response, Klass) {
+    const data = response.body.data
+    if (Array.isArray(response.body.data)) {
+      return data.map((raw) => {
+        return this.createObject(raw, Klass)
+      })
+    } else {
+      return this.createObject(data, Klass)
+    }
+  }
+
+  createObject({attributes, id}, Klass) {
+    return new Klass({...attributes, id: id })
   }
 }

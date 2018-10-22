@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-md-12 additional">
-        <span v-bind:class="{ 'notes-button': link.notes }" class="">
+        <span v-bind:class="{ 'notes-button': link.notes }">
           <span>NOTES </span>
           <span @click="showNotes = !showNotes">
             <i v-if="link.notes && showNotes" class="material-icons mr-1">keyboard_arrow_up</i>

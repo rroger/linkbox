@@ -2,7 +2,6 @@ import { BaseApiService } from './base_api_service'
 import { Link } from '../models/link'
 
 export class LinksApiService extends BaseApiService {
-
   constructor() {
     super()
     this.url = `${this.baseUrl}/links`
@@ -17,8 +16,7 @@ export class LinksApiService extends BaseApiService {
     const params = this.linkParams(link)
     return this.$http.put(`${this.url}/${link.id}`, params).then(
       (response) => {
-        const raw = response.body['data']
-        return new Link(Object.assign(raw['attributes'], { id: raw['id']}))
+        return this.createObjectsFromResponse(response, Link)
       },
       (error) => {
         throw error

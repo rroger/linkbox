@@ -5,7 +5,7 @@
       <span class="count">({{ linksToDoCount }})</span>
     </h2>
     <draggable v-model='linksToDo'>
-      <div class="to-do"  v-bind:key="link.id" v-for="link in linksToDo">
+      <div class="to-do" v-bind:key="link.id" v-for="link in linksToDo">
           <lb-link-show :link="link"></lb-link-show>
         </div>
     </draggable>
@@ -19,13 +19,13 @@
              class="expand-completed material-icons mr-1">
             keyboard_arrow_down
           </i>
-          <i v-if="showCompletedSection"
+          <i v-else
              class="expand-completed material-icons mr-1">
             keyboard_arrow_up
           </i>
         </span>
       </h2>
-      <div v-if="showCompletedSection" class="completed"  v-bind:key="link.id" v-for="link in linksCompleted">
+      <div v-if="showCompletedSection" class="completed" v-bind:key="link.id" v-for="link in linksCompleted">
         <lb-link-show :link="link"></lb-link-show>
       </div>
     </div>
@@ -54,7 +54,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'links',
       'linksToDoCount',
       'linksCompleted',
       'linksCompletedCount'

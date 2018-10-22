@@ -18,7 +18,7 @@ const getters = {
     return state.links
   },
   linksToDo: state => {
-    if (state.links.length === 0) return []
+    if (state.links.length === 0) { return [] }
     return state.links.filter(link => !link.completed).sort((a, b) => {
       if (a.order > b.order) {
         return 1
@@ -30,7 +30,7 @@ const getters = {
     })
   },
   linksCompleted: state => {
-    if (state.links.length === 0) return []
+    if (state.links.length === 0) { return [] }
     return state.links.filter(link => link.completed)
   },
   linksToDoCount: (state, getters) => {
@@ -71,7 +71,7 @@ const mutations = {
     state.links = links
   },
   updateLink(state, linkUpdate) {
-    const link = state.links.find((link) =>  link.id === linkUpdate.id)
+    const link = state.links.find((link) => link.id === linkUpdate.id)
     Object.assign(link, linkUpdate)
   }
 }

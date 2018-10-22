@@ -65,7 +65,7 @@ export default {
 
   .nav-link {
     color: $background-bright !important;
-    margin-left: 1.5rem;
+    margin-left: 1.5 * $big-space;
   }
 
   .router-link-active {
