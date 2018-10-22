@@ -1,6 +1,5 @@
 import linksModule from '../../../../app/javascript/store/modules/links'
 import { Link } from '../../../../app/javascript/models/link'
-import { LinksApiService } from '../../../../app/javascript/services/links_api_service'
 import * as mocks from '../../mocks/links_mocks'
 import {TOAST_TYPE} from '../../../../app/javascript/models/toast'
 
@@ -75,7 +74,7 @@ describe('store/modules/links', () => {
   describe('actions', () => {
     describe('#fetchLinks', () => {
       it('commits setLinks on success', (done) => {
-        linksModule.linksApiService().$http = mocks.$httpIndexSuccess
+        linksModule.linksApiService.$http = mocks.$httpIndexSuccess
         let commit = jest.fn()
         let dispatch = jest.fn()
 
@@ -96,7 +95,7 @@ describe('store/modules/links', () => {
       })
 
       it('dispatches action add Toast on error', (done) => {
-        linksModule.linksApiService().$http = mocks.$httpIndexFail
+        linksModule.linksApiService.$http = mocks.$httpIndexFail
         let commit = jest.fn()
         let dispatch = jest.fn()
 
@@ -111,7 +110,7 @@ describe('store/modules/links', () => {
 
     describe('#updateLinksToDo', () => {
       it('commits updateLink on success', (done) => {
-        linksModule.linksApiService().$http = mocks.$httpUpdateSuccess
+        linksModule.linksApiService.$http = mocks.$httpUpdateSuccess
         let dispatch = jest.fn()
         let commit = function(operation, parameter) {
           expect(operation).toEqual('updateLink')
@@ -139,7 +138,7 @@ describe('store/modules/links', () => {
       })
 
       it('dispatches addToast on error', (done) => {
-        linksModule.linksApiService().$http = mocks.$httpUpdateFail
+        linksModule.linksApiService.$http = mocks.$httpUpdateFail
         let commit = jest.fn()
         let dispatch = function(operation, parameter) {
           expect(operation).toEqual('addToast')
@@ -184,19 +183,6 @@ describe('store/modules/links', () => {
 
         expect(state.links[0].order).toEqual(400)
       })
-    })
-  })
-
-  describe('#linksApiService()', () => {
-    it('returns a LinksApiService', () => {
-      expect(linksModule.linksApiService()).toBeInstanceOf(LinksApiService)
-    })
-
-    it('returns the same instance of LinksApiService', () => {
-      const firstInstance = linksModule.linksApiService()
-      const secondInstance = linksModule.linksApiService()
-
-      expect(firstInstance).toBe(secondInstance)
     })
   })
 })

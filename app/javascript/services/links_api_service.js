@@ -4,17 +4,17 @@ import { Link } from '../models/link'
 export class LinksApiService extends BaseApiService {
   constructor() {
     super()
-    this.url = `${this.baseUrl}/links`
+    this.path = 'links'
   }
 
   fetchLinks() {
-    return this.fetchAll(this.url, Link)
+    return this.fetchAll(this.path, Link)
   }
 
   updateLink(link) {
     if (!(link && link.id)) { throw 'Exception: no link to update' }
     const params = this.linkParams(link)
-    return this.$http.put(`${this.url}/${link.id}`, params).then(
+    return this.$http.put(`${this.path}/${link.id}`, params).then(
       (response) => {
         return this.createObjectsFromResponse(response, Link)
       }
@@ -25,10 +25,9 @@ export class LinksApiService extends BaseApiService {
     const params = {
       data: {
         type: 'link',
-        attributes: {}
+        attributes: link
       }
     }
-    Object.assign(params.data.attributes, link)
     if (link.id) {
       params.id = link.id
     }

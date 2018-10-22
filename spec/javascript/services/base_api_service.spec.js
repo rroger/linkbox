@@ -1,6 +1,6 @@
 import { BaseApiService } from '../../../app/javascript/services/base_api_service'
-import { Topic } from '../../../app/javascript/models/topic'
-import * as mocks from '../mocks/topics_mocks'
+import { Link } from '../../../app/javascript/models/link'
+import * as mocks from '../mocks/links_mocks'
 
 describe('BaseApiService', () => {
   describe('#fetchAll', () => {
@@ -13,14 +13,18 @@ describe('BaseApiService', () => {
     it('returns items of type itemClass',  (done) =>  {
       service.$http = mocks.$httpIndexSuccess
 
-      service.fetchAll('/topics', Topic).then(
+      service.fetchAll('/links', Link).then(
         (data) => {
-          expect(data).toEqual([
-            new Topic({ id: '55', name: 'One mores' }),
-            new Topic({ id: '52', name: 'So goodOk' }),
-            new Topic({ id: '111', name: 'Totaly New Topic' }),
-            new Topic({ id: '112', name: 'Typography' })
-          ])
+          expect(data).toEqual(
+            [
+              new Link({ completed: false, id: '8', notes: 'Some other notes', order: null, title: 'flexbox', topic_id: 4,
+                topic_name: 'UI Elements', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
+              new Link({ completed: false, id: '9', notes: 'Hint of Andres', order: null, title: 'css tricks',
+                topic_id: 4, topic_name: 'UI Elements', url: 'https://css-tricks.com/'}),
+              new Link({ completed: true, id: '10', notes: '', order: null, title: 'Example 6', topic_id: 1,
+                topic_name: 'Typography', url: 'https://example6.com'})
+            ]
+          )
           done()
         }
       )
@@ -29,9 +33,9 @@ describe('BaseApiService', () => {
     it('throws error when http status not ok', (done) => {
       service.$http = mocks.$httpIndexFail
 
-      service.fetchAll('/topics', Topic).catch(
+      service.fetchAll('/topics', Link).catch(
         (error) => {
-          expect(error).toEqual({'body': {'data': 'internal server error'}})
+          expect(error).toEqual({'data': {'data': 'internal server error'}})
           done()
         }
       )

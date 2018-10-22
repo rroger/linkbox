@@ -1,13 +1,7 @@
 import { LinksApiService } from '../../services/links_api_service'
 import { TOAST_TYPE } from '../../models/toast'
 
-let _linksApiService = null
-
-function linksApiService() {
-  if (_linksApiService) return _linksApiService
-  _linksApiService = new LinksApiService()
-  return _linksApiService
-}
+const linksApiService = new LinksApiService()
 
 const state = {
   links: [],
@@ -43,7 +37,7 @@ const getters = {
 
 const actions = {
   fetchLinks ({ commit, dispatch }) {
-    return linksApiService().fetchLinks()
+    return linksApiService.fetchLinks()
       .then((response) => {
         commit('setLinks', response)
       })
@@ -55,7 +49,7 @@ const actions = {
   updateLinksToDo ({ commit, dispatch }, toDoList) {
     toDoList.forEach((toDo, index) => {
       toDo.order = index
-      linksApiService().updateLink(toDo)
+      linksApiService.updateLink(toDo)
         .then(() => {
           commit('updateLink', toDo)
         })

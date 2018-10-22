@@ -33,7 +33,7 @@ describe('LinksApiService', () => {
 
       service.fetchAll().catch(
         (error) => {
-          expect(error).toEqual({'body': {'data': 'internal server error'}})
+          expect(error).toEqual({'data': {'data': 'internal server error'}})
           done()
         }
       )

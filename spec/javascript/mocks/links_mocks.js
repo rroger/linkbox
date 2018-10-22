@@ -1,7 +1,7 @@
 export const $httpIndexSuccess = {
   get() {
     return Promise.resolve({
-      body: {
+      data: {
         'data':[
           { 'id': '8',
             'type': 'link',
@@ -46,14 +46,14 @@ export const $httpIndexSuccess = {
 
 export const $httpIndexFail = {
   get() {
-    return Promise.reject({ body: { 'data': 'internal server error' } })
+    return Promise.reject({ data: { 'data': 'internal server error' } })
   }
 }
 
 export const $httpUpdateSuccess = {
   put() {
     return Promise.resolve({
-      body: {
+      data: {
         'data': {'id':'88','type':'topic','attributes':{'name':'Newly Edited Topic'}},
       }
     })
@@ -62,7 +62,7 @@ export const $httpUpdateSuccess = {
 
 export const $httpUpdateFail = {
   put() {
-    return Promise.reject({ body: { 'data': 'internal server error' } })
+    return Promise.reject({ data: { 'data': 'internal server error' } })
   }
 }
 

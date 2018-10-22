@@ -1,14 +1,14 @@
-import Vue from 'vue/dist/vue.js'
+import axios from 'axios'
 /* eslint-disable no-undef */
 
 export class BaseApiService {
   constructor() {
-    this.baseUrl = process.env.BASE_API
-    this.$http = Vue.http
+    this.baseURL = process.env.BASE_API
+    this.$http = axios.create({baseURL: this.baseURL})
   }
 
-  fetchAll(url, Klass) {
-    return this.$http.get(url).then(
+  fetchAll(path, Klass) {
+    return this.$http.get(path).then(
       (response) => {
         return this.createObjectsFromResponse(response, Klass)
       }
@@ -16,8 +16,8 @@ export class BaseApiService {
   }
 
   createObjectsFromResponse(response, Klass) {
-    const data = response.body.data
-    if (Array.isArray(response.body.data)) {
+    const data = response.data.data
+    if (Array.isArray(data)) {
       return data.map((raw) => {
         return this.createObject(raw, Klass)
       })
