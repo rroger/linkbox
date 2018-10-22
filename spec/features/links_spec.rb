@@ -19,21 +19,21 @@ RSpec.describe 'Links', :js do
 
   context 'with existing links' do
     let!(:link) do
-      create(:link, title: 'topics', url: 'http://localhost:5001/#/library',
-                    order: 3, topic: create(:topic, name: 'Cars'))
+      create(:link, title: 'Architecture', url: 'http://localhost:5001/#/library',
+                    notes: 'Very good resource', order: 3, topic: create(:topic, name: 'Cars'))
     end
 
     before { visit '/#/library' }
 
     it 'can display links' do
-      expect(page).to have_content link.title
-      expect(page).to have_content link.topic.name
+      expect(page).to have_content 'Architecture'
+      expect(page).to have_content 'Cars'
     end
 
     it 'displays notes when clicked' do
-      find('span', text: 'NOTES', match: :first).click
+      find('a', text: 'NOTES', exact_text: false).click
 
-      expect(page).to have_content link.notes
+      expect(page).to have_content 'Very good resource'
     end
 
     it 'links url to link title with target _blank' do
