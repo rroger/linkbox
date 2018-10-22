@@ -16,11 +16,11 @@
     <div class="row">
       <div class="col-md-12 additional">
         <span v-bind:class="{ 'notes-button': link.notes }">
-          <span>NOTES </span>
-          <span @click="showNotes = !showNotes">
-            <i v-if="link.notes && showNotes" class="material-icons mr-1">keyboard_arrow_up</i>
-            <i v-if="link.notes && !showNotes" class="material-icons mr-1">keyboard_arrow_down</i>
-          </span>
+          <a @click="showNotes = !showNotes">
+            <span>NOTES </span>
+              <i v-if="link.notes && showNotes" class="material-icons mr-1">keyboard_arrow_up</i>
+              <i v-if="link.notes && !showNotes" class="material-icons mr-1">keyboard_arrow_down</i>
+          </a>
         </span>
         <div v-if="showNotes" class="notes" >
           {{ link.notes }}
