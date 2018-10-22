@@ -53,7 +53,7 @@ const actions = {
   },
 
   updateLinksToDo ({ commit, dispatch }, toDoList) {
-    toDoList.map((toDo, index) => {
+    toDoList.forEach((toDo, index) => {
       toDo.order = index
       linksApiService().updateLink(toDo)
         .then(() => {

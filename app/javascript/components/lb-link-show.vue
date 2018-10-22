@@ -22,7 +22,7 @@
               <i v-if="link.notes && !showNotes" class="material-icons mr-1">keyboard_arrow_down</i>
           </a>
         </span>
-        <div v-if="showNotes" class="notes" >
+        <div v-if="showNotes" class="notes">
           {{ link.notes }}
         </div>
       </div>

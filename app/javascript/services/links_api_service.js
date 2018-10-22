@@ -17,9 +17,6 @@ export class LinksApiService extends BaseApiService {
     return this.$http.put(`${this.url}/${link.id}`, params).then(
       (response) => {
         return this.createObjectsFromResponse(response, Link)
-      },
-      (error) => {
-        throw error
       }
     )
   }

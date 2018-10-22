@@ -63,14 +63,13 @@ export default {
         return this.$store.getters.linksToDo
       },
       set(linksList) {
-        this.updateLinksToDo(linksList)
+        this.$store.dispatch('updateLinksToDo', linksList)
       }
     }
   },
   methods: {
     ...mapActions([
-      'fetchLinks',
-      'updateLinksToDo'
+      'fetchLinks'
     ]),
   }
 }
