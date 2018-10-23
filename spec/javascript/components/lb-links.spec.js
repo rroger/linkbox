@@ -70,4 +70,15 @@ describe('lb-links.vue', () => {
       expect(getters.linksCompleted).toHaveBeenCalled()
     })
   })
+
+  describe('#toggleShowCompleted', () => {
+    it('toggles showCompletedSection', () => {
+      const wrapper = shallowMount(LbLinks, {
+        store, localVue,
+      })
+      wrapper.vm.toggleShowCompleted()
+
+      expect(wrapper.vm.showCompletedSection).toBeTruthy()
+    })
+  })
 })

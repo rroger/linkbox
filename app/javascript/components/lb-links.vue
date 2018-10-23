@@ -14,7 +14,7 @@
         Completed
         <span class="count">({{ linksCompletedCount }})</span>
         <span class="pull-right"
-              @click="showCompletedSection = !showCompletedSection">
+              @click="toggleShowCompleted()">
           <i v-if="!showCompletedSection"
              class="expand-completed material-icons mr-1">
             keyboard_arrow_down
@@ -71,6 +71,9 @@ export default {
     ...mapActions([
       'fetchLinks'
     ]),
+    toggleShowCompleted() {
+      this.showCompletedSection = !this.showCompletedSection
+    }
   }
 }
 </script>
