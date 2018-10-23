@@ -39,7 +39,7 @@ RSpec.describe 'Links', :js do
     it 'links url to link title with target _blank' do
       click_on link.title
 
-      expect(current_url).to match 'http://localhost:5001/#/library'
+      expect(current_url).to eq 'http://localhost:5001/#/library'
       # https://github.com/teamcapybara/capybara#working-with-windows would be nice,
       # but it does not work
     end

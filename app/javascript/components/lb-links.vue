@@ -15,13 +15,13 @@
         <span class="count">({{ linksCompletedCount }})</span>
         <span class="pull-right"
               @click="toggleShowCompleted()">
-          <i v-if="!showCompletedSection"
+          <i v-if="showCompletedSection"
              class="expand-completed material-icons mr-1">
-            keyboard_arrow_down
+            keyboard_arrow_up
           </i>
           <i v-else
              class="expand-completed material-icons mr-1">
-            keyboard_arrow_up
+            keyboard_arrow_down
           </i>
         </span>
       </h2>
@@ -83,7 +83,6 @@ export default {
   .links {
     h2 {
       @include default-font-measure;
-      max-width: 800px;
     }
 
     .count {

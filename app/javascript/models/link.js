@@ -1,11 +1,16 @@
 export class Link {
-  constructor({ id, title, url,
-    notes = '',
-    order = null,
-    completed = false,
-    topic_name = null,
-    topic_id = null,
-    topic_color = '#a393ac' }) {
+  constructor(
+    {
+      id,
+      title,
+      url,
+      notes = '',
+      order = null,
+      completed = false,
+      topic_name = null,
+      topic_id = null,
+      topic_color = null
+    }) {
     this.id = id
     this.title = title
     this.url = url
