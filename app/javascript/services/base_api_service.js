@@ -27,6 +27,9 @@ export class BaseApiService {
   }
 
   createObject({attributes, id}, Klass) {
+    if (!attributes || !id || Object.keys(attributes).length === 0) {
+      throw new TypeError('Invalid Parameters')
+    }
     return new Klass({...attributes, id: id })
   }
 }

@@ -1,15 +1,16 @@
 import { BaseApiService } from '../../../app/javascript/services/base_api_service'
 import { Link } from '../../../app/javascript/models/link'
+import { Topic } from '../../../app/javascript/models/topic'
 import * as mocks from '../mocks/links_mocks'
 
 describe('BaseApiService', () => {
+  let service
+
+  beforeEach(() => {
+    service = new BaseApiService()
+  })
+
   describe('#fetchAll', () => {
-    let service
-
-    beforeEach(() => {
-      service = new BaseApiService()
-    })
-
     it('returns items of type itemClass',  (done) =>  {
       service.$http = mocks.$httpIndexSuccess
 
@@ -39,6 +40,130 @@ describe('BaseApiService', () => {
           done()
         }
       )
+    })
+  })
+
+  describe('#createObjectsFromResponse', () => {
+    beforeEach(() => {
+      service.createObject = jest.fn()
+    })
+
+    it('can handle single objects', () => {
+      const response = {
+        data: {
+          data: {
+            id: 1,
+            type: 'topic',
+            attributes: {
+              name: 'Architecture'
+            }
+          }
+        }
+      }
+      service.createObjectsFromResponse(response, Topic)
+
+      expect(service.createObject).toHaveBeenCalledWith(
+        {
+          id: 1,
+          type: 'topic',
+          attributes: {
+            name: 'Architecture'
+          }
+        },
+        Topic
+      )
+    })
+
+    it('can handle arrays', () => {
+      const response = {
+        data: {
+          data: [
+            { id: 1,
+              type: 'topic',
+              attributes: {
+                name: 'Architecture'
+              }
+            },
+            { id: 2,
+              type: 'topic',
+              attributes: {
+                name: 'Things'
+              }
+            }
+          ]
+        }
+      }
+      service.createObjectsFromResponse(response, Topic)
+
+      expect(service.createObject).toHaveBeenCalledWith(
+        {
+          id: 1,
+          type: 'topic',
+          attributes: {
+            name: 'Architecture'
+          }
+        },
+        Topic
+      )
+      expect(service.createObject).toHaveBeenCalledWith(
+        {
+          id: 2,
+          type: 'topic',
+          attributes: {
+            name: 'Things'
+          }
+        },
+        Topic
+      )
+      expect(service.createObject).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('#createObject', () => {
+    it('can create objects', () => {
+      const raw = {
+        data: {
+          id: 1,
+          type: 'topic',
+          attributes: {
+            name: 'Architecture'
+          }
+        }
+      }
+
+      expect(service.createObject(raw.data, Topic)).toEqual(
+        new Topic({ id: 1, name: 'Architecture' })
+      )
+    })
+
+    describe('with invalid parameters', () => {
+      it('throws error when attributes empty', () => {
+        const raw = {
+          data: {
+            id: 1,
+            type: 'topic',
+            attributes: {
+            }
+          }
+        }
+        const call = () => { service.createObject(raw.data, Topic) }
+
+        expect(call).toThrow('Invalid Parameters')
+      })
+
+      it('throws error when id empty', () => {
+        const raw = {
+          data: {
+            type: 'topic',
+            attributes: {
+              name: 'Arch'
+            }
+          }
+        }
+        const call = () => { service.createObject(raw.data, Topic) }
+
+        expect(call).toThrow('Invalid Parameters')
+      })
     })
   })
 })
