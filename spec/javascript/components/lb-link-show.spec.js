@@ -34,5 +34,17 @@ describe('lb-link-show.vue', () => {
     it('links url to tile', () => {
       expect(wrapper.find('.link-url').html()).toMatch(/<a\shref="https:\/\/typos\.ch.*>Typography<\/a>/)
     })
+
+    describe('#toggleShowNotes', () => {
+      it('showNotes is false by default', () => {
+        expect(wrapper.vm.showNotes).toBeFalsy()
+      })
+
+      it('toggles showNotes', () => {
+        wrapper.vm.toggleShowNotes()
+
+        expect(wrapper.vm.showNotes).toBeTruthy()
+      })
+    })
   })
 })
