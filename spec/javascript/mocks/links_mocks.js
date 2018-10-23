@@ -11,7 +11,8 @@ export const $httpIndexSuccess = {
               'order': null,
               'completed': false,
               'topic_name': 'UI Elements',
-              'topic_id': 4
+              'topic_id': 4,
+              'topic_color': '#8729b9'
             }
           },
           { 'id': '9',
@@ -23,7 +24,8 @@ export const $httpIndexSuccess = {
               'order': null,
               'completed': false,
               'topic_name': 'UI Elements',
-              'topic_id': 4
+              'topic_id': 4,
+              'topic_color': '#8729b9'
             }
           },
           { 'id': '10',
@@ -35,7 +37,8 @@ export const $httpIndexSuccess = {
               'order': null,
               'completed': true,
               'topic_name': 'Typography',
-              'topic_id': 1
+              'topic_id': 1,
+              'topic_color': '#603850'
             }
           }
         ]

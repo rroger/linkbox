@@ -35,7 +35,8 @@ RSpec.describe Api::V1::LinksController do
               title: 'Newly created Link',
               url: 'https://new-created.ch',
               topic_id: topic.id,
-              topic_name: topic.name
+              topic_name: topic.name,
+              topic_color: topic.color
             }
           }
         )
@@ -66,7 +67,8 @@ RSpec.describe Api::V1::LinksController do
                                       title: link.title,
                                       url: link.url,
                                       topic_name: link.topic.name,
-                                      topic_id: link.topic.id
+                                      topic_id: link.topic.id,
+                                      topic_color: link.topic.color
                                     },
                                       id: link.id.to_s,
                                       type: 'link' }
@@ -87,7 +89,8 @@ RSpec.describe Api::V1::LinksController do
                                       title: link.title,
                                       url: link.url,
                                       topic_name: link.topic.name,
-                                      topic_id: link.topic.id
+                                      topic_id: link.topic.id,
+                                      topic_color: link.topic.color
                                     },
                                     id: link.id.to_s,
                                     type: 'link'
@@ -110,7 +113,7 @@ RSpec.describe Api::V1::LinksController do
           put :update, params: { id: link.to_param, data: new_attributes['data'] }
 
           link.reload
-          expect(link).to have_attributes(new_attributes['data']['attributes'].except('topic_name'))
+          expect(link).to have_attributes(new_attributes['data']['attributes'].except('topic_name', 'topic_color'))
         end
       end
 

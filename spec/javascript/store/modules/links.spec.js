@@ -82,12 +82,12 @@ describe('store/modules/links', () => {
           () => {
             expect(commit).toHaveBeenCalledWith('setLinks', [
               {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': null, 'title': 'flexbox',
-                'topicId': 4, 'topicName': 'UI Elements',
+                'topicId': 4, 'topicName': 'UI Elements', 'topicColor': '#8729b9',
                 'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'},
               {'completed': false, 'id': '9', 'notes': 'Hint of Andres', 'order': null, 'title': 'css tricks',
-                'topicId': 4, 'topicName': 'UI Elements', 'url': 'https://css-tricks.com/'},
+                'topicId': 4, 'topicName': 'UI Elements', 'topicColor': '#8729b9', 'url': 'https://css-tricks.com/'},
               {'completed': true, 'id': '10', 'notes': '', 'order': null, 'title': 'Example 6',
-                'topicId': 1, 'topicName': 'Typography', 'url': 'https://example6.com'}
+                'topicId': 1, 'topicName': 'Typography', 'topicColor': '#603850', 'url': 'https://example6.com'}
             ])
             done()
           }

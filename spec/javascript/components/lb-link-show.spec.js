@@ -11,7 +11,7 @@ describe('lb-link-show.vue', () => {
         propsData: {
           link: new Link({
             id: '1', title: 'Typography', url: 'https://typos.ch',
-            notes: 'Some note', topic_id: 2, topic_name: 'Super Topic'
+            notes: 'Some note', topic_id: 2, topic_name: 'Super Topic', topic_color: '#1111ab'
           })
         }
       })

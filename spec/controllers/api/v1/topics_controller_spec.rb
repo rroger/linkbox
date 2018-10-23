@@ -22,7 +22,8 @@ RSpec.describe Api::V1::TopicsController do
             id: Topic.last.id.to_s,
             type: 'topic',
             attributes: {
-              name: 'Architecture'
+              name: 'Architecture',
+              color: '#2d242b'
             }
           }
         )

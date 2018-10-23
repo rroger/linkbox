@@ -11,4 +11,8 @@ class LinkSerializer
   attribute :topic_id do |object|
     object.topic&.id
   end
+
+  attribute :topic_color do |object|
+    object.topic&.color
+  end
 end

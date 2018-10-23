@@ -2,7 +2,7 @@
   <div class="link container">
     <div class="row">
       <div class="col-md-12 topic" v-bind:class="{ completed: link.completed }">
-        <div class="rectangle"></div>
+        <div class="rectangle" v-bind:style="{ backgroundColor: link.topicColor }"></div>
         <span>
           {{ link.topicName }}
         </span>
@@ -89,7 +89,6 @@ export default {
     .rectangle {
       width: 10px;
       height: 10px;
-      background-color: #a393ac;
       display: inline-block;
       white-space: nowrap;
       position: relative;

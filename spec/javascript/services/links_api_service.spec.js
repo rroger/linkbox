@@ -17,11 +17,11 @@ describe('LinksApiService', () => {
         (data) => {
           expect(data).toEqual([
             new Link({ completed: false, id: '8', notes: 'Some other notes', order: null, title: 'flexbox', topic_id: 4,
-              topic_name: 'UI Elements', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
+              topic_name: 'UI Elements', topic_color: '#8729b9', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
             new Link({ completed: false, id: '9', notes: 'Hint of Andres', order: null, title: 'css tricks',
-              topic_id: 4, topic_name: 'UI Elements', url: 'https://css-tricks.com/'}),
+              topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9', url: 'https://css-tricks.com/'}),
             new Link({ completed: true, id: '10', notes: '', order: null, title: 'Example 6', topic_id: 1,
-              topic_name: 'Typography', url: 'https://example6.com'})
+              topic_name: 'Typography', topic_color: '#603850', url: 'https://example6.com'})
           ])
           done()
         }

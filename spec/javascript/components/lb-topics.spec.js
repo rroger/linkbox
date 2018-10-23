@@ -92,10 +92,10 @@ describe('TopicsComponent', () => {
         Vue.nextTick(() => {
           expect(wrapper.vm.topics).toEqual(
             [
-              { id: '55', name: 'One mores' },
-              { id: '52', name: 'So goodOk' },
-              { id: '111', name: 'Totaly New Topic'},
-              { id: '112', name: 'Typography' }
+              { id: '55', name: 'One mores', color: '#4dbea7' },
+              { id: '52', name: 'So goodOk', color: '#c6f98a' },
+              { id: '111', name: 'Totaly New Topic', color: '#f6c98a'},
+              { id: '112', name: 'Typography', color: '#3614fa' }
             ]
           )
           done()
