@@ -10,7 +10,7 @@ topic_7 = seed_once(Topic, name: 'Desing Masters')
 topic_8 = seed_once(Topic, name: 'Copywritting')
 topic_9 = seed_once(Topic, name: 'Icons')
 
-seed_once(Link, title: 'flexbox', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', notes: 'Recommendation', topic_id: 4)
+seed_once(Link, title: 'flexbox', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', notes: 'Recommendation', topic: topic_4)
 seed_once(Link, title: 'css tricks', url: 'https://css-tricks.com/', notes: 'Hint', topic: topic_4)
 seed_once(Link, title: 'Example 1', url: 'https://example1.com', notes: '', topic: topic_1)
 seed_once(Link, title: 'Example 2', url: 'https://example2.com', notes: '', topic: topic_3)
