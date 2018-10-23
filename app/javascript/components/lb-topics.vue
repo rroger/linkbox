@@ -93,7 +93,7 @@ export default {
     fetchTopics() {
       this.$http.get(this.baseUrl).then(
         (response) => {
-          this.topics = response.body['data'].map((raw) => {
+          this.topics = response.body.data.map((raw) => {
             const topic = raw.attributes
             topic.id = raw.id
             return topic
