@@ -18,11 +18,13 @@ describe('lb-link-show.vue', () => {
     })
 
     it('displays topic', () => {
-      expect(wrapper.find('.topic').text()).toMatch(/Super\sTopic/)
+      expect(wrapper.find('.topic').text()).toEqual('Super Topic')
     })
 
     it('contains notes', () => {
-      expect(wrapper.find('#link-id-1').text()).toMatch(/Some\snote/)
+      wrapper.find('[data-test="notes-show-link"]').trigger('click')
+
+      expect(wrapper.find('.notes').text()).toEqual('Some note')
     })
 
     it('displays title', () => {
