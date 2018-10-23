@@ -1,13 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
     <div class="container nav-container">
-      <button class="add-button ml-5">
+      <button @click="$router.push('library/new')" class="add-button ml-5">
         <img src="../images/add.svg" class="add-sign" />
         <span class="add-text pl-2 pr-2">
           ADD LINK
         </span>
       </button>
-
       <ul class="navbar-nav ml-auto mr-5 nav-links-right">
         <li class="nav-item">
           <router-link to="/library" class="nav-link">LIBRARY</router-link>

@@ -57,12 +57,31 @@ const actions = {
           dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update ${toDo.title}`])
         })
     })
+  },
+
+  addLink ({ commit, dispatch }, newLink) {
+    return new Promise((resolve, reject) => {
+      linksApiService().createLink(newLink)
+        .then((link) => {
+          dispatch('addToast', [TOAST_TYPE.SUCCESS, `Successfully added Link '${link.title}'`])
+          // dispatch('fetchLinks')
+          commit('addLink', link)
+          resolve()
+        })
+        .catch(() => {
+          dispatch('addToast', [TOAST_TYPE.ERROR, `Could not create ${newLink.title}`])
+          reject()
+        })
+    })
   }
 }
 
 const mutations = {
   setLinks(state, links) {
     state.links = links
+  },
+  addLink(state, link) {
+    state.links.push(link)
   },
   updateLink(state, linkUpdate) {
     const link = state.links.find((link) => link.id === linkUpdate.id)

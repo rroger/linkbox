@@ -29,6 +29,9 @@
         <lb-link-show :link="link"></lb-link-show>
       </div>
     </div>
+    <lb-link-create v-if="$route.params.additional === 'new'"
+        @close="$router.push('/library')"
+    ></lb-link-create>
   </div>
 </template>
 
@@ -36,11 +39,13 @@
 import { mapGetters, mapActions } from 'vuex'
 import Draggable from 'vuedraggable'
 import LbLinkShow from './lb-link-show'
+import LbLinkCreate from './lb-link-create'
 
 export default {
   name: 'lb-links',
   components: {
     'lb-link-show': LbLinkShow,
+    'lb-link-create': LbLinkCreate,
     'draggable': Draggable,
   },
   created() {
@@ -49,6 +54,10 @@ export default {
   data() {
     return {
       showCompletedSection: false,
+    }
+  },
+  data: () => {
+    return {
     }
   },
   computed: {

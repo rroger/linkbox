@@ -11,6 +11,20 @@ export class LinksApiService extends BaseApiService {
     return this.fetchAll(this.path, Link)
   }
 
+  createLink(newLink) {
+    if (!(newLink)) { throw 'Exception: no link to update' }
+    const params = this.linkParams(newLink)
+    return this.$http.post(this.url, params).then(
+      (response) => {
+        const raw = response.body['data']
+        return new Link(Object.assign(raw['attributes'], { id: raw['id']}))
+      },
+      (error) => {
+        throw error
+      }
+    )
+  }
+
   updateLink(link) {
     if (!(link && link.id)) { throw 'Exception: no link to update' }
     const params = this.linkParams(link)
