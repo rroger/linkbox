@@ -5,7 +5,11 @@
         <div class="modal-container container create-link-form p-3">
           <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
           <div class="mx-sm-auto col-sm-7">
-            <h2 class="mb-5">New Link</h2>
+            <h2 class="mb-5">
+              <span v-if="this.editLink">Edit Link</span>
+              <span v-else>New Link</span>
+            </h2>
+
             <label for="link-url" hidden>Link URL</label>
             <input id="link-url" v-model="newLink.url" v-focus type="text" placeholder="URL" class="form-control">
 
@@ -42,24 +46,20 @@ export default {
     return {
       topics: [],
       newLink: null,
+      editLink: null
     }
   },
   props: {
     showLinkCreate: Boolean
   },
   created() {
-    this.topicsService.fetchAll('topics', Topic)
-      .then((topics) => {
-        this.topics = topics
-      })
-      .catch(() => {
-        this.addToast([TOAST_TYPE.ERROR, 'Could not load Topics'])
-      })
-    this.resetNewLink()
+    this.loadTopics()
+    this.loadData()
   },
   computed: {
     ...mapGetters([
-      'linksToDo'
+      'linksToDo',
+      'link'
     ]),
     topicsService() { return new BaseApiService() }
   },
@@ -67,18 +67,54 @@ export default {
     ...mapActions([
       'addToast',
       'addLink',
+      'updateLink',
       'updateLinksToDo'
     ]),
     save() {
-      this.addLink(this.newLink)
-        .then(() => {
+      if (this.editLink) {
+        this.updateLink(this.newLink).then(() => {
           this.resetNewLink()
-          this.updateLinksToDo(this.linksToDo)
-          this.$router.push('/library')
+          this.editLink = null
+          this.closeFormModal()
         })
+      } else {
+        this.addLink(this.newLink)
+          .then(() => {
+            this.resetNewLink()
+            this.updateLinksToDo(this.linksToDo)
+            this.closeFormModal()
+          })
+      }
+    },
+    loadTopics() {
+      this.topicsService.fetchAll('topics', Topic)
+        .then((topics) => {
+          this.topics = topics
+        })
+        .catch(() => {
+          this.addToast([TOAST_TYPE.ERROR, 'Could not load Topics'])
+        })
+    },
+    loadData() {
+      this.resetNewLink()
+      const id = this.$route.params.id
+      if (id) {
+        this.editLink = this.link(id)
+        if (this.editLink) {
+          // according to stackoverflow the best way to clone a class instance in es6:
+          // https://stackoverflow.com/questions/41474986/how-to-clone-a-javascript-es6-class-instance
+          this.newLink = Object.assign( Object.create( Object.getPrototypeOf(this.editLink)), this.editLink)
+        } else {
+          this.closeFormModal()
+          this.addToast([TOAST_TYPE.ERROR, `Could not edit Link (id: ${id})`])
+        }
+      }
     },
     resetNewLink() {
       this.newLink = new Link({ url: 'https://' })
+    },
+    closeFormModal() {
+      this.$router.push('/library')
     }
   }
 }
@@ -90,11 +126,12 @@ export default {
   .modal-container {
     @include default-font-measure;
     max-width: $modal-min-width;
-    min-height: 1.3*$modal-min-height;
+    max-height: 100vh;
     background-color: $background-bright;
     border-radius: $thicker-border-size;
     box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
     margin: 0 auto;
+    overflow-y:auto
   }
 
   .create-link-form {

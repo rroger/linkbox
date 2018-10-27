@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import LbLinkForm from '../../../app/javascript/components/lb-link-form.vue'
 import focus from '../../../app/javascript/directives/focus'
 import { Topic } from '../../../app/javascript/models/topic'
@@ -10,19 +10,55 @@ localVue.use(Vuex)
 localVue.directive('focus', focus)
 
 describe('lb-link-form.vue', () => {
+  let routerPushSpy = jest.fn()
+  let router = { push(input) { routerPushSpy(input) } }
+  let route = { params: {} }
+
   describe('#created', () => {
+    let loadTopicsSpy = jest.fn()
+    let loadDataSpy = jest.fn()
+
+    beforeEach(() => {
+      shallowMount(LbLinkForm, {
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
+        methods: {
+          loadTopics() { loadTopicsSpy() },
+          loadData() { loadDataSpy(this.resetNewLink()) }
+        }
+      })
+    })
+
+    it('calls loadTopics', () => {
+      expect(loadTopicsSpy).toHaveBeenCalled()
+    })
+
+    it('calls loadData', () => {
+      expect(loadDataSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('#loadTopics', () => {
     it('calls fetchTopics and sets topics', (done) =>  {
       const fetchAllSpy = jest.fn().mockImplementation(() => {
         return Promise.resolve('newly set topics')
       })
       const wrapper = mount(LbLinkForm, {
         localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
         computed: {
           topicsService() {
             return { fetchAll: fetchAllSpy }
           }
         }
       })
+
       localVue.nextTick(() => {
         expect(fetchAllSpy).toHaveBeenCalledWith('topics', Topic)
         expect(wrapper.vm.topics).toEqual('newly set topics')
@@ -37,6 +73,10 @@ describe('lb-link-form.vue', () => {
       const toastSpy = jest.fn()
       mount(LbLinkForm, {
         localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
         computed: {
           topicsService() {
             return { fetchAll: fetchAllSpy }
@@ -58,12 +98,107 @@ describe('lb-link-form.vue', () => {
     })
   })
 
+  describe('#loadData', () => {
+    let wrapper
+
+    describe('without id', () => {
+      beforeEach(() => {
+        wrapper = shallowMount(LbLinkForm, {
+          localVue,
+          mocks: {
+            $router: router,
+            $route: route
+          },
+        })
+      })
+
+      it('sets newLink to an empty Link', () => {
+        expect(wrapper.vm.newLink).toEqual({
+          completed: false,
+          id: undefined,
+          notes: '',
+          order: null,
+          title: undefined,
+          topicColor: '#a393ac',
+          topicId: null,
+          topicName: null,
+          url: 'https://'
+        })
+      })
+
+      it('sets editLink to null', () => {
+        expect(wrapper.vm.editLink).toEqual(null)
+      })
+    })
+
+    describe('with valid id', () => {
+      beforeEach(() => {
+        wrapper = shallowMount(LbLinkForm, {
+          localVue,
+          mocks: {
+            $router: router,
+            $route: { params: { id: 1 } }
+          },
+          computed: {
+            link: () => () => { return new Link({
+              completed: true, id: 1, notes: '', order: null, title: 'Example 6', topic_id: 1,
+              topic_name: 'Typography', url: 'https://example6.com'})
+            },
+          }
+        })
+      })
+
+      it('sets edit Link', () => {
+        expect(wrapper.vm.editLink.id).toEqual(1)
+        expect(wrapper.vm.editLink.title).toEqual('Example 6')
+      })
+
+      it('clones edit Link', () => {
+        expect(wrapper.vm.newLink).not.toBe(wrapper.vm.editLink)
+        expect(wrapper.vm.newLink).toEqual(wrapper.vm.editLink)
+      })
+    })
+
+    describe('with in-existing id', () => {
+      let toastSpy
+      let closeFormModalSpy
+
+      beforeEach(() => {
+        toastSpy = jest.fn()
+        closeFormModalSpy = jest.fn()
+        wrapper = shallowMount(LbLinkForm, {
+          localVue,
+          mocks: {
+            $router: router,
+            $route: { params: { id: 1 } }
+          },
+          computed: {
+            link: () => () => { return undefined },
+          },
+          methods: {
+            addToast(input) { toastSpy(input) },
+            closeFormModal() { closeFormModalSpy() }
+          }
+        })
+      })
+
+      it('toasts an error', () => {
+        expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not edit Link (id: 1)'])
+      })
+
+      it('closes edit modal', () => {
+        expect(closeFormModalSpy).toHaveBeenCalled()
+      })
+    })
+  })
+
   describe('#save', () => {
     let actions
     let getters
     let store
     let wrapper
-    let addLinkSpy
+    let saveLinkSpy
+    let closeFormModalSpy
 
     beforeEach(() => {
       actions = {
@@ -76,7 +211,11 @@ describe('lb-link-form.vue', () => {
         modules: {
           links: {
             state: {
-              links: []
+              links: [
+                new Link({ completed: false, id: '8', notes: 'Some other notes',
+                  order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
+                  url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
+              ]
             },
             getters,
             actions
@@ -84,51 +223,119 @@ describe('lb-link-form.vue', () => {
         }
       })
 
-      addLinkSpy = jest.fn()
-      wrapper = mount(LbLinkForm, {
-        store,
-        localVue,
-        mocks: {
-          $router: { push: jest.fn() }
-        },
-        methods: {
-          addLink(input) {
-            addLinkSpy(input)
-            return Promise.resolve(true)
+      saveLinkSpy = jest.fn()
+      closeFormModalSpy = jest.fn()
+    })
+
+    describe('add new link', () => {
+      beforeEach(() => {
+        wrapper = mount(LbLinkForm, {
+          store,
+          localVue,
+          mocks: {
+            $router: router,
+            $route: route
           },
-        }
+          methods: {
+            addLink(input) {
+              saveLinkSpy(input)
+              return Promise.resolve(true)
+            },
+            closeFormModal() { closeFormModalSpy() }
+          }
+        })
+        wrapper.vm.newLink.title = 'new title'
+        wrapper.vm.save()
       })
-      wrapper.vm.newLink.title = 'new title'
-      wrapper.vm.save()
+
+      it('calls addLink with newLink', (done) => {
+        localVue.nextTick(() => {
+          expect(saveLinkSpy).toHaveBeenCalledWith(new Link({ url: 'https://', title: 'new title' }))
+          done()
+        })
+      })
+
+      it('resets newLink after adding', (done) => {
+        localVue.nextTick(() => {
+          expect(wrapper.vm.newLink).toEqual(new Link({ url: 'https://'}))
+          done()
+        })
+      })
+
+      it('closes FormModal', (done) => {
+        localVue.nextTick(() => {
+          expect(closeFormModalSpy).toHaveBeenCalledTimes(1)
+          done()
+        })
+      })
     })
 
-
-    it('calls addLink with newLink', (done) => {
-      localVue.nextTick(() => {
-        expect(addLinkSpy).toHaveBeenCalledWith(new Link({ url: 'https://', title: 'new title' }))
-        done()
+    describe('edit link', () => {
+      beforeEach(() => {
+        wrapper = mount(LbLinkForm, {
+          store,
+          localVue,
+          mocks: {
+            $router: router,
+            $route: route
+          },
+          methods: {
+            updateLink(input) {
+              saveLinkSpy(input)
+              return Promise.resolve(true)
+            },
+            closeFormModal() { closeFormModalSpy() }
+          }
+        })
+        wrapper.vm.editLink =  new Link({ completed: false, id: '8', notes: 'Some other notes',
+          order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
+          url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
+        wrapper.vm.newLink = new Link({ completed: true, id: '8', notes: 'Edited notes',
+          order: 2, title: 'Edited Link', topic_id: 2, topic_name: 'Archive', topic_color: '#8abb9',
+          url: 'https://edited.com/'})
+        wrapper.vm.save()
       })
-    })
 
-    it('resets newLink after adding', (done) => {
-      localVue.nextTick(() => {
-        expect(wrapper.vm.newLink).toEqual(new Link({ url: 'https://'}))
-        done()
+      it('calls updateLink with newLink', (done) => {
+        localVue.nextTick(() => {
+          expect(saveLinkSpy).toHaveBeenCalledWith(new Link({ completed: true, id: '8', notes: 'Edited notes',
+            order: 2, title: 'Edited Link', topic_id: 2, topic_name: 'Archive', topic_color: '#8abb9',
+            url: 'https://edited.com/'}))
+          done()
+        })
       })
-    })
 
+      it('resets newLink', (done) => {
+        localVue.nextTick(() => {
+          expect(wrapper.vm.newLink).toEqual(new Link({ url: 'https://'}))
+          done()
+        })
+      })
 
-    it('redirects back to library', (done) => {
-      localVue.nextTick(() => {
-        expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/library')
-        done()
+      it('sets editLink to null', (done) => {
+        localVue.nextTick(() => {
+          expect(wrapper.vm.editLink).toBe(null)
+          done()
+        })
+      })
+
+      it('closes FormModal', (done) => {
+        localVue.nextTick(() => {
+          expect(closeFormModalSpy).toHaveBeenCalledTimes(1)
+          done()
+        })
       })
     })
   })
 
   describe('#resetNewLink', () => {
     it('resets newLink', () => {
-      const wrapper = mount(LbLinkForm, { localVue })
+      const wrapper = shallowMount(LbLinkForm, {
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        }})
       wrapper.vm.newLink = new Link({
         title: 'abc',
         id: 5,
@@ -150,6 +357,23 @@ describe('lb-link-form.vue', () => {
         topicId: null,
         topicName: null,
         url: 'https://'
+      })
+    })
+  })
+
+  describe('#closeFormModal', () => {
+    it('redirects back to library', (done) => {
+      const wrapper = shallowMount(LbLinkForm, {
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        }})
+      wrapper.vm.closeFormModal()
+
+      localVue.nextTick(() => {
+        expect(routerPushSpy).toHaveBeenCalledWith('/library')
+        done()
       })
     })
   })

@@ -22,12 +22,13 @@
     <div class="row">
       <div class="col-md-12 additional">
         <span v-bind:class="{ 'notes-button': link.notes }">
-          <a @click="toggleShowNotes()" data-test="notes-show-link">
+          <a href="javascript:void(0)" @click="toggleShowNotes()" data-test="notes-show-link">
             <span>NOTES </span>
-              <i v-if="link.notes && showNotes" class="material-icons mr-1">keyboard_arrow_up</i>
-              <i v-if="link.notes && !showNotes" class="material-icons mr-1">keyboard_arrow_down</i>
+              <i v-if="link.notes && showNotes" class="material-icons">keyboard_arrow_up</i>
+              <i v-if="link.notes && !showNotes" class="material-icons">keyboard_arrow_down</i>
           </a>
         </span>
+        <a href="javascript:void(0)" @click="editLink()" class="ml-1" >EDIT</a>
         <div v-if="showNotes" class="notes">
           {{ link.notes }}
         </div>
@@ -60,6 +61,9 @@ export default {
     },
     toggleShowNotes() {
       this.showNotes = !this.showNotes
+    },
+    editLink() {
+      this.$router.push(`library/${this.link.id}/edit`)
     }
   }
 }
@@ -99,7 +103,7 @@ export default {
       }
     }
 
-    .notes-button {
+    a, .notes-button {
       cursor: pointer;
     }
 

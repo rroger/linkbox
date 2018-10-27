@@ -12,6 +12,9 @@ const getters = {
   links: state => {
     return state.links
   },
+  link: state => id => {
+    return state.links.find((link) => link.id === id)
+  },
   linksToDo: state => {
     if (state.links.length === 0) { return [] }
     return state.links.filter(link => !link.completed).sort((a, b) => {
@@ -48,7 +51,7 @@ const actions = {
   fetchLinks ({ commit, dispatch }) {
     return linksApiService.fetchLinks()
       .then((response) => {
-        commit('setLinks', response)
+        commit('SET_LINKS', response)
       })
       .catch(() => {
         dispatch('addToast', [TOAST_TYPE.ERROR, 'Could not load Links'])
@@ -64,8 +67,8 @@ const actions = {
 
   updateLink({ commit, dispatch }, newValues) {
     return linksApiService.updateLink(newValues)
-      .then((link) => {
-        commit('updateLink', link)
+      .then((updatedLink) => {
+        commit('UPDATE_LINK', updatedLink)
       })
       .catch((error) => {
         dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update Link: ${newValues}`])
@@ -77,7 +80,7 @@ const actions = {
     return linksApiService.createLink(newLink)
       .then((link) => {
         dispatch('addToast', [TOAST_TYPE.SUCCESS, `Successfully added Link "${link.title}"`])
-        commit('addLink', link)
+        commit('ADD_LINK', link)
       })
       .catch((error) => {
         dispatch('addToast', [TOAST_TYPE.ERROR, `Could not create Link "${newLink.title}"`])
@@ -87,15 +90,15 @@ const actions = {
 }
 
 const mutations = {
-  setLinks(state, links) {
+  SET_LINKS(state, links) {
     state.links = links
   },
-  addLink(state, link) {
+  ADD_LINK(state, link) {
     state.links.push(link)
   },
-  updateLink(state, linkUpdate) {
-    const link = state.links.find((link) => link.id === linkUpdate.id)
-    Object.assign(link, linkUpdate)
+  UPDATE_LINK(state, updatedLink) {
+    const linkToUpdate = getters.link(state)(updatedLink.id)
+    Object.assign(linkToUpdate, updatedLink)
   }
 }
 

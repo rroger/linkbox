@@ -85,7 +85,7 @@ describe('store/modules/links', () => {
 
         linksModule.actions.fetchLinks( { commit, dispatch } ).then(
           () => {
-            expect(commit).toHaveBeenCalledWith('setLinks', [
+            expect(commit).toHaveBeenCalledWith('SET_LINKS', [
               {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': null, 'title': 'flexbox',
                 'topicId': 4, 'topicName': 'UI Elements', 'topicColor': '#8729b9',
                 'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'},
@@ -137,7 +137,7 @@ describe('store/modules/links', () => {
         linksModule.linksApiService.$http = mocks.$httpUpdateSuccess
         let dispatch = jest.fn()
         let commit = function(operation, parameter) {
-          expect(operation).toEqual('updateLink')
+          expect(operation).toEqual('UPDATE_LINK')
           expect(parameter).toEqual(
             new Link({
               id: 88,
@@ -186,7 +186,7 @@ describe('store/modules/links', () => {
           linksModule.linksApiService.$http = mocks.$httpCreateSuccess
           let dispatch = jest.fn()
           let commit = function (operation, parameter) {
-            expect(operation).toEqual('addLink')
+            expect(operation).toEqual('ADD_LINK')
             expect(parameter).toEqual(
               new Link({
                 id: 2,
@@ -250,7 +250,7 @@ describe('store/modules/links', () => {
 
     describe('#setLinks', () => {
       it('assigns links', () => {
-        linksModule.mutations.setLinks(state, links)
+        linksModule.mutations.SET_LINKS(state, links)
 
         expect(state.links).toEqual(links)
       })
@@ -262,7 +262,7 @@ describe('store/modules/links', () => {
           new Link({ id: 3, title: 'old Link', url: 'https://b.ch' })
         ]
         const newLink = new Link({ id: 1, title: 'new Link', url: 'https://a.ch' })
-        linksModule.mutations.addLink(state, newLink)
+        linksModule.mutations.ADD_LINK(state, newLink)
 
         expect(state.links).toEqual([
           new Link({ id: 3, title: 'old Link', url: 'https://b.ch' }),
@@ -277,7 +277,7 @@ describe('store/modules/links', () => {
         const updatedLink = JSON.parse(JSON.stringify(links[0])) // clone
         updatedLink.order = 400
 
-        linksModule.mutations.updateLink(state, updatedLink)
+        linksModule.mutations.UPDATE_LINK(state, updatedLink)
 
         expect(state.links[0].order).toEqual(400)
       })

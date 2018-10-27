@@ -33,8 +33,8 @@
         </div>
       </div>
     </div>
-    <lb-link-form v-if="$route.params.additional === 'new'"
-        @close="$router.push('/library')"
+    <lb-link-form v-if="showLinkForm()"
+        @close="closeLinkForm()"
     ></lb-link-form>
   </div>
 </template>
@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      showCompletedSection: false
+      showCompletedSection: false,
     }
   },
   computed: {
@@ -81,6 +81,14 @@ export default {
     ]),
     toggleShowCompleted() {
       this.showCompletedSection = !this.showCompletedSection
+    },
+    showLinkForm() {
+      const urlParam = this.$route.params.additional
+      const id = this.$route.params.id
+      return (!id && urlParam === 'new') || (id && urlParam === 'edit')
+    },
+    closeLinkForm() {
+      this.$router.push('/library')
     }
   }
 }
