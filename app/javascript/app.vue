@@ -22,16 +22,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "./stylesheets/shared";
 
   body {
     font-family: $font-family-base;
-    background-color: $background-gray;
+    background-color: white;
+    min-height:100vh
   }
 
   .main-container {
-    margin-top: $nav-height + 1.5 * $toast-block-height;
+    margin-top: $app-wide-min-top-margin;
     max-width: 100vw;
     padding: 0;
   }

@@ -13,6 +13,7 @@ RSpec.describe 'Links', :js do
   it 'can add new links', :js do
     create(:topic, name: 'Topic new')
     visit '/#/library'
+    click_button 'ADD LINK'
     fill_in 'Link Title', with: 'Zeit'
     fill_in 'link-url', with: 'https://zeit.de'
     fill_in 'Notes', with: 'some notes'
@@ -69,7 +70,7 @@ RSpec.describe 'Links', :js do
       end
     end
 
-    it 'can edit links' do
+    it 'can edit link' do
       click_link 'EDIT'
       fill_in 'link-title', with: 'Edited Title'
       fill_in 'link-url', with: 'https://edited.com'
@@ -82,6 +83,16 @@ RSpec.describe 'Links', :js do
         expect(page).to have_content('Houses')
         click_link 'NOTES'
         expect(page).to have_content('Edited notes')
+      end
+    end
+
+    it 'can delete link' do
+      click_link 'EDIT'
+      click_button 'Delete'
+      click_button 'Proceed'
+
+      within('.todo-section') do
+        expect(page).not_to have_content 'Architecture'
       end
     end
   end

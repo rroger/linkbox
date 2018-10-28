@@ -185,4 +185,94 @@ describe('LinksApiService', () => {
       })
     })
   })
+
+  describe('#deleteLink', () => {
+    describe('with http success', () => {
+      it('can delete a link', (done) => {
+        service.$http = mocks.$httpDeleteSuccess
+
+        service.deleteLink({ id: 1 }).then(
+          (data) => {
+            expect(data).toBeTruthy()
+            done()
+          }
+        )
+      })
+    })
+
+    describe('with http error', () => {
+      it('gets error when server fails', (done) => {
+        service.$http = mocks.$httpDeleteFail
+        const call = () => {
+          service.deleteLink({ id: 1 }).catch(
+            (error) => {
+              expect(error).toEqual({ data: { data: 'internal server error' } })
+              done()
+            }
+          )
+        }
+
+        call()
+      })
+    })
+
+    describe('with invalid params', () => {
+      it('throws exception when no link is present', () => {
+        service.$http = mocks.$httpDeleteFail
+        const call = () => {
+          service.deleteLink({url: 'newUrl'}).catch(
+            (error) => {
+              expect(error).toEqual('This would be the wrong error')
+            }
+          )
+        }
+
+        expect(call).toThrow('Exception: no link to delete')
+      })
+
+      it('throws error when no parameter is passed', () => {
+        service.$http = mocks.$httpDeleteFail
+        const call = () => {
+          service.deleteLink().catch(
+            (error) => {
+              expect(error).toEqual('This would be the wrong error')
+            }
+          )
+        }
+
+        expect(call).toThrow('Exception: no link to delete')
+      })
+    })
+  })
+
+  describe('helpers', () => {
+    describe('#linkIdentifier', () => {
+      it('returns existing title', () => {
+        const link = { title: 'Awesome'}
+        expect(service.linkIdentifier(link)).toEqual('"Awesome"')
+      })
+
+      it('returns id without title', () => {
+        const link = { id: '12'}
+        expect(service.linkIdentifier(link)).toEqual('ID: 12')
+      })
+
+      it('returns empty string without title id or title', () => {
+        let link = { id: '', title: ''}
+        expect(service.linkIdentifier(link)).toEqual('')
+
+        link = {}
+        expect(service.linkIdentifier(link)).toEqual('')
+
+        link = { id: '' }
+        expect(service.linkIdentifier(link)).toEqual('')
+
+        link = { title: '' }
+        expect(service.linkIdentifier(link)).toEqual('')
+
+        link = null
+        expect(service.linkIdentifier(link)).toEqual('')
+      })
+    })
+  })
 })

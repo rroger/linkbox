@@ -6,7 +6,7 @@
           <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
           <div class="mx-sm-auto col-sm-7">
             <h2 class="mb-5">
-              <span v-if="this.editLink">Edit Link</span>
+              <span v-if="editLink">Edit Link</span>
               <span v-else>New Link</span>
             </h2>
 
@@ -20,16 +20,26 @@
             <input id="link-notes" v-model="newLink.notes" type="text" placeholder="Notes" class="form-control">
 
             <label for="link-topic" hidden>Link Topic</label>
-            <select id="link-topic" v-model="newLink.topicId" class="form-control">
+            <select id="link-topic" v-model="newLink.topicId" class="form-control mb-5">
               <option v-for="topic in topics" v-bind:key="topic.id" v-bind:value="topic.id">
                 {{ topic.name }}
               </option>
             </select>
-            <button @click="save()" class="btn btn-primary mt-5 mb-3">Save</button>
+            <button v-if="editLink" type="button" class="btn btn-outline-primary mt-2" @click="toggleConfirmationShown()">Delete</button>
+            <button @click="save()" class="btn btn-primary mt-2 mb-3">Save</button>
           </div>
         </div>
       </div>
     </div>
+    <lb-confirmation
+        :showConfirmation="isConfirmationShown"
+        :doAfterConfirm="remove"
+        @close="toggleConfirmationShown"
+    >
+      <span v-if="editLink">
+        Are you sure you want to delete '{{ editLink.title }}' from the Library?
+      </span>
+    </lb-confirmation>
   </div>
 </template>
 
@@ -46,7 +56,8 @@ export default {
     return {
       topics: [],
       newLink: null,
-      editLink: null
+      editLink: null,
+      isConfirmationShown: false
     }
   },
   props: {
@@ -68,7 +79,8 @@ export default {
       'addToast',
       'addLink',
       'updateLink',
-      'updateLinksToDo'
+      'updateLinksToDo',
+      'deleteLink'
     ]),
     save() {
       if (this.editLink) {
@@ -85,6 +97,11 @@ export default {
             this.closeFormModal()
           })
       }
+    },
+    remove() {
+      if (!this.editLink || !this.editLink.id) { throw 'Exception: No Link to delete'}
+      this.deleteLink(this.editLink)
+      this.closeFormModal()
     },
     loadTopics() {
       this.topicsService.fetchAll('topics', Topic)
@@ -115,6 +132,9 @@ export default {
     },
     closeFormModal() {
       this.$router.push('/library')
+    },
+    toggleConfirmationShown() {
+      this.isConfirmationShown = !this.isConfirmationShown
     }
   }
 }
@@ -126,12 +146,11 @@ export default {
   .modal-container {
     @include default-font-measure;
     max-width: $modal-min-width;
-    max-height: 100vh;
+    max-height: calc(100vh - #{$app-wide-min-top-margin});
     background-color: $background-bright;
     border-radius: $thicker-border-size;
     box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
-    margin: 0 auto;
-    overflow-y:auto
+    overflow-y:auto;
   }
 
   .create-link-form {

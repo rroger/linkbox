@@ -30,6 +30,13 @@ export class LinksApiService extends BaseApiService {
     )
   }
 
+  deleteLink(link) {
+    if (!(link && link.id)) { throw 'Exception: no link to delete' }
+    return this.$http.delete(`${this.path}/${link.id}`).then(() => {
+      return true
+    })
+  }
+
   linkParams(link) {
     const params = {
       data: {
@@ -46,6 +53,18 @@ export class LinksApiService extends BaseApiService {
       delete params.data.attributes.topicId
     }
     return params
+  }
+
+  // helpers
+
+  linkIdentifier(link) {
+    let linkIdentifier = ''
+    if (link && link.title) {
+      linkIdentifier = `"${link.title}"`
+    } else if (link && link.id) {
+      linkIdentifier = `ID: ${link.id}`
+    }
+    return linkIdentifier
   }
 }
 

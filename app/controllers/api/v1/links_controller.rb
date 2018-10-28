@@ -19,7 +19,7 @@ module Api
         if link.save
           render_links(link, :created)
         else
-          render json: link.errors, status: :unprocessable_entity
+          render_error(link, :unprocessable_entity)
         end
       end
 
@@ -27,13 +27,16 @@ module Api
         if @link.update(link_params)
           render_links(@link)
         else
-          render json: @link.errors, status: :unprocessable_entity
+          render_error(@link, :unprocessable_entity)
         end
       end
 
       def destroy
-        @link.destroy
-        head :no_content
+        if @link.destroy
+          head :no_content
+        else
+          render_error(@link, :unprocessable_entity)
+        end
       end
 
       private
@@ -52,6 +55,10 @@ module Api
 
       def render_links(links, status = :ok)
         render status, json: ::LinkSerializer.new(links)
+      end
+
+      def render_error(link, status)
+        render json: link.errors, status: status
       end
     end
   end

@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import LbLinkForm from '../../../app/javascript/components/lb-link-form.vue'
+import LbConfirmation from '../../../app/javascript/components/lb-confirmation.vue'
 import focus from '../../../app/javascript/directives/focus'
 import { Topic } from '../../../app/javascript/models/topic'
 import { Link } from '../../../app/javascript/models/link'
@@ -8,6 +9,8 @@ import { Link } from '../../../app/javascript/models/link'
 const localVue  = createLocalVue()
 localVue.use(Vuex)
 localVue.directive('focus', focus)
+localVue.component('lb-confirmation', LbConfirmation)
+
 
 describe('lb-link-form.vue', () => {
   let routerPushSpy = jest.fn()
@@ -119,7 +122,7 @@ describe('lb-link-form.vue', () => {
           notes: '',
           order: null,
           title: undefined,
-          topicColor: '#a393ac',
+          topicColor: null,
           topicId: null,
           topicName: null,
           url: 'https://'
@@ -328,6 +331,62 @@ describe('lb-link-form.vue', () => {
     })
   })
 
+  describe('#remove', () => {
+    let store
+    let wrapper
+    let deleteLinkSpy
+    let closeFormModalSpy
+
+    beforeEach(() => {
+      deleteLinkSpy = jest.fn()
+      closeFormModalSpy = jest.fn()
+      wrapper = mount(LbLinkForm, {
+        store,
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
+        methods: {
+          deleteLink(input) {
+            deleteLinkSpy(input)
+            return Promise.resolve(true)
+          },
+          closeFormModal() {
+            closeFormModalSpy()
+          }
+        }
+      })
+      wrapper.vm.editLink =  new Link({ completed: false, id: '8', notes: 'Some other notes',
+        order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
+        url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'})
+    })
+
+    it('calls deleteLink with this.editLink', () => {
+      wrapper.vm.remove()
+
+      expect(deleteLinkSpy).toHaveBeenCalledWith(wrapper.vm.editLink)
+    })
+
+    it('close form modal', () => {
+      wrapper.vm.remove()
+
+      expect(closeFormModalSpy).toHaveBeenCalled()
+    })
+
+    it('throws an exception without editLink', () => {
+      wrapper.vm.editLink = null
+
+      expect(wrapper.vm.remove).toThrow('Exception: No Link to delete')
+    })
+
+    it('throws an exception without editLink.id', () => {
+      wrapper.vm.editLink = { title: 'something' }
+
+      expect(wrapper.vm.remove).toThrow('Exception: No Link to delete')
+    })
+  })
+
   describe('#resetNewLink', () => {
     it('resets newLink', () => {
       const wrapper = shallowMount(LbLinkForm, {
@@ -375,6 +434,21 @@ describe('lb-link-form.vue', () => {
         expect(routerPushSpy).toHaveBeenCalledWith('/library')
         done()
       })
+    })
+  })
+
+  describe('#toggleConfirmationShown', () => {
+    it('toggles value', () => {
+      const wrapper = shallowMount(LbLinkForm, {
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        }})
+      const oldValue = wrapper.vm.isConfirmationShown
+      wrapper.vm.toggleConfirmationShown()
+
+      expect(wrapper.vm.isConfirmationShown).not.toEqual(oldValue)
     })
   })
 })

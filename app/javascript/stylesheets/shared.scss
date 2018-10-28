@@ -32,6 +32,7 @@ $max-width-nav: 80rem;
 $max-width: 50rem;
 $normal-form-element-width: 22rem;
 $normal-form-element-height: 3rem;
+$app-wide-min-top-margin: $nav-height + 1.5 * $toast-block-height;
 
 $modal-min-width: 45rem;
 $modal-min-height: 18rem;
@@ -74,12 +75,13 @@ $very-thick-border-size: 3px;
   left: 0;
   width: 100%;
   height: 100%;
-  display: table;
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: $app-wide-min-top-margin auto 0;
 }
 
 .close-x {

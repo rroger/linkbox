@@ -23,8 +23,8 @@
                 </div>
                 <div class="row">
                   <div class=col-lg-12>
-                    <button v-show="currentTopic" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="showConfirmation = true">Delete</button>
-                    <button v-show="!currentTopic" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
+                    <button v-if="currentTopic" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="showConfirmation = true">Delete</button>
+                    <button v-else type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
                     <button type="submit" class="btn btn-primary save-button" :disabled="isSaveDisabled()">Save</button>
                   </div>
                 </div>

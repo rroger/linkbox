@@ -107,3 +107,14 @@ export const $httpCreateFail = {
   }
 }
 
+export const $httpDeleteSuccess = {
+  delete() {
+    return Promise.resolve()
+  }
+}
+
+export const $httpDeleteFail = {
+  delete() {
+    return Promise.reject({ data: { 'data': 'internal server error' } })
+  }
+}
