@@ -1,19 +1,23 @@
-/*eslint quotes: "off" */
+/*eslint quotes: "off", no-unused-vars: "off" */
 
 import Vue from 'vue/dist/vue.js'
-import { shallowMount } from '@vue/test-utils'
-import LbTopics from '../../app/javascript/components/lb-topics.vue'
-import LbConfirmation from '../../app/javascript/components/lb-confirmation.vue'
-import * as mocks from './mocks/topics_mocks'
+import { mount, createLocalVue } from '@vue/test-utils'
+import LbTopics from '../../../app/javascript/components/lb-topics.vue'
+import LbConfirmation from '../../../app/javascript/components/lb-confirmation.vue'
+import * as mocks from '../mocks/topics_mocks'
+
 
 describe('TopicsComponent', () => {
+  const localVue  = createLocalVue()
+  localVue.component('lb-confirmation', LbConfirmation)
   let toastSpy = null
   let addToast = (toastMessage) => { return `Toast: ${toastMessage}` }
 
   describe('#created', () => {
     it('calls fetchTopics', () =>  {
       const spy = jest.spyOn(LbTopics.methods, 'fetchTopics')
-      shallowMount(LbTopics,  {
+      mount(LbTopics, {
+        localVue,
         mocks: {
           $http: mocks.$httpIndexSuccess
         }
@@ -25,10 +29,11 @@ describe('TopicsComponent', () => {
   describe('#toggleFormVisibility', () => {
     let wrapper = null
     beforeEach(() => {
-      wrapper = shallowMount(LbTopics,  {
+      wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
           $http: mocks.$httpIndexSuccess
-        },
+        }
       })
     })
 
@@ -60,7 +65,8 @@ describe('TopicsComponent', () => {
 
   describe('#clearForm', () => {
     it('clears values', () => {
-      const wrapper = shallowMount(LbTopics,  {
+      const wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
           $http: mocks.$httpIndexSuccess
         }
@@ -77,7 +83,8 @@ describe('TopicsComponent', () => {
   describe('#fetchTopics', () => {
     describe('successfull http call', () => {
       it('sets topics', (done) => {
-        const wrapper = shallowMount(LbTopics,  {
+        const wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
             $http: mocks.$httpIndexSuccess
           },
@@ -85,10 +92,10 @@ describe('TopicsComponent', () => {
         Vue.nextTick(() => {
           expect(wrapper.vm.topics).toEqual(
             [
-              { id: '55', name: 'One mores' },
-              { id: '52', name: 'So goodOk' },
-              { id: '111', name: 'Totaly New Topic'},
-              { id: '112', name: 'Typography' }
+              { id: '55', name: 'One mores', color: '#4dbea7' },
+              { id: '52', name: 'So goodOk', color: '#c6f98a' },
+              { id: '111', name: 'Totaly New Topic', color: '#f6c98a'},
+              { id: '112', name: 'Typography', color: '#3614fa' }
             ]
           )
           done()
@@ -98,7 +105,8 @@ describe('TopicsComponent', () => {
 
     describe('http fail', () => {
       it('adds toaster', (done) => {
-        const wrapper = shallowMount(LbTopics,  {
+        const wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
             $http: mocks.$httpIndexFail
           },
@@ -118,7 +126,8 @@ describe('TopicsComponent', () => {
     let spyEdit = null
     let spyCreate = null
     beforeEach(() => {
-      wrapper = shallowMount(LbTopics,  {
+      wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
           $http: mocks.$httpIndexSuccess,
         },
@@ -150,11 +159,9 @@ describe('TopicsComponent', () => {
 
   describe('#newTopicParams', () => {
     it('renders the correct Title', () => {
-      const wrapper = shallowMount(LbTopics,  {
+      const wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
-          components: {
-            'lb-confirmation': LbConfirmation
-          },
           $http: mocks.$httpIndexSuccess
         }
       })
@@ -169,11 +176,9 @@ describe('TopicsComponent', () => {
       let wrapper = null
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateSuccess.post },
           },
           methods: {
@@ -218,11 +223,9 @@ describe('TopicsComponent', () => {
       let wrapper = null
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateFail.post },
           },
           methods: {
@@ -260,11 +263,9 @@ describe('TopicsComponent', () => {
       let wrapper = null
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, put: mocks.$httpUpdateSuccess.put },
           },
           methods: {
@@ -312,11 +313,9 @@ describe('TopicsComponent', () => {
       let currentTopic = { id: 222, name: 'Existing Topic'}
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, put: mocks.$httpUpdateFail.put },
           },
           methods: {
@@ -358,11 +357,9 @@ describe('TopicsComponent', () => {
 
   describe('#editInForm', () => {
     it('sets correct values', () => {
-      const wrapper = shallowMount(LbTopics,  {
+      const wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
-          components: {
-            'lb-confirmation': LbConfirmation
-          },
           $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateSuccess.post },
         },
         methods: {
@@ -384,11 +381,9 @@ describe('TopicsComponent', () => {
       let wrapper = null
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, delete: mocks.$httpDeleteSuccess.delete },
           },
           methods: {
@@ -435,11 +430,9 @@ describe('TopicsComponent', () => {
       let currentTopic = { id: 222, name: 'Existing Topic'}
 
       beforeEach(() => {
-        wrapper = shallowMount(LbTopics,  {
+        wrapper = mount(LbTopics, {
+          localVue,
           mocks: {
-            components: {
-              'lb-confirmation': LbConfirmation
-            },
             $http: { get: mocks.$httpIndexSuccess.get, delete: mocks.$httpDeleteFail.delete },
           },
           methods: {
@@ -480,11 +473,9 @@ describe('TopicsComponent', () => {
 
   describe('#isSaveDisabled', () => {
     it ('works', () => {
-      const wrapper = shallowMount(LbTopics,  {
+      const wrapper = mount(LbTopics, {
+        localVue,
         mocks: {
-          components: {
-            'lb-confirmation': LbConfirmation
-          },
           $http: { get: mocks.$httpIndexSuccess.get, post: mocks.$httpCreateSuccess.post },
         },
         methods: {

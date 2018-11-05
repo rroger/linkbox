@@ -32,5 +32,6 @@ export default {
 
   .main-container {
     margin-top: $nav-height + 1.5 * $toast-block-height;
+    max-width: $max-width;
   }
 </style>

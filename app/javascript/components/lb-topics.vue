@@ -1,7 +1,7 @@
 <template>
   <div class="container topics">
     <div class="row mt-2">
-      <div class="offset-lg-4 col-lg-4">
+      <div class="offset-lg-3 col-lg-6">
         <div class="topics-header">
           <div class="row">
             <div class="col-lg-12">
@@ -58,7 +58,6 @@
 
 <script>
 /* eslint-disable no-undef */
-import _ from 'lodash'
 import { mapActions } from 'vuex'
 import { TOAST_TYPE} from '../models/toast'
 
@@ -94,7 +93,7 @@ export default {
     fetchTopics() {
       this.$http.get(this.baseUrl).then(
         (response) => {
-          this.topics = _.map(response.body['data'], (raw) => {
+          this.topics = response.body.data.map((raw) => {
             const topic = raw.attributes
             topic.id = raw.id
             return topic
@@ -193,7 +192,6 @@ export default {
 
   .topics-counter {
     font-size: $font-size-small;
-    color: $gray;
     vertical-align: super;
   }
 

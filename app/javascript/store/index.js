@@ -1,19 +1,13 @@
 import Vue from 'vue/dist/vue.js'
 import Vuex from 'vuex'
-import { mutations } from './mutations'
-import actions from './actions'
+import links from './modules/links'
+import toasts from './modules/toasts'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    toasts: []
+  modules: {
+    toasts,
+    links
   },
-  getters: {
-    toasts: state => {
-      return state.toasts
-    }
-  },
-  actions,
-  mutations,
 })

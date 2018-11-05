@@ -3,10 +3,10 @@ export const $httpIndexSuccess = {
     return Promise.resolve({
       body: {
         'data': [
-          {'id':'55','type':'topic','attributes':{'name':'One mores'}},
-          {'id':'52','type':'topic','attributes':{'name':'So goodOk'}},
-          {'id':'111','type':'topic','attributes':{'name':'Totaly New Topic'}},
-          {'id':'112','type':'topic','attributes':{'name':'Typography'}}
+          {'id':'55','type':'topic','attributes':{'name':'One mores', 'color': '#4dbea7'}},
+          {'id':'52','type':'topic','attributes':{'name':'So goodOk', 'color': '#c6f98a'}},
+          {'id':'111','type':'topic','attributes':{'name':'Totaly New Topic', 'color': '#f6c98a' }},
+          {'id':'112','type':'topic','attributes':{'name':'Typography', 'color': '#3614fa' }}
         ]
       }
     })

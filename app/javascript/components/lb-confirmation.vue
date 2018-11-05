@@ -1,35 +1,28 @@
 <template>
 <div v-bind:class="{ 'modal-background': showConfirmation }">
-  <transition
-      name="custom-classes-transition"
-      enter-active-class="animated zoomIn"
-      leave-active-class="animated zoomOut"
-      :duration="250"
-  >
-    <div v-if="showConfirmation" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container p-3">
-          <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
+  <div v-if="showConfirmation" class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container p-3">
+        <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
 
-          <div class="modal-body mt-5">
-            <slot></slot>
-          </div>
+        <div class="modal-body mt-5">
+          <slot></slot>
+        </div>
 
-          <div class="mt-3 m-1">
-            <button class="btn btn-outline-primary" @click="$emit('close')">
-              Cancel
-            </button>
+        <div class="mt-3 m-1">
+          <button class="btn btn-outline-primary" @click="$emit('close')">
+            Cancel
+          </button>
 
-            <button class="btn btn-primary" data-test="confirm-button" @click="$emit('close') && doAfterConfirm()">
-              <slot name="confirm-button">
-                Proceed
-              </slot>
-            </button>
-          </div>
+          <button class="btn btn-primary" data-test="confirm-button" @click="$emit('close') && doAfterConfirm()">
+            <slot name="confirm-button">
+              Proceed
+            </slot>
+          </button>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </div>
 </template>
 
