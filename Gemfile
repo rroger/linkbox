@@ -22,8 +22,6 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'capybara-screenshot'
-  gem 'danger', github: 'danger/danger'
-  gem 'danger-gitlab'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'foreman'

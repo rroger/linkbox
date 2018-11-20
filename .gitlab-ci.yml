@@ -8,12 +8,12 @@ variables:
   DISABLE_SPRING: 'true'
   TZ: Europe/Zurich
   DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/$POSTGRES_DB'
-  DANGER_GITLAB_HOST: git.panter.ch
-  DANGER_GITLAB_API_BASE_URL: https://git.panter.ch/api/v4
   RAILS_ENV: test
 
 stages:
 - test
+
+include: 'https://git.panter.ch/open-source/danger-rules/raw/master/gitlab-ci-include.yml'
 
 .install-bundler:
   - &install-bundler
@@ -43,21 +43,6 @@ stages:
   - *install-npm-packages
 
 <<: *install-backend-part
-
-danger-review:
-  stage: test
-  allow_failure: true
-  cache: {}
-  dependencies: []
-  only:
-    variables:
-    - $DANGER_GITLAB_API_TOKEN
-  except:
-    refs:
-    - master
-  script:
-  - git version
-  - bundle exec danger --fail-on-errors=true
 
 rubocop:
   stage: test
