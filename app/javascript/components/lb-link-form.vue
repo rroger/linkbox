@@ -20,11 +20,17 @@
             <input id="link-notes" v-model="newLink.notes" type="text" placeholder="Notes" class="form-control">
 
             <label for="link-topic" hidden>Link Topic</label>
-            <select id="link-topic" v-model="newLink.topicId" class="form-control mb-5">
+            <select id="link-topic" v-model="newLink.topicId" class="form-control">
               <option v-for="topic in topics" v-bind:key="topic.id" v-bind:value="topic.id">
                 {{ topic.name }}
               </option>
             </select>
+
+            <div class="custom-control form-control-lg custom-checkbox mb-5">
+              <input type="checkbox" v-model="newLink.completed" class="custom-control-input" id="link-completed">
+              <label class="custom-control-label" for="link-completed">Mark as Completed</label>
+            </div>
+
             <button v-if="editLink" type="button" class="btn btn-outline-primary mt-2" @click="toggleConfirmationShown()">Delete</button>
             <button @click="save()" class="btn btn-primary mt-2 mb-3">Save</button>
           </div>
@@ -191,6 +197,18 @@ export default {
 
     .form-control {
       margin-left: 0
+    }
+
+    .custom-control-label {
+      font-size: $font-size-title-small;
+      font-weight: normal;
+    }
+
+    .custom-control-label::before,
+    .custom-control-label::after {
+      border: $dark-gray 1px solid;
+      width: 0.75rem;
+      height: 0.75rem;
     }
   }
 </style>

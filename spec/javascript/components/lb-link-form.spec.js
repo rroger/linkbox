@@ -301,9 +301,11 @@ describe('lb-link-form.vue', () => {
 
       it('calls updateLink with newLink', (done) => {
         localVue.nextTick(() => {
-          expect(saveLinkSpy).toHaveBeenCalledWith(new Link({ completed: true, id: '8', notes: 'Edited notes',
+          const expectedLink = new Link({ completed: true, id: '8', notes: 'Edited notes',
             order: 2, title: 'Edited Link', topic_id: 2, topic_name: 'Archive', topic_color: '#8abb9',
-            url: 'https://edited.com/'}))
+            url: 'https://edited.com/'})
+          expectedLink.toastSuccessMessage = true
+          expect(saveLinkSpy).toHaveBeenCalledWith(expectedLink)
           done()
         })
       })
