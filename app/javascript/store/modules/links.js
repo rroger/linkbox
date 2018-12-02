@@ -69,9 +69,14 @@ const actions = {
   },
 
   updateLink({ commit, dispatch }, newValues) {
+    const toastSuccessMessage = newValues.toastSuccessMessage
+    delete newValues.toastSuccessMessage
     return linksApiService.updateLink(newValues)
       .then((updatedLink) => {
         commit('UPDATE_LINK', updatedLink)
+        if (toastSuccessMessage) {
+          dispatch('addToast', [TOAST_TYPE.SUCCESS, `Successfully updated Link ${linksApiService.linkIdentifier(newValues)}`])
+        }
       })
       .catch((error) => {
         dispatch('addToast', [TOAST_TYPE.ERROR, `Could not update Link ${linksApiService.linkIdentifier(newValues)}`])

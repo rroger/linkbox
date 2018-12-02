@@ -208,6 +208,23 @@ describe('store/modules/links', () => {
           }
         )
       })
+
+      it('toasts a success message', (done) => {
+        linksModule.linksApiService.$http = mocks.$httpUpdateSuccess
+        let commit = jest.fn()
+        let dispatch = function(operation, parameter) {
+          expect(operation).toEqual('addToast')
+          expect(parameter).toEqual(['success', 'Successfully updated Link "flexbox"'])
+          done()
+        }
+
+        linksModule.actions.updateLink({commit, dispatch},
+          {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
+            'topicId': 4, 'topicName': 'UI Elements', 'toastSuccessMessage': true,
+            'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
+          }
+        )
+      })
     })
 
     describe('addLink', () => {

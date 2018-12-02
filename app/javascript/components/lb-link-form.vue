@@ -84,6 +84,7 @@ export default {
     ]),
     save() {
       if (this.editLink) {
+        this.newLink.toastSuccessMessage = true
         this.updateLink(this.newLink).then(() => {
           this.resetNewLink()
           this.editLink = null
