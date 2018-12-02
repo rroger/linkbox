@@ -44,31 +44,6 @@ export default {
 <style lang='scss' scoped>
 @import "../stylesheets/shared";
 
-.modal-background {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: table;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: table;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
 
 .modal-container {
   @include default-font-measure;
@@ -85,10 +60,5 @@ export default {
     min-width: 35%;
     margin: $normal-space $small-space $small-space $small-space;
   }
-}
-
-.close-x {
-  float: right;
-  cursor: pointer;
 }
 </style>

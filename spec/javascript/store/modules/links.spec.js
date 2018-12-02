@@ -6,6 +6,8 @@ import {TOAST_TYPE} from '../../../../app/javascript/models/toast'
 describe('store/modules/links', () => {
   const state = {
     links: [
+      new Link({ completed: true, id: '7', notes: '', order: null, title: 'XYZ', topic_id: 1,
+        topic_name: 'Typography', url: 'https://example6.com'}),
       new Link({ completed: false, id: '8', notes: 'Some other notes', order: 10, title: 'flexbox', topic_id: 4,
         topic_name: 'UI Elements', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
       new Link({ completed: false, id: '9', notes: 'Hint of Andres', order: 2, title: 'css tricks',
@@ -21,6 +23,8 @@ describe('store/modules/links', () => {
 
       expect(result).toEqual(
         [
+          new Link({ completed: true, id: '7', notes: '', order: null, title: 'XYZ', topic_id: 1,
+            topic_name: 'Typography', url: 'https://example6.com'}),
           new Link({ completed: false, id: '8', notes: 'Some other notes', order: 10, title: 'flexbox', topic_id: 4,
             topic_name: 'UI Elements', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
           new Link({ completed: false, id: '9', notes: 'Hint of Andres', order: 2, title: 'css tricks',
@@ -52,12 +56,13 @@ describe('store/modules/links', () => {
       expect(result).toEqual(2)
     })
 
-    it('#linksCompleted', () => {
-      const result = linksModule.getters.linksCompleted(state)
+    it('#linksCompleted (ordered by title)', () => {
 
-      expect(result).toEqual(
+      expect(linksModule.getters.linksCompleted(state)).toEqual(
         [
           new Link({ completed: true, id: '10', notes: '', order: null, title: 'Example 6', topic_id: 1,
+            topic_name: 'Typography', url: 'https://example6.com'}),
+          new Link({ completed: true, id: '7', notes: '', order: null, title: 'XYZ', topic_id: 1,
             topic_name: 'Typography', url: 'https://example6.com'})
         ]
       )
@@ -67,7 +72,7 @@ describe('store/modules/links', () => {
       const linksCompleted = linksModule.getters.linksCompleted(state)
       const result = linksModule.getters.linksCompletedCount(state, { linksCompleted })
 
-      expect(result).toEqual(1)
+      expect(result).toEqual(2)
     })
   })
 
@@ -109,49 +114,127 @@ describe('store/modules/links', () => {
     })
 
     describe('#updateLinksToDo', () => {
+      it('dispatches updateLink', (done) => {
+        linksModule.linksApiService.$http = mocks.$httpUpdateFail
+        let commit = jest.fn()
+        let dispatch = function(operation, parameter) {
+          expect(operation).toEqual('updateLink')
+          expect(parameter).toEqual({ id: '8', order: 1 })
+          done()
+        }
+
+        linksModule.actions.updateLinksToDo({commit, dispatch},
+          [
+            {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
+              'topicId': 4, 'topicName': 'UI Elements', topicColor: '#8729b9',
+              'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}
+          ])
+      })
+    })
+
+    describe('#updateLink', () => {
       it('commits updateLink on success', (done) => {
         linksModule.linksApiService.$http = mocks.$httpUpdateSuccess
         let dispatch = jest.fn()
         let commit = function(operation, parameter) {
           expect(operation).toEqual('updateLink')
           expect(parameter).toEqual(
-            {
+            new Link({
+              id: 88,
+              title: 'News',
+              url: 'https://a.ch',
+              notes: '',
+              order: 4,
               completed: false,
-              id: '8',
-              notes: 'Some other notes',
-              order: 0,
-              title: 'flexbox',
-              topicId: 4,
-              topicName: 'UI Elements',
-              url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
-            }
+              topicName: null,
+              topicId: null,
+              topicColor: '#a393ac'
+            })
           )
           done()
         }
 
-        linksModule.actions.updateLinksToDo({commit, dispatch},
-          [
-            {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
-              'topicId': 4, 'topicName': 'UI Elements',
-              'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}
-          ])
+        linksModule.actions.updateLink({commit, dispatch},
+          {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
+            'topicId': 4, 'topicName': 'UI Elements',
+            'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
+          }
+        )
       })
 
-      it('dispatches addToast on error', (done) => {
+      it('toasts an error', (done) => {
         linksModule.linksApiService.$http = mocks.$httpUpdateFail
         let commit = jest.fn()
         let dispatch = function(operation, parameter) {
           expect(operation).toEqual('addToast')
-          expect(parameter).toEqual([TOAST_TYPE.ERROR, 'Could not update flexbox'])
+          expect(parameter).toEqual(['error', 'Could not update Link: [object Object]'])
           done()
         }
 
-        linksModule.actions.updateLinksToDo({commit, dispatch},
-          [
+        linksModule.actions.updateLink({commit, dispatch},
+          {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
+            'topicId': 4, 'topicName': 'UI Elements',
+            'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
+          }
+        )
+      })
+    })
+
+    describe('addLink', () => {
+      describe('when succeding', () => {
+        it('commits addLink', (done) => {
+          linksModule.linksApiService.$http = mocks.$httpCreateSuccess
+          let dispatch = jest.fn()
+          let commit = function (operation, parameter) {
+            expect(operation).toEqual('addLink')
+            expect(parameter).toEqual(
+              new Link({
+                id: 2,
+                title: 'Types',
+                url: 'https://t.ch',
+                notes: 'some',
+                order: 0,
+                topic_id: 2,
+                topic_name: 'Architecture',
+                topic_color: '#ab2123'
+              })
+            )
+            done()
+          }
+
+          linksModule.actions.addLink({commit, dispatch}, mocks.$httpCreateSuccess.newItem)
+        })
+
+        it('dispatches addToast', (done) => {
+          linksModule.linksApiService.$http = mocks.$httpCreateSuccess
+          let commit = jest.fn()
+          let dispatch = function (operation, parameter) {
+            expect(operation).toEqual('addToast')
+            expect(parameter).toEqual([TOAST_TYPE.SUCCESS, 'Successfully added Link "Types"'])
+            done()
+          }
+
+          linksModule.actions.addLink({commit, dispatch}, mocks.$httpCreateSuccess.newItem)
+        })
+      })
+
+      describe('when failing', () => {
+        it('toasts an error', (done) => {
+          linksModule.linksApiService.$http = mocks.$httpCreateFail
+          let commit = jest.fn()
+          let dispatch = function(operation, parameter) {
+            expect(operation).toEqual('addToast')
+            expect(parameter).toEqual(['error', 'Could not create Link "flexbox"'])
+            done()
+          }
+
+          linksModule.actions.addLink({commit, dispatch},
             {'completed': false, 'id': '8', 'notes': 'Some other notes', 'order': 2, 'title': 'flexbox',
               'topicId': 4, 'topicName': 'UI Elements',
-              'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}
-          ])
+              'url': 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
+            }
+          )
+        })
       })
     })
   })
@@ -161,7 +244,7 @@ describe('store/modules/links', () => {
     let links
 
     beforeEach(() => {
-      state = {}
+      state = { links: [] }
       links = [new Link({ id: 2, url: 'https://house.ch', title: 'the house' })]
     })
 
@@ -170,6 +253,21 @@ describe('store/modules/links', () => {
         linksModule.mutations.setLinks(state, links)
 
         expect(state.links).toEqual(links)
+      })
+    })
+
+    describe('#addLinks', () => {
+      it('adds a link', () => {
+        state.links = [
+          new Link({ id: 3, title: 'old Link', url: 'https://b.ch' })
+        ]
+        const newLink = new Link({ id: 1, title: 'new Link', url: 'https://a.ch' })
+        linksModule.mutations.addLink(state, newLink)
+
+        expect(state.links).toEqual([
+          new Link({ id: 3, title: 'old Link', url: 'https://b.ch' }),
+          new Link({ id: 1, title: 'new Link', url: 'https://a.ch' })
+        ])
       })
     })
 

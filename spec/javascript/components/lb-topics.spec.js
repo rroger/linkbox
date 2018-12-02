@@ -61,6 +61,16 @@ describe('TopicsComponent', () => {
 
       expect(spy).toBeCalledTimes(1)
     })
+
+    it('focus topic name field', (done) => {
+      wrapper.vm.toggleFormVisibility()
+
+      Vue.nextTick(() => {
+        const focusedElement = document.activeElement
+        expect(wrapper.vm.$refs.topicNameInput).toEqual(focusedElement)
+        done()
+      })
+    })
   })
 
   describe('#clearForm', () => {

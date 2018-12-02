@@ -3,13 +3,13 @@ import { Link } from '../../../app/javascript/models/link'
 import * as mocks from '../mocks/links_mocks'
 
 describe('LinksApiService', () => {
+  let service
+
+  beforeEach(() => {
+    service = new LinksApiService()
+  })
+
   describe('#fetchAll', () => {
-    let service
-
-    beforeEach(() => {
-      service = new LinksApiService()
-    })
-
     it('returns all links',  (done) =>  {
       service.$http = mocks.$httpIndexSuccess
 
@@ -28,7 +28,7 @@ describe('LinksApiService', () => {
       )
     })
 
-    it('throws error when http status not ok', (done) => {
+    it('gets error when http status not ok', (done) => {
       service.$http = mocks.$httpIndexFail
 
       service.fetchAll().catch(
@@ -37,6 +37,152 @@ describe('LinksApiService', () => {
           done()
         }
       )
+    })
+  })
+
+  describe('#createLink', () => {
+    it('create a link',  (done) =>  {
+      service.$http = mocks.$httpCreateSuccess
+
+      service.createLink(mocks.$httpCreateSuccess.newItem).then(
+        (data) => {
+          expect(data).toEqual(
+            new Link({ completed: false, id: 2, notes: 'some', order: 0, title: 'Types', topic_id: 2,
+              topic_name: 'Architecture', topic_color: '#ab2123', url: 'https://t.ch'})
+          )
+          done()
+        }
+      )
+    })
+
+    it('gets an error when http status not ok', (done) => {
+      service.$http = mocks.$httpCreateFail
+
+      service.createLink(mocks.$httpCreateSuccess.newItem).catch(
+        (error) => {
+          expect(error).toEqual({'data': {'data': 'internal server error'}})
+          done()
+        }
+      )
+    })
+
+    it('throws error when no parameter is passed', () => {
+      service.$http = mocks.$httpCreateFail
+      const call = () => {
+        service.createLink().catch(
+          (error) => {
+            expect(error).toEqual('This would be the wrong error')
+          }
+        )
+      }
+
+      expect(call).toThrow('Exception: no link to update')
+    })
+  })
+
+  describe('#updateLink', () => {
+    it('updates a link',  (done) =>  {
+      service.$http = mocks.$httpUpdateSuccess
+      const updateData = { id: 88, order: 4}
+
+      service.updateLink(updateData).then(
+        (data) => {
+          expect(data).toEqual(
+            new Link({ completed: false, id: 88, notes: '', order: 4, title: 'News', topic_id: null,
+              topic_name: null, topic_color: null, url: 'https://a.ch'})
+          )
+          done()
+        }
+      )
+    })
+
+    it('gets an error when http status not ok', (done) => {
+      service.$http = mocks.$httpUpdateFail
+
+      service.updateLink({ id: 5, order: 4 }).catch(
+        (error) => {
+          expect(error).toEqual({'data': {'data': 'internal server error'}})
+          done()
+        }
+      )
+    })
+
+    it('throws error when no parameter is passed', () => {
+      service.$http = mocks.$httpUpdateFail
+      const call = () => {
+        service.updateLink().catch(
+          (error) => {
+            expect(error).toEqual('This would be the wrong error')
+          }
+        )
+      }
+
+      expect(call).toThrow('Exception: no link to update')
+    })
+
+    it('throws error when no id is passed', () => {
+      service.$http = mocks.$httpUpdateFail
+      const call = () => {
+        service.updateLink({ url: 'newUrl'}).catch(
+          (error) => {
+            expect(error).toEqual('This would be the wrong error')
+          }
+        )
+      }
+
+      expect(call).toThrow('Exception: no link to update')
+    })
+  })
+
+  describe('#linkParams', () => {
+    it('creates params for new link', () => {
+      const link = { title: 'Houses', url: 'https://www.exa.com' }
+      const params = service.linkParams(link)
+
+      expect(params).toEqual({
+        data: {
+          type: 'link',
+          attributes: {
+            title: 'Houses',
+            url: 'https://www.exa.com',
+          }
+        }
+      })
+    })
+
+    it('adds link on top level', () => {
+      const link = { id: 1, title: 'Houses', url: 'https://www.exa.com', notes: 'some', topic_id: 23 }
+      const params = service.linkParams(link)
+
+      expect(params).toEqual({
+        data: {
+          type: 'link',
+          attributes: {
+            title: 'Houses',
+            url: 'https://www.exa.com',
+            topic_id: 23,
+            notes: 'some'
+          },
+          id: 1,
+        }
+      })
+    })
+
+    it('adds topic_id to attributes', () => {
+      const link = { id: 1, title: 'Houses', url: 'https://www.exa.com', topicId: 4 }
+      const params = service.linkParams(link)
+
+      expect(params).toEqual({
+        data: {
+          type: 'link',
+          attributes: {
+            title: 'Houses',
+            url: 'https://www.exa.com',
+            topic_id: 4
+          },
+          id: 1,
+        }
+      })
     })
   })
 })
