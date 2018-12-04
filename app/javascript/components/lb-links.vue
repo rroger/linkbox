@@ -33,12 +33,8 @@
         </div>
       </div>
     </div>
-    <lb-link-new v-if="showLinkNew()"
-        @close="closeLinkModals()"
-    ></lb-link-new>
-    <lb-link-edit v-if="showLinkEdit()"
-                 @close="closeLinkModals()"
-    ></lb-link-edit>
+    <lb-link-new v-if="showLinkNew()" @close="closeLinkModals()"></lb-link-new>
+    <lb-link-edit v-if="showLinkEdit()" @close="closeLinkModals()"></lb-link-edit>
   </div>
 </template>
 
