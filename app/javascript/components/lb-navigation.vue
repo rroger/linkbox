@@ -48,6 +48,7 @@ export default {
     overflow-x: hidden;
     border: $background-bright $normal-border-size solid;
     line-height: $nav-button-line-height;
+    cursor: pointer;
 
     .add-sign {
       width: $nav-button-line-height;

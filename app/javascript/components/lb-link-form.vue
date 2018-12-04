@@ -89,10 +89,10 @@ export default {
 
     .textarea-autosize {
       width: $normal-form-element-width;
-      padding: $normal-space;
       font-size: $font-size-title-small;
       font-weight: normal;
       color: $dark-gray;
+      padding: 2*$normal-space $normal-space;
       margin: 1.5*$normal-space auto 0;
     }
 
