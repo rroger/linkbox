@@ -27,7 +27,7 @@ export default {
 
   body {
     font-family: $font-family-base;
-    background-color: white;
+    background-color: $background-bright;
     min-height:100vh
   }
 

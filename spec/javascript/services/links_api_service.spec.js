@@ -252,9 +252,9 @@ describe('LinksApiService', () => {
         expect(service.linkIdentifier(link)).toEqual('"Awesome"')
       })
 
-      it('returns id without title', () => {
-        const link = { id: '12'}
-        expect(service.linkIdentifier(link)).toEqual('ID: 12')
+      it('returns url without title', () => {
+        const link = { url: 'https://so.test'}
+        expect(service.linkIdentifier(link)).toEqual('URL: https://so.test')
       })
 
       it('returns empty string without title id or title', () => {

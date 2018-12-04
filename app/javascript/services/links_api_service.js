@@ -61,8 +61,8 @@ export class LinksApiService extends BaseApiService {
     let linkIdentifier = ''
     if (link && link.title) {
       linkIdentifier = `"${link.title}"`
-    } else if (link && link.id) {
-      linkIdentifier = `ID: ${link.id}`
+    } else if (link && link.url) {
+      linkIdentifier = `URL: ${link.url}`
     }
     return linkIdentifier
   }

@@ -303,7 +303,7 @@ describe('store/modules/links', () => {
           let commit = jest.fn()
           let dispatch = function (operation, parameter) {
             expect(operation).toEqual('addToast')
-            expect(parameter).toEqual([TOAST_TYPE.SUCCESS, 'Successfully deleted Link ID: 2'])
+            expect(parameter).toEqual([TOAST_TYPE.SUCCESS, 'Successfully deleted Link '])
             done()
           }
 
@@ -317,7 +317,7 @@ describe('store/modules/links', () => {
           let commit = jest.fn()
           let dispatch = function(operation, parameter) {
             expect(operation).toEqual('addToast')
-            expect(parameter).toEqual(['error', 'Could not deleted Link ID: 2'])
+            expect(parameter).toEqual(['error', 'Could not deleted Link '])
             done()
           }
 

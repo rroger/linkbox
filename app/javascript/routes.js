@@ -6,4 +6,5 @@ export const routes = [
   { path: '/library', component: LbLinks },
   { path: '/library/:additional', component: LbLinks },
   { path: '/library/:id/:additional', component: LbLinks },
+  { path: '*', redirect: '/library' }
 ]
