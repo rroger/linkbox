@@ -30,7 +30,9 @@
         </span>
         <a href="javascript:void(0)" @click="editLink()" class="ml-1" >EDIT</a>
         <div v-if="showNotes" class="notes">
-          {{ link.notes }}
+          <span v-bind:key="row" v-for="row in link.notes.split('\n')">
+            {{ row }}<br/>
+          </span>
         </div>
       </div>
     </div>

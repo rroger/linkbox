@@ -17,7 +17,15 @@
             <input id="link-title" v-model="newLink.title" type="text" placeholder="Link Title" class="form-control">
 
             <label for="link-notes" hidden>Link Notes</label>
-            <input id="link-notes" v-model="newLink.notes" type="text" placeholder="Notes" class="form-control">
+            <textarea-autosize
+                id="link-notes"
+                class="form-control textarea-autosize"
+                placeholder="Notes"
+                ref="someName"
+                v-model="newLink.notes"
+                :min-height="30"
+                @blur.native="onBlurTextarea"
+            ></textarea-autosize>
 
             <label for="link-topic" hidden>Link Topic</label>
             <select id="link-topic" v-model="newLink.topicId" class="form-control">
@@ -187,6 +195,15 @@ export default {
       @include default-button;
       min-width: 35%;
       margin: 0;
+    }
+
+    .textarea-autosize {
+      width: $normal-form-element-width;
+      padding: $normal-space;
+      font-size: $font-size-title-small;
+      font-weight: normal;
+      color: $dark-gray;
+      margin: 1.5*$normal-space auto 0;
     }
 
     ::placeholder {

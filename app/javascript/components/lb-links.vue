@@ -7,8 +7,8 @@
       </h2>
       <draggable v-model='linksToDo' class="mb-5">
         <div class="to-do" v-bind:key="link.id" v-for="link in linksToDo">
-            <lb-link-show :link="link"></lb-link-show>
-          </div>
+          <lb-link-show :link="link"></lb-link-show>
+        </div>
       </draggable>
     </div>
     <div class="completed-section">
@@ -124,7 +124,7 @@ export default {
       .completed-title {
         cursor: pointer;
       }
-    
+
       .completed-links {
         max-width: $max-width;
       }
