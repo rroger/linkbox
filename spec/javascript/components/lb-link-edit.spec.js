@@ -29,7 +29,7 @@ describe('lb-link-edit', () => {
           $route: route
         },
         methods: {
-          loadData() { loadDataSpy(this.resetNewLink()) }
+          loadData() { loadDataSpy() }
         }
       })
     })
@@ -53,8 +53,8 @@ describe('lb-link-edit', () => {
         })
       })
 
-      it('sets newLink to an empty Link', () => {
-        expect(wrapper.vm.newLink).toEqual({
+      it('sets editLinkCopy to an empty Link', () => {
+        expect(wrapper.vm.editLinkCopy).toEqual({
           completed: false,
           id: undefined,
           notes: '',
@@ -95,8 +95,8 @@ describe('lb-link-edit', () => {
       })
 
       it('clones edit Link', () => {
-        expect(wrapper.vm.newLink).not.toBe(wrapper.vm.editLink)
-        expect(wrapper.vm.newLink).toEqual(wrapper.vm.editLink)
+        expect(wrapper.vm.editLinkCopy).not.toBe(wrapper.vm.editLink)
+        expect(wrapper.vm.editLinkCopy).toEqual(wrapper.vm.editLink)
       })
     })
 
@@ -189,13 +189,13 @@ describe('lb-link-edit', () => {
         wrapper.vm.editLink =  new Link({ completed: false, id: '8', notes: 'Some other notes',
           order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
           url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
-        wrapper.vm.newLink = new Link({ completed: true, id: '8', notes: 'Edited notes',
+        wrapper.vm.editLinkCopy = new Link({ completed: true, id: '8', notes: 'Edited notes',
           order: 2, title: 'Edited Link', topic_id: 2, topic_name: 'Archive', topic_color: '#8abb9',
           url: 'https://edited.com/'})
         wrapper.vm.save()
       })
 
-      it('calls updateLink with newLink', (done) => {
+      it('calls updateLink with editLinkCopy', (done) => {
         localVue.nextTick(() => {
           const expectedLink = new Link({ completed: true, id: '8', notes: 'Edited notes',
             order: 2, title: 'Edited Link', topic_id: 2, topic_name: 'Archive', topic_color: '#8abb9',
@@ -206,9 +206,9 @@ describe('lb-link-edit', () => {
         })
       })
 
-      it('resets newLink', (done) => {
+      it('resets editLinkCopy', (done) => {
         localVue.nextTick(() => {
-          expect(wrapper.vm.newLink).toEqual(new Link({ url: 'https://'}))
+          expect(wrapper.vm.editLinkCopy).toEqual(new Link({ url: 'https://'}))
           done()
         })
       })
@@ -285,15 +285,15 @@ describe('lb-link-edit', () => {
     })
   })
 
-  describe('#resetNewLink', () => {
-    it('resets newLink', () => {
+  describe('#resetEditLinkCopy', () => {
+    it('resets editLinkCopy', () => {
       const wrapper = shallowMount(LbLinkEdit, {
         localVue,
         mocks: {
           $router: router,
           $route: route
         }})
-      wrapper.vm.newLink = new Link({
+      wrapper.vm.editLinkCopy = new Link({
         title: 'abc',
         id: 5,
         notes: 'some Notes',
@@ -302,9 +302,9 @@ describe('lb-link-edit', () => {
         topicName: 'Name',
         topicId: '5'
       })
-      wrapper.vm.resetNewLink()
+      wrapper.vm.resetEditLinkCopy()
 
-      expect(wrapper.vm.newLink).toEqual({
+      expect(wrapper.vm.editLinkCopy).toEqual({
         completed: false,
         id: undefined,
         notes: '',

@@ -8,7 +8,7 @@
             <h2 class="mb-5">
               <span>Edit Link</span>
             </h2>
-            <lb-link-form :link="newLink"></lb-link-form>
+            <lb-link-form :link="editLinkCopy"></lb-link-form>
             <button type="button" class="btn btn-outline-primary mt-2" @click="toggleConfirmationShown()">Delete</button>
             <button @click="save()" class="btn btn-primary mt-2 mb-3">Save</button>
           </div>
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       topics: [],
-      newLink: null,
+      editLinkCopy: null,
       editLink: null,
       isConfirmationShown: false
     }
@@ -67,9 +67,9 @@ export default {
     ]),
     save() {
       if (this.editLink) {
-        this.newLink.toastSuccessMessage = true
-        this.updateLink(this.newLink).then(() => {
-          this.resetNewLink()
+        this.editLinkCopy.toastSuccessMessage = true
+        this.updateLink(this.editLinkCopy).then(() => {
+          this.resetEditLinkCopy()
           this.editLink = null
           this.closeFormModal()
         })
@@ -81,22 +81,22 @@ export default {
       this.closeFormModal()
     },
     loadData() {
-      this.resetNewLink()
+      this.resetEditLinkCopy()
       const id = this.$route.params.id
       if (id) {
         this.editLink = this.link(id)
         if (this.editLink) {
           // according to stackoverflow the best way to clone a class instance in es6:
           // https://stackoverflow.com/questions/41474986/how-to-clone-a-javascript-es6-class-instance
-          this.newLink = Object.assign( Object.create( Object.getPrototypeOf(this.editLink)), this.editLink)
+          this.editLinkCopy = Object.assign( Object.create( Object.getPrototypeOf(this.editLink)), this.editLink)
         } else {
           this.closeFormModal()
           this.addToast([TOAST_TYPE.ERROR, `Could not edit Link (id: ${id})`])
         }
       }
     },
-    resetNewLink() {
-      this.newLink = new Link({ url: 'https://' })
+    resetEditLinkCopy() {
+      this.editLinkCopy = new Link({ url: 'https://' })
     },
     closeFormModal() {
       this.$router.push('/library')
