@@ -101,51 +101,51 @@ describe('lb-links.vue', () => {
     it('returns true for "new" as url param', () => {
       wrapper.vm.$route.params.additional = 'new'
 
-      expect(wrapper.vm.showLinkForm()).toBeTruthy()
+      expect(wrapper.vm.showLinkNew()).toBeTruthy()
     })
 
     it('returns true for id with "edit" as url param', () => {
       wrapper.vm.$route.params.id = 1
       wrapper.vm.$route.params.additional = 'edit'
 
-      expect(wrapper.vm.showLinkForm()).toBeTruthy()
+      expect(wrapper.vm.showLinkEdit()).toBeTruthy()
     })
 
     it('returns false for just "edit" as url param', () => {
       wrapper.vm.$route.params.additional = 'edit'
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
     })
 
     it('returns false for empty url param', () => {
       wrapper.vm.$route.params.additional = ''
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
     })
 
     it('returns false for undefined url param', () => {
       wrapper.vm.$route.params.additional = undefined
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
     })
 
     it('returns false for null url param', () => {
       wrapper.vm.$route.params.additional = null
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
     })
 
     it('returns false for id with "new" url param', () => {
       wrapper.vm.$route.params.id = 1
       wrapper.vm.$route.params.additional = 'new'
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
     })
 
     it('returns false for number url param', () => {
       wrapper.vm.$route.params.additional = 1
 
-      expect(wrapper.vm.showLinkForm()).toBeFalsy()
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
     })
   })
 })

@@ -33,9 +33,12 @@
         </div>
       </div>
     </div>
-    <lb-link-form v-if="showLinkForm()"
-        @close="closeLinkForm()"
-    ></lb-link-form>
+    <lb-link-new v-if="showLinkNew()"
+        @close="closeLinkModals()"
+    ></lb-link-new>
+    <lb-link-edit v-if="showLinkEdit()"
+                 @close="closeLinkModals()"
+    ></lb-link-edit>
   </div>
 </template>
 
@@ -43,13 +46,15 @@
 import { mapGetters, mapActions } from 'vuex'
 import Draggable from 'vuedraggable'
 import LbLinkShow from './lb-link-show'
-import LbLinkForm from './lb-link-form'
+import LbLinkNew from './lb-link-new'
+import LbLinkEdit from './lb-link-edit'
 
 export default {
   name: 'lb-links',
   components: {
     'lb-link-show': LbLinkShow,
-    'lb-link-form': LbLinkForm,
+    'lb-link-new': LbLinkNew,
+    'lb-link-edit': LbLinkEdit,
     'draggable': Draggable,
   },
   created() {
@@ -82,12 +87,17 @@ export default {
     toggleShowCompleted() {
       this.showCompletedSection = !this.showCompletedSection
     },
-    showLinkForm() {
+    showLinkNew() {
       const urlParam = this.$route.params.additional
       const id = this.$route.params.id
-      return (!id && urlParam === 'new') || (id && urlParam === 'edit')
+      return (!id && urlParam === 'new')
     },
-    closeLinkForm() {
+    showLinkEdit() {
+      const urlParam = this.$route.params.additional
+      const id = this.$route.params.id
+      return (id && urlParam === 'edit')
+    },
+    closeLinkModals() {
       this.$router.push('/library')
     }
   }
