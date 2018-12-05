@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import LbLinkEdit from '../../../app/javascript/components/lb-link-edit'
 import LbConfirmation from '../../../app/javascript/components/lb-confirmation'
+import LbModal from '../../../app/javascript/components/lb-modal'
 import focus from '../../../app/javascript/directives/focus'
 import { Link } from '../../../app/javascript/models/link'
 import VueTextareaAutosize from 'vue-textarea-autosize'
@@ -11,26 +12,65 @@ localVue.use(Vuex)
 localVue.directive('focus', focus)
 localVue.use(VueTextareaAutosize)
 localVue.component('lb-confirmation', LbConfirmation)
+localVue.component('lb-modal', LbModal)
 
 
 describe('lb-link-edit', () => {
   let routerPushSpy = jest.fn()
   let router = { push(input) { routerPushSpy(input) } }
   let route = { params: {} }
+  let actions
+  let getters
+  let store
+  let wrapper
+
+  beforeEach(() => {
+    actions = {
+      updateLinksToDo: jest.fn(),
+      addToast: jest.fn()
+    }
+    getters = {
+      linksToDo: jest.fn(),
+    }
+    store = new Vuex.Store({
+      modules: {
+        links: {
+          state: {
+            links: [
+              new Link({ completed: false, id: '8', notes: 'Some other notes',
+                order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
+                url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
+            ]
+          },
+          getters,
+          actions
+        }
+      }
+    })
+  })
 
   describe('#created', () => {
-    let loadDataSpy = jest.fn()
+    let loadDataSpy
 
     beforeEach(() => {
-      shallowMount(LbLinkEdit, {
+      loadDataSpy = jest.spyOn(LbLinkEdit.methods, 'loadData')
+
+      wrapper = mount(LbLinkEdit, {
+        sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+        store,
         localVue,
         mocks: {
           $router: router,
-          $route: route
+          $route: { params: { id: 1 } }
         },
-        methods: {
-          loadData() { loadDataSpy() }
-        }
+        computed: {
+          link: () => () => {
+            return new Link({
+              completed: true, id: 1, notes: '', order: null, title: 'Example 6', topic_id: 1,
+              topic_name: 'Typography', url: 'https://example6.com'
+            })
+          },
+        },
       })
     })
 
@@ -39,12 +79,51 @@ describe('lb-link-edit', () => {
     })
   })
 
+  describe ('#mounted', () => {
+    describe('with in-existing id', () => {
+      let toastSpy
+
+      beforeEach(() => {
+        toastSpy = jest.fn()
+        wrapper = mount(LbLinkEdit, {
+          sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+          store,
+          localVue,
+          mocks: {
+            $router: router,
+            $route: {params: {id: 1}}
+          },
+          computed: {
+            link: () => () => {
+              return undefined
+            },
+          },
+          methods: {
+            addToast(input) {
+              toastSpy(input)
+            },
+          }
+        })
+      })
+
+      it('toasts an error', () => {
+        expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not edit Link'])
+      })
+
+      it('closes edit modal', () => {
+        expect(routerPushSpy).toHaveBeenCalledWith('/library')
+      })
+    })
+  })
+
   describe('#loadData', () => {
     let wrapper
 
     describe('without id', () => {
       beforeEach(() => {
-        wrapper = shallowMount(LbLinkEdit, {
+        wrapper = mount(LbLinkEdit, {
+          sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+          store,
           localVue,
           mocks: {
             $router: router,
@@ -75,6 +154,8 @@ describe('lb-link-edit', () => {
     describe('with valid id', () => {
       beforeEach(() => {
         wrapper = shallowMount(LbLinkEdit, {
+          sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+          store,
           localVue,
           mocks: {
             $router: router,
@@ -99,74 +180,10 @@ describe('lb-link-edit', () => {
         expect(wrapper.vm.editLinkCopy).toEqual(wrapper.vm.editLink)
       })
     })
-
-    describe('with in-existing id', () => {
-      let toastSpy
-      let closeFormModalSpy
-
-      beforeEach(() => {
-        toastSpy = jest.fn()
-        closeFormModalSpy = jest.fn()
-        wrapper = shallowMount(LbLinkEdit, {
-          localVue,
-          mocks: {
-            $router: router,
-            $route: { params: { id: 1 } }
-          },
-          computed: {
-            link: () => () => { return undefined },
-          },
-          methods: {
-            addToast(input) { toastSpy(input) },
-            closeFormModal() { closeFormModalSpy() }
-          }
-        })
-      })
-
-      it('toasts an error', () => {
-        expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not edit Link (id: 1)'])
-      })
-
-      it('closes edit modal', () => {
-        expect(closeFormModalSpy).toHaveBeenCalled()
-      })
-    })
   })
 
   describe('#save', () => {
-    let actions
-    let getters
-    let store
-    let wrapper
     let saveLinkSpy
-    let closeFormModalSpy
-
-    beforeEach(() => {
-      actions = {
-        updateLinksToDo: jest.fn()
-      }
-      getters = {
-        linksToDo: jest.fn(),
-      }
-      store = new Vuex.Store({
-        modules: {
-          links: {
-            state: {
-              links: [
-                new Link({ completed: false, id: '8', notes: 'Some other notes',
-                  order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
-                  url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
-              ]
-            },
-            getters,
-            actions
-          }
-        }
-      })
-
-      saveLinkSpy = jest.fn()
-      closeFormModalSpy = jest.fn()
-    })
 
     describe('edit link', () => {
       beforeEach(() => {
@@ -183,9 +200,9 @@ describe('lb-link-edit', () => {
               saveLinkSpy(input)
               return Promise.resolve(true)
             },
-            closeFormModal() { closeFormModalSpy() }
           }
         })
+        saveLinkSpy = jest.fn()
         wrapper.vm.editLink =  new Link({ completed: false, id: '8', notes: 'Some other notes',
           order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
           url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'}),
@@ -222,7 +239,7 @@ describe('lb-link-edit', () => {
 
       it('closes FormModal', (done) => {
         localVue.nextTick(() => {
-          expect(closeFormModalSpy).toHaveBeenCalledTimes(1)
+          expect(routerPushSpy).toHaveBeenCalledWith('/library')
           done()
         })
       })
@@ -233,31 +250,32 @@ describe('lb-link-edit', () => {
     let store
     let wrapper
     let deleteLinkSpy
-    let closeFormModalSpy
 
     beforeEach(() => {
       deleteLinkSpy = jest.fn()
-      closeFormModalSpy = jest.fn()
       wrapper = mount(LbLinkEdit, {
         store,
         localVue,
         mocks: {
           $router: router,
-          $route: route
+          $route: { params: { id: 8 } }
+        },
+        computed: {
+          link: () => () => {
+            return new Link({
+              completed: false, id: '8', notes: 'Some other notes',
+              order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
+              url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'
+            })
+          }
         },
         methods: {
           deleteLink(input) {
             deleteLinkSpy(input)
             return Promise.resolve(true)
           },
-          closeFormModal() {
-            closeFormModalSpy()
-          }
         }
       })
-      wrapper.vm.editLink =  new Link({ completed: false, id: '8', notes: 'Some other notes',
-        order: null, title: 'flexbox', topic_id: 4, topic_name: 'UI Elements', topic_color: '#8729b9',
-        url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/'})
     })
 
     it('calls deleteLink with this.editLink', () => {
@@ -269,7 +287,9 @@ describe('lb-link-edit', () => {
     it('close form modal', () => {
       wrapper.vm.remove()
 
-      expect(closeFormModalSpy).toHaveBeenCalled()
+      localVue.nextTick(() => {
+        expect(routerPushSpy).toHaveBeenCalledWith('/library')
+      })
     })
 
     it('throws an exception without editLink', () => {
@@ -287,12 +307,15 @@ describe('lb-link-edit', () => {
 
   describe('#resetEditLinkCopy', () => {
     it('resets editLinkCopy', () => {
-      const wrapper = shallowMount(LbLinkEdit, {
+      const wrapper = mount(LbLinkEdit, {
+        sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+        store,
         localVue,
         mocks: {
           $router: router,
           $route: route
-        }})
+        }
+      })
       wrapper.vm.editLinkCopy = new Link({
         title: 'abc',
         id: 5,
@@ -318,31 +341,17 @@ describe('lb-link-edit', () => {
     })
   })
 
-  describe('#closeFormModal', () => {
-    it('redirects back to library', (done) => {
-      const wrapper = shallowMount(LbLinkEdit, {
-        localVue,
-        mocks: {
-          $router: router,
-          $route: route
-        }})
-      wrapper.vm.closeFormModal()
-
-      localVue.nextTick(() => {
-        expect(routerPushSpy).toHaveBeenCalledWith('/library')
-        done()
-      })
-    })
-  })
-
   describe('#toggleConfirmationShown', () => {
     it('toggles value', () => {
-      const wrapper = shallowMount(LbLinkEdit, {
+      const wrapper = mount(LbLinkEdit, {
+        sync: false, // bug https://github.com/vuejs/vue-test-utils/issues/829#issuecomment-406049236
+        store,
         localVue,
         mocks: {
           $router: router,
           $route: route
-        }})
+        }
+      })
       const oldValue = wrapper.vm.isConfirmationShown
       wrapper.vm.toggleConfirmationShown()
 

@@ -33,8 +33,8 @@
         </div>
       </div>
     </div>
-    <lb-link-new v-if="showLinkNew()" @close="closeLinkModals()"></lb-link-new>
-    <lb-link-edit v-if="showLinkEdit()" @close="closeLinkModals()"></lb-link-edit>
+    <lb-link-new v-if="showLinkNew()"></lb-link-new>
+    <lb-link-edit v-if="showLinkEdit()"></lb-link-edit>
   </div>
 </template>
 
@@ -84,17 +84,10 @@ export default {
       this.showCompletedSection = !this.showCompletedSection
     },
     showLinkNew() {
-      const urlParam = this.$route.params.additional
-      const id = this.$route.params.id
-      return (!id && urlParam === 'new')
+      return !this.$route.params.id && this.$route.params.additional === 'new'
     },
     showLinkEdit() {
-      const urlParam = this.$route.params.additional
-      const id = this.$route.params.id
-      return (id && urlParam === 'edit')
-    },
-    closeLinkModals() {
-      this.$router.push('/library')
+      return this.$route.params.id && this.$route.params.additional === 'edit'
     }
   }
 }

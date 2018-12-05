@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="create-link-form">
     <label for="link-url" hidden>Link URL</label>
     <input id="link-url" v-model="link.url" v-focus type="text" placeholder="URL" class="form-control">
 

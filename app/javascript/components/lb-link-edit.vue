@@ -1,19 +1,12 @@
 <template>
-  <div class="modal-background">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container container create-link-form p-3">
-          <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
-          <div class="mx-sm-auto col-sm-7">
-            <h2 class="mb-5">
-              <span>Edit Link</span>
-            </h2>
-            <lb-link-form :link="editLinkCopy"></lb-link-form>
-            <button type="button" class="btn btn-outline-primary mt-2" @click="toggleConfirmationShown()">Delete</button>
-            <button @click="save()" class="btn btn-primary mt-2 mb-3">Save</button>
-          </div>
-        </div>
-      </div>
+  <lb-modal class="modal-content" ref="modal">
+    <div>
+      <h2 class="mb-5">
+        <span>Edit Link</span>
+      </h2>
+      <lb-link-form :link="editLinkCopy"></lb-link-form>
+      <button type="button" class="btn btn-outline-primary mt-2" @click="toggleConfirmationShown()">Delete</button>
+      <button @click="save()" class="btn btn-primary mt-2 mb-3">Save</button>
     </div>
     <lb-confirmation
         :showConfirmation="isConfirmationShown"
@@ -24,7 +17,7 @@
         Are you sure you want to delete '{{ editLink.title }}' from the Library?
       </span>
     </lb-confirmation>
-  </div>
+  </lb-modal>
 </template>
 
 <script>
@@ -32,6 +25,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { Link } from '../models/link'
 import { TOAST_TYPE} from '../models/toast'
 import LbLinkForm from './lb-link-form'
+import LbModal from './lb-modal'
 
 export default {
   name: 'lb-link-edit',
@@ -45,12 +39,19 @@ export default {
   },
   components: {
     'lb-link-form': LbLinkForm,
+    'lb-modal': LbModal,
   },
   props: {
     showLinkCreate: Boolean
   },
   created() {
     this.loadData()
+  },
+  mounted() {
+    if (!this.editLink) {
+      this.$refs.modal.close()
+      this.addToast([TOAST_TYPE.ERROR, 'Could not edit Link'])
+    }
   },
   computed: {
     ...mapGetters([
@@ -71,14 +72,14 @@ export default {
         this.updateLink(this.editLinkCopy).then(() => {
           this.resetEditLinkCopy()
           this.editLink = null
-          this.closeFormModal()
+          this.$refs.modal.close()
         })
       }
     },
     remove() {
       if (!this.editLink || !this.editLink.id) { throw 'Exception: No Link to delete'}
       this.deleteLink(this.editLink)
-      this.closeFormModal()
+      this.$refs.modal.close()
     },
     loadData() {
       this.resetEditLinkCopy()
@@ -89,17 +90,11 @@ export default {
           // according to stackoverflow the best way to clone a class instance in es6:
           // https://stackoverflow.com/questions/41474986/how-to-clone-a-javascript-es6-class-instance
           this.editLinkCopy = Object.assign( Object.create( Object.getPrototypeOf(this.editLink)), this.editLink)
-        } else {
-          this.closeFormModal()
-          this.addToast([TOAST_TYPE.ERROR, `Could not edit Link (id: ${id})`])
         }
       }
     },
     resetEditLinkCopy() {
       this.editLinkCopy = new Link({ url: 'https://' })
-    },
-    closeFormModal() {
-      this.$router.push('/library')
     },
     toggleConfirmationShown() {
       this.isConfirmationShown = !this.isConfirmationShown
@@ -110,33 +105,4 @@ export default {
 
 <style lang="scss" scoped>
   @import "../stylesheets/shared";
-
-  .modal-container {
-    @include default-font-measure;
-    max-width: $modal-min-width;
-    max-height: calc(100vh - #{$app-wide-min-top-margin});
-    background-color: $background-bright;
-    border-radius: $thicker-border-size;
-    box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
-    overflow-y:auto;
-  }
-
-  .create-link-form {
-    background-color: $light-gray;
-
-    h2 {
-      @include default-font-measure;
-      width: $normal-form-element-width;
-    }
-
-    button {
-      @include default-button;
-      width: $normal-form-element-width;
-      height: $normal-form-element-height;
-      padding: $normal-space;
-      margin: 0 auto;
-      float: none;
-      min-width: 35%;
-    }
-  }
 </style>

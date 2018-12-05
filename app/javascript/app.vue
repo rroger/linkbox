@@ -12,12 +12,12 @@
 
 <script>
 import LbNavigation from './components/lb-navigation'
-import LbToaster from './components/lb-toaster.vue'
+import LbToaster from './components/lb-toaster'
 
 export default {
   components: {
     'lb-navigation': LbNavigation,
-    'lb-toaster': LbToaster
+    'lb-toaster': LbToaster,
   }
 }
 </script>

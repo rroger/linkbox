@@ -74,7 +74,6 @@ describe('lb-link-new', () => {
     let store
     let wrapper
     let saveLinkSpy
-    let closeFormModalSpy
 
     beforeEach(() => {
       actions = {
@@ -102,7 +101,6 @@ describe('lb-link-new', () => {
       })
 
       saveLinkSpy = jest.fn()
-      closeFormModalSpy = jest.fn()
     })
 
     describe('add new link', () => {
@@ -112,15 +110,12 @@ describe('lb-link-new', () => {
           localVue,
           mocks: {
             $router: router,
-            $route: route
+            $route: route,
           },
           methods: {
             addLink(input) {
               saveLinkSpy(input)
               return Promise.resolve(true)
-            },
-            closeFormModal() {
-              closeFormModalSpy()
             }
           }
         })
@@ -144,7 +139,7 @@ describe('lb-link-new', () => {
 
       it('closes FormModal', (done) => {
         localVue.nextTick(() => {
-          expect(closeFormModalSpy).toHaveBeenCalledTimes(1)
+          expect(routerPushSpy).toHaveBeenCalledWith('/library')
           done()
         })
       })
@@ -180,23 +175,6 @@ describe('lb-link-new', () => {
         topicId: null,
         topicName: null,
         url: 'https://'
-      })
-    })
-  })
-
-  describe('#closeFormModal', () => {
-    it('redirects back to library', (done) => {
-      const wrapper = shallowMount(LbLinkNew, {
-        localVue,
-        mocks: {
-          $router: router,
-          $route: route
-        }})
-      wrapper.vm.closeFormModal()
-
-      localVue.nextTick(() => {
-        expect(routerPushSpy).toHaveBeenCalledWith('/library')
-        done()
       })
     })
   })

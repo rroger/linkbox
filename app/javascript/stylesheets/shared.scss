@@ -84,6 +84,23 @@ $very-thick-border-size: 3px;
   margin: $app-wide-min-top-margin auto 0;
 }
 
+.modal-content {
+  h2 {
+    @include default-font-measure;
+    width: $normal-form-element-width;
+  }
+
+  button {
+    @include default-button;
+    width: $normal-form-element-width;
+    height: $normal-form-element-height;
+    padding: $normal-space;
+    margin: 0 auto;
+    float: none;
+    min-width: 35%;
+  }
+}
+
 .close-x {
   float: right;
   cursor: pointer;
