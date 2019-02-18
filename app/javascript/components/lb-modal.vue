@@ -18,7 +18,13 @@ export default {
   name: 'lb-modal',
   methods: {
     close() {
-      this.$router.push('/library')
+      this.$router.push(this.returnUrl)
+    }
+  },
+  props: {
+    'returnUrl': {
+      default: '/library',
+      type: String
     }
   }
 }
