@@ -13,3 +13,4 @@ test:
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
+  username: <%= ENV['DATABASE_USER] %>
