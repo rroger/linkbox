@@ -12,7 +12,4 @@ test:
   database: linkbox_test
 
 production:
-  <<: *default
-  database: linkbox_production
-  username: linkbox
-  password: <%= ENV['LINKBOX_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
