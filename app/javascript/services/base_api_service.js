@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export class BaseApiService {
   constructor() {
-    this.baseURL = process.env.BASE_API
+    this.baseURL = process.env.BASE_API || '/api/v1'
     this.$http = axios.create({baseURL: this.baseURL})
   }
 
