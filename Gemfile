@@ -15,6 +15,8 @@ gem 'rails', '~> 5.2.2'
 gem 'seed_box'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
+gem 'bootsnap', require: false
+
 
 group :development, :test do
   gem 'brakeman', require: false

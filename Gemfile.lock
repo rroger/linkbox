@@ -49,6 +49,8 @@ GEM
     arel (9.0.0)
     ast (2.4.2)
     bindex (0.8.1)
+    bootsnap (1.15.0)
+      msgpack (~> 1.2)
     brakeman (5.4.0)
     builder (3.2.4)
     bundler-audit (0.9.1)
@@ -138,6 +140,7 @@ GEM
       tomlrb
     mixlib-shellout (3.2.7)
       chef-utils
+    msgpack (1.6.0)
     net-imap (0.3.4)
       date
       net-protocol
@@ -290,6 +293,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootsnap
   brakeman
   bundler-audit
   byebug
