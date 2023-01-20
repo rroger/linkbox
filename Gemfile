@@ -7,6 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'bootsnap', require: false
 gem 'fast_jsonapi'
 gem 'jbuilder', '~> 2.5'
 gem 'pg', '~> 0.18'
@@ -15,8 +16,6 @@ gem 'rails', '~> 5.2.2'
 gem 'seed_box'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
-gem 'bootsnap', require: false
-
 
 group :development, :test do
   gem 'brakeman', require: false
@@ -24,6 +23,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'capybara-screenshot'
+  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'foreman'
