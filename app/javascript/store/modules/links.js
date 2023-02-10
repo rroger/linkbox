@@ -58,7 +58,7 @@ const actions = {
       })
   },
 
-  updateLinksToDo ({ commit, dispatch }, toDoList) {
+  updateLinksToDo ({ commit, dispatch }, toDoList) { // TODO: make sure new order is ignored when it can not be saved
     toDoList.forEach((toDo, index) => {
       const newOrder = index + 1
       if (newOrder !== toDo.order) {

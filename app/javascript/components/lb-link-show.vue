@@ -59,7 +59,7 @@ export default {
     ]),
     toggleCompleted() {
       this.link.completed = !this.link.completed
-      this.updateLink({id: this.link.id, completed: this.link.completed})
+      this.updateLink({id: this.link.id, completed: this.link.completed}) // TODO: don't switch position if it is not able to save
     },
     toggleShowNotes() {
       this.showNotes = !this.showNotes
