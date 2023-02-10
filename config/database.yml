@@ -6,10 +6,14 @@ default: &default
 development:
   <<: *default
   database: linkbox_development
+  username: "dbuser"
+  password: <%= ENV['DATABASE_PW'] %>
 
 test:
   <<: *default
   database: linkbox_test
+  username: "dbuser"
+  password: <%= ENV['DATABASE_PW'] %>
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
