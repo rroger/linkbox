@@ -70,7 +70,8 @@ export default {
       showConfirmation: false,
       newTopicName: null,
       currentTopic: null,
-      baseUrl: `${process.env.BASE_API}/topics`,
+      // baseUrl: `${process.env.BASE_API}/topics`, // TODO: fix .env
+      baseUrl: `http://localhost:3000/api/v1/topics`,
     }
   },
   created() {
@@ -97,7 +98,9 @@ export default {
     fetchTopics() {
       this.$http.get(this.baseUrl).then(
         (response) => {
+          console.log("Topic fetch called")
           this.topics = response.body.data.map((raw) => {
+            console.log(raw)
             const topic = raw.attributes
             topic.id = raw.id
             return topic
