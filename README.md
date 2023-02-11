@@ -26,6 +26,7 @@ svgo app/javascript/images/add.svg
 
 ## Open Issues:
 
+- [ ] fix tests
 - [ ] upgrade to rails 6
 - [ ] upgrade to rails 7
 - [ ] fix webpack dev server hot reload
