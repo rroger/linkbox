@@ -5,9 +5,14 @@ import { Link } from '../../../app/javascript/models/link'
 describe('lb-link-show.vue', () => {
   describe('with props', () => {
     let wrapper
+    let pushSpy
 
     beforeEach(() => {
+      pushSpy = jest.fn()
       wrapper = shallowMount(LbLinkShow, {
+        mocks: {
+          $router: { push(input) { pushSpy(input) } }
+        },
         propsData: {
           link: new Link({
             id: '1', title: 'Typography', url: 'https://typos.ch',
@@ -68,6 +73,13 @@ describe('lb-link-show.vue', () => {
         wrapper.vm.toggleCompleted()
 
         expect(updateCompleteSpy).toHaveBeenCalledWith({ completed: false, id: '1'})
+      })
+    })
+
+    describe('editLink', () => {
+      it('calls edit url', () => {
+        wrapper.vm.editLink()
+        expect(pushSpy).toHaveBeenCalledWith('library/1/edit')
       })
     })
   })

@@ -19,7 +19,7 @@ RSpec.describe 'Links', :js do
     fill_in 'Notes', with: 'some notes'
     select 'Topic new', from: 'link-topic'
     click_button 'Save'
-    find('a', text: 'NOTES', exact_text: false).click
+    click_link 'NOTES'
 
     expect(page).to have_content 'Topic new'
     expect(page).to have_link('Zeit', href: 'https://zeit.de')
@@ -27,6 +27,7 @@ RSpec.describe 'Links', :js do
   end
 
   context 'with existing links' do
+    let!(:topic) { create(:topic, name: 'Houses') }
     let!(:link) do
       create(:link, title: 'Architecture', url: 'http://localhost:5001/#/library',
                     notes: 'Very good resource', order: 3, topic: create(:topic, name: 'Cars'))
@@ -40,7 +41,7 @@ RSpec.describe 'Links', :js do
     end
 
     it 'displays notes when clicked' do
-      find('a', text: 'NOTES', exact_text: false).click
+      click_link 'NOTES'
 
       expect(page).to have_content 'Very good resource'
     end
@@ -64,6 +65,32 @@ RSpec.describe 'Links', :js do
 
         expect(page).to have_content 'Architecture'
       end
+      within('.todo-section') do
+        expect(page).not_to have_content 'Architecture'
+      end
+    end
+
+    it 'can edit link' do
+      click_link 'EDIT'
+      fill_in 'link-title', with: 'Edited Title'
+      fill_in 'link-url', with: 'https://edited.com'
+      fill_in 'link-notes', with: 'Edited notes'
+      select 'Houses', from: 'link-topic'
+      click_button 'Save'
+
+      within('.todo-section') do
+        expect(page).to have_link('Edited Title', href: 'https://edited.com')
+        expect(page).to have_content('Houses')
+        click_link 'NOTES'
+        expect(page).to have_content('Edited notes')
+      end
+    end
+
+    it 'can delete link' do
+      click_link 'EDIT'
+      click_button 'Delete'
+      click_button 'Proceed'
+
       within('.todo-section') do
         expect(page).not_to have_content 'Architecture'
       end

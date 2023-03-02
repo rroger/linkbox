@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import LbLinks from '../../../app/javascript/components/lb-links.vue'
 import { Link } from '../../../app/javascript/models/link'
 import * as mocks from '../mocks/links_mocks'
@@ -83,6 +83,69 @@ describe('lb-links.vue', () => {
       wrapper.vm.toggleShowCompleted()
 
       expect(wrapper.vm.showCompletedSection).toBeTruthy()
+    })
+  })
+
+  describe('#showLinkForm', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = shallowMount(LbLinks, { store, localVue,
+        mocks: {
+          $http: mocks.$httpIndexSuccess,
+          $route: { params: { additional: '' } }
+        }
+      })
+    })
+
+    it('returns true for "new" as url param', () => {
+      wrapper.vm.$route.params.additional = 'new'
+
+      expect(wrapper.vm.showLinkNew()).toBeTruthy()
+    })
+
+    it('returns true for id with "edit" as url param', () => {
+      wrapper.vm.$route.params.id = 1
+      wrapper.vm.$route.params.additional = 'edit'
+
+      expect(wrapper.vm.showLinkEdit()).toBeTruthy()
+    })
+
+    it('returns false for just "edit" as url param', () => {
+      wrapper.vm.$route.params.additional = 'edit'
+
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
+    })
+
+    it('returns false for empty url param', () => {
+      wrapper.vm.$route.params.additional = ''
+
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
+    })
+
+    it('returns false for undefined url param', () => {
+      wrapper.vm.$route.params.additional = undefined
+
+      expect(wrapper.vm.showLinkEdit()).toBeFalsy()
+    })
+
+    it('returns false for null url param', () => {
+      wrapper.vm.$route.params.additional = null
+
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
+    })
+
+    it('returns false for id with "new" url param', () => {
+      wrapper.vm.$route.params.id = 1
+      wrapper.vm.$route.params.additional = 'new'
+
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
+    })
+
+    it('returns false for number url param', () => {
+      wrapper.vm.$route.params.additional = 1
+
+      expect(wrapper.vm.showLinkNew()).toBeFalsy()
     })
   })
 })

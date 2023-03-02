@@ -7,8 +7,8 @@
       </h2>
       <draggable v-model='linksToDo' class="mb-5">
         <div class="to-do" v-bind:key="link.id" v-for="link in linksToDo">
-            <lb-link-show :link="link"></lb-link-show>
-          </div>
+          <lb-link-show :link="link"></lb-link-show>
+        </div>
       </draggable>
     </div>
     <div class="completed-section">
@@ -33,9 +33,8 @@
         </div>
       </div>
     </div>
-    <lb-link-form v-if="$route.params.additional === 'new'"
-        @close="$router.push('/library')"
-    ></lb-link-form>
+    <lb-link-new v-if="showLinkNew()"></lb-link-new>
+    <lb-link-edit v-if="showLinkEdit()"></lb-link-edit>
   </div>
 </template>
 
@@ -43,13 +42,15 @@
 import { mapGetters, mapActions } from 'vuex'
 import Draggable from 'vuedraggable'
 import LbLinkShow from './lb-link-show'
-import LbLinkForm from './lb-link-form'
+import LbLinkNew from './lb-link-new'
+import LbLinkEdit from './lb-link-edit'
 
 export default {
   name: 'lb-links',
   components: {
     'lb-link-show': LbLinkShow,
-    'lb-link-form': LbLinkForm,
+    'lb-link-new': LbLinkNew,
+    'lb-link-edit': LbLinkEdit,
     'draggable': Draggable,
   },
   created() {
@@ -57,7 +58,7 @@ export default {
   },
   data() {
     return {
-      showCompletedSection: false
+      showCompletedSection: false,
     }
   },
   computed: {
@@ -81,6 +82,12 @@ export default {
     ]),
     toggleShowCompleted() {
       this.showCompletedSection = !this.showCompletedSection
+    },
+    showLinkNew() {
+      return !this.$route.params.id && this.$route.params.additional === 'new'
+    },
+    showLinkEdit() {
+      return this.$route.params.id && this.$route.params.additional === 'edit'
     }
   }
 }

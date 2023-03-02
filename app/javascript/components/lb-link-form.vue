@@ -1,84 +1,70 @@
 <template>
-  <div class="modal-background">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container container create-link-form p-3">
-          <i @click="$emit('close')" class="material-icons md-48 close-x">close</i>
-          <div class="mx-sm-auto col-sm-7">
-            <h2 class="mb-5">New Link</h2>
-            <label for="link-url" hidden>Link URL</label>
-            <input id="link-url" v-model="newLink.url" v-focus type="text" placeholder="URL" class="form-control">
+  <div class="create-link-form">
+    <label for="link-url" hidden>Link URL</label>
+    <input id="link-url" v-model="link.url" v-focus type="text" placeholder="URL" class="form-control">
 
-            <label for="link-title" hidden>Link Title</label>
-            <input id="link-title" v-model="newLink.title" type="text" placeholder="Title" class="form-control">
+    <label for="link-title" hidden>Link Title</label>
+    <input id="link-title" v-model="link.title" type="text" placeholder="Link Title" class="form-control">
 
-            <label for="link-notes" hidden>Link Notes</label>
-            <textarea id="link-notes" v-model="newLink.notes" type="textarea" placeholder="Notes" class="form-control">
-            </textarea>
-            <label for="link-topic" hidden>Link Topic</label>
-            <select id="link-topic" v-model="newLink.topicId" class="form-control">
-              <option v-for="topic in topics" v-bind:key="topic.id" v-bind:value="topic.id">
-                {{ topic.name }}
-              </option>
-            </select>
-            <button @click="save()" class="btn btn-primary mt-5 mb-3">Save</button>
-          </div>
-        </div>
-      </div>
+    <label for="link-notes" hidden>Link Notes</label>
+    <textarea-autosize
+        id="link-notes"
+        class="form-control textarea-autosize"
+        placeholder="Notes"
+        ref="someName"
+        v-model="link.notes"
+        :min-height="30"
+    ></textarea-autosize>
+
+    <label for="link-topic" hidden>Link Topic</label>
+    <select id="link-topic" v-model="link.topicId" class="form-control">
+      <option v-for="topic in topics" v-bind:key="topic.id" v-bind:value="topic.id">
+        {{ topic.name }}
+      </option>
+    </select>
+
+    <div class="custom-control form-control-lg custom-checkbox mb-5">
+      <input type="checkbox" v-model="link.completed" class="custom-control-input" id="link-completed">
+      <label class="custom-control-label" for="link-completed">Mark as Completed</label>
     </div>
   </div>
 </template>
-
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { BaseApiService } from '../services/base_api_service'
 import { Topic } from '../models/topic'
-import { Link } from '../models/link'
-import { TOAST_TYPE } from '../models/toast'
+import { TOAST_TYPE} from '../models/toast'
 
 export default {
   name: 'lb-link-form',
   data() {
     return {
       topics: [],
-      newLink: null,
     }
   },
+
   props: {
-    showLinkCreate: Boolean
+    showLinkCreate: Boolean,
+    link: null
   },
   created() {
-    this.topicsService.fetchAll('topics', Topic)
-      .then((topics) => {
-        this.topics = topics
-      })
-      .catch(() => {
-        this.addToast([TOAST_TYPE.ERROR, 'Could not load Topics'])
-      })
-    this.resetNewLink()
+    this.loadTopics()
   },
   computed: {
-    ...mapGetters([
-      'linksToDo'
-    ]),
     topicsService() { return new BaseApiService() }
   },
   methods: {
     ...mapActions([
       'addToast',
-      'addLink',
-      'updateLinksToDo'
     ]),
-    save() {
-      this.addLink(this.newLink)
-        .then(() => {
-          this.resetNewLink()
-          this.updateLinksToDo(this.linksToDo)
-          this.$router.push('/library')
+    loadTopics() {
+      this.topicsService.fetchAll('topics', Topic)
+        .then((topics) => {
+          this.topics = topics
         })
-    },
-    resetNewLink() {
-      this.newLink = new Link({ url: 'https://' })
+        .catch(() => {
+          this.addToast([TOAST_TYPE.ERROR, 'Could not load Topics'])
+        })
     }
   }
 }
@@ -87,43 +73,27 @@ export default {
 <style lang="scss" scoped>
   @import "../stylesheets/shared";
 
-  .modal-container {
-    @include default-font-measure;
-    max-width: $modal-min-width;
-    min-height: 1.3*$modal-min-height;
-    background-color: $background-bright;
-    border-radius: $thicker-border-size;
-    box-shadow: 0 $thicker-border-size $normal-space rgba(0, 0, 0, 0.33);
-    margin: 0 auto;
-  }
-
   .create-link-form {
     background-color: $light-gray;
 
-    h2 {
-      @include default-font-measure;
-      width: $normal-form-element-width;
-    }
-
-    input, select, button, textarea {
+    input, select {
       width: $normal-form-element-width;
       height: $normal-form-element-height;
       padding: $normal-space;
-      margin: 0 auto;
       float: none;
-    }
-
-    input, select, textarea {
       font-size: $font-size-title-small;
       font-weight: normal;
       color: $dark-gray;
-      margin-top: 1.5*$normal-space;
+      margin: 1.5*$normal-space auto 0;
     }
 
-    button {
-      @include default-button;
-      min-width: 35%;
-      margin: 0;
+    .textarea-autosize {
+      width: $normal-form-element-width;
+      font-size: $font-size-title-small;
+      font-weight: normal;
+      color: $dark-gray;
+      padding: 2*$normal-space $normal-space;
+      margin: 1.5*$normal-space auto 0;
     }
 
     ::placeholder {
@@ -134,6 +104,18 @@ export default {
 
     .form-control {
       margin-left: 0
+    }
+
+    .custom-control-label {
+      font-size: $font-size-title-small;
+      font-weight: normal;
+    }
+
+    .custom-control-label::before,
+    .custom-control-label::after {
+      border: $dark-gray 1px solid;
+      width: 0.75rem;
+      height: 0.75rem;
     }
   }
 </style>

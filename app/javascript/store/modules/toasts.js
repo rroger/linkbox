@@ -16,21 +16,17 @@ const getters = {
 const actions = {
   addToast ({ commit }, raw_toast ) {
     const toast = new Toast(... raw_toast)
-    commit('addToast', toast)
-    setTimeout(() => commit('removeToast', toast), TOAST_DURATION)
-  },
-
-  removeToast ({ commit }, toast) {
-    commit('removeToast', toast)
+    commit('ADD_TOAST', toast)
+    setTimeout(() => commit('REMOVE_TOAST', toast), TOAST_DURATION)
   },
 }
 
 const mutations = {
-  addToast (state, toast) {
+  ADD_TOAST (state, toast) {
     state.toasts.push(toast)
   },
 
-  removeToast (state, toast) {
+  REMOVE_TOAST (state, toast) {
     state.toasts.splice(state.toasts.indexOf(toast), 1)
   },
 }

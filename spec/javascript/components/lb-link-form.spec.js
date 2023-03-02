@@ -1,28 +1,69 @@
-import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import LbLinkForm from '../../../app/javascript/components/lb-link-form.vue'
 import focus from '../../../app/javascript/directives/focus'
 import { Topic } from '../../../app/javascript/models/topic'
 import { Link } from '../../../app/javascript/models/link'
+import VueTextareaAutosize from 'vue-textarea-autosize'
+
 
 const localVue  = createLocalVue()
-localVue.use(Vuex)
+localVue.use(VueTextareaAutosize)
 localVue.directive('focus', focus)
 
+
 describe('lb-link-form.vue', () => {
+  let link = new Link({})
+  let routerPushSpy = jest.fn()
+  let router = { push(input) { routerPushSpy(input) } }
+  let route = { params: {} }
+
   describe('#created', () => {
+    let loadTopicsSpy = jest.fn()
+    let loadDataSpy = jest.fn()
+
+    beforeEach(() => {
+      shallowMount(LbLinkForm, {
+        localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
+        methods: {
+          loadTopics() { loadTopicsSpy() },
+          loadData() { loadDataSpy(this.resetNewLink()) }
+        },
+        propsData: {
+          link: link
+        }
+      })
+    })
+
+    it('calls loadTopics', () => {
+      expect(loadTopicsSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('#loadTopics', () => {
     it('calls fetchTopics and sets topics', (done) =>  {
       const fetchAllSpy = jest.fn().mockImplementation(() => {
         return Promise.resolve('newly set topics')
       })
       const wrapper = mount(LbLinkForm, {
         localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
         computed: {
           topicsService() {
             return { fetchAll: fetchAllSpy }
           }
+        },
+        propsData: {
+          link: link
         }
       })
+
       localVue.nextTick(() => {
         expect(fetchAllSpy).toHaveBeenCalledWith('topics', Topic)
         expect(wrapper.vm.topics).toEqual('newly set topics')
@@ -37,6 +78,10 @@ describe('lb-link-form.vue', () => {
       const toastSpy = jest.fn()
       mount(LbLinkForm, {
         localVue,
+        mocks: {
+          $router: router,
+          $route: route
+        },
         computed: {
           topicsService() {
             return { fetchAll: fetchAllSpy }
@@ -46,6 +91,9 @@ describe('lb-link-form.vue', () => {
           addToast(input) {
             toastSpy(input)
           }
+        },
+        propsData: {
+          link: link
         }
       })
 
@@ -54,102 +102,6 @@ describe('lb-link-form.vue', () => {
           expect(toastSpy).toHaveBeenCalledWith(['error', 'Could not load Topics'])
           done()
         })
-      })
-    })
-  })
-
-  describe('#save', () => {
-    let actions
-    let getters
-    let store
-    let wrapper
-    let addLinkSpy
-
-    beforeEach(() => {
-      actions = {
-        updateLinksToDo: jest.fn()
-      }
-      getters = {
-        linksToDo: jest.fn(),
-      }
-      store = new Vuex.Store({
-        modules: {
-          links: {
-            state: {
-              links: []
-            },
-            getters,
-            actions
-          }
-        }
-      })
-
-      addLinkSpy = jest.fn()
-      wrapper = mount(LbLinkForm, {
-        store,
-        localVue,
-        mocks: {
-          $router: { push: jest.fn() }
-        },
-        methods: {
-          addLink(input) {
-            addLinkSpy(input)
-            return Promise.resolve(true)
-          },
-        }
-      })
-      wrapper.vm.newLink.title = 'new title'
-      wrapper.vm.save()
-    })
-
-
-    it('calls addLink with newLink', (done) => {
-      localVue.nextTick(() => {
-        expect(addLinkSpy).toHaveBeenCalledWith(new Link({ url: 'https://', title: 'new title' }))
-        done()
-      })
-    })
-
-    it('resets newLink after adding', (done) => {
-      localVue.nextTick(() => {
-        expect(wrapper.vm.newLink).toEqual(new Link({ url: 'https://'}))
-        done()
-      })
-    })
-
-
-    it('redirects back to library', (done) => {
-      localVue.nextTick(() => {
-        expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/library')
-        done()
-      })
-    })
-  })
-
-  describe('#resetNewLink', () => {
-    it('resets newLink', () => {
-      const wrapper = mount(LbLinkForm, { localVue })
-      wrapper.vm.newLink = new Link({
-        title: 'abc',
-        id: 5,
-        notes: 'some Notes',
-        url: 'some url',
-        topicColer: '#fff',
-        topicName: 'Name',
-        topicId: '5'
-      })
-      wrapper.vm.resetNewLink()
-
-      expect(wrapper.vm.newLink).toEqual({
-        completed: false,
-        id: undefined,
-        notes: '',
-        order: null,
-        title: undefined,
-        topicColor: null,
-        topicId: null,
-        topicName: null,
-        url: 'https://'
       })
     })
   })

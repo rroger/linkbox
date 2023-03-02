@@ -23,8 +23,8 @@
                 </div>
                 <div class="row">
                   <div class=col-lg-12>
-                    <button v-show="currentTopic" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="showConfirmation = true">Delete</button>
-                    <button v-show="!currentTopic" type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
+                    <button v-if="currentTopic" type="button" class="btn btn-outline-primary" data-test="delete-button" @click="showConfirmation = true">Delete</button>
+                    <button v-else type="button" class="btn btn-outline-primary" @click="showForm = false">Cancel</button>
                     <button type="submit" class="btn btn-primary save-button" :disabled="isSaveDisabled()">Save</button>
                   </div>
                 </div>
@@ -70,7 +70,8 @@ export default {
       showConfirmation: false,
       newTopicName: null,
       currentTopic: null,
-      baseUrl: `${process.env.BASE_API}/topics`,
+      // baseUrl: `${process.env.BASE_API}/topics`, // TODO: fix .env
+      baseUrl: `http://localhost:3000/api/v1/topics`,
     }
   },
   created() {
@@ -97,7 +98,9 @@ export default {
     fetchTopics() {
       this.$http.get(this.baseUrl).then(
         (response) => {
+          console.log("Topic fetch called")
           this.topics = response.body.data.map((raw) => {
+            console.log(raw)
             const topic = raw.attributes
             topic.id = raw.id
             return topic
