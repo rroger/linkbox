@@ -2,7 +2,7 @@
 
 experimental project to play with vue and rails. 
 
-*I'm in the process of upgrading to Rails 6 so so the tests are broken - sorry! I will fix it soon.'
+*I'm in the process of upgrading to Rails 6 so so the tests are broken - sorry! I will fix it soon.*
 
 ### Setup
 
